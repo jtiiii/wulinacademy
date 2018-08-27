@@ -1,0 +1,32 @@
+{
+  "name": "wulinacademy-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "tbuild": "webpack --config webpack.test-config.js",
+    "start": "webpack-dev-server --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "lodash": "^4.17.10",
+    "style-loader": "^0.22.1",
+    "url-loader": "^1.1.1",
+    "vue": "^2.5.17",
+    "vue-i18n": "^8.0.0",
+    "vue-loader": "^15.4.0",
+    "vue-style-loader": "^4.1.2",
+    "vue-template": "^1.0.3",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  }
+}
