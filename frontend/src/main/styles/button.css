@@ -1,0 +1,14 @@
+
+button {
+    height: 24px;
+    width: auto;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+button:active {
+    background: #eee;
+}
