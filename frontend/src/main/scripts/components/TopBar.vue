@@ -1,17 +1,17 @@
 <template>
     <div class="topbar">
-        <dropDown class="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></dropDown>
+        <dropDown ref="navigation" class="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></dropDown>
         <img v-if="logoSrc" class="logo" :src="logoSrc" />
         <div class="currentTitle" v-if="currentTitle"> {{ currentTitle }} </div>
-        <dropDown class="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></dropDown>
+        <dropDown ref="setting" class="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></dropDown>
     </div>
 </template>
 <script type="text/javascript">
-    import DropDown from './dropdown.vue';
+    import DropDown from './BaseDropDown.vue';
     import navIcon from '../../icons/list-icon.png';
     import settingIcon from '../../icons/setting-icon.png';
     export default {
-        name: "topBar",
+        name: "top-bar",
         components: {
             "dropDown": DropDown
         },
@@ -42,7 +42,7 @@
 <style scoped>
     .topbar{
         width: 100%;
-        height: 100px;
+        height: 80px;
         text-align: center;
         border-bottom: 2px solid #ccc;
         position: relative;
@@ -57,12 +57,12 @@
     .navigation{
         left: 0;
         position: absolute;
-        top: 30px;
+        top: 20px;
     }
     .setting{
         right: 0;
         position: absolute;
-        top: 30px;
+        top: 20px;
     }
     .currentTitle{
         display: inline-block;

@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import Dropdown from '../main/scripts/components/dropdown.vue';
-import List from '../main/scripts/components/list.vue';
-import TopBar from '../main/scripts/components/topbar.vue';
+import Dropdown from '../main/scripts/components/BaseDropDown.vue';
+import List from '../main/scripts/components/BaseList.vue';
+import TopBar from '../main/scripts/components/TopBar.vue';
 
 import logo from '../main/images/logo.png';
 

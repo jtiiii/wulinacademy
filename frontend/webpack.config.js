@@ -1,23 +1,23 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require('path');
 
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
     entry: {
         wulinacademy: './src/main/index.js',
-        // test: './src/test/test.js'
     },
     output: {
-        path: __dirname + '/build',
+        path: path.join( __dirname ,'build'),
         filename: '[name].bundle.js'
     },
     module: {
         rules: [
             { test: /\.vue$/, use: ['vue-loader']},
             { test: /\.css$/, use: ['style-loader','css-loader']},
-            { test: /\.(jpg|png)$/, use:[{
+            { test: /\.(jpg|png|jpeg)$/, use:[{
                     loader: 'url-loader',
                     options: {
                         limit: 81920,
@@ -35,9 +35,8 @@ module.exports = {
             chunks: ['wulinacademy']
         }),
         // new HtmlWebpackPlugin({
-        //     filename: 'test.html',
-        //     template: 'src/test/test.html',
-        //     chunks: ['test']
+        //     filename: 'pages/home.html',
+        //     template: 'src/main/pages/home.html'
         // }),
         new CleanWebpackPlugin('build')
     ],

@@ -1,0 +1,43 @@
+.topBar{
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    position: relative;
+}
+.icon{
+    width: 20px;
+    height: 20px;
+}
+.logo {
+    width: 300px;
+}
+#navigation{
+    left: 0;
+    position: absolute;
+    top: 20px;
+}
+#setting{
+    right: 0;
+    position: absolute;
+    top: 20px;
+}
+.currentTitle{
+    display: inline-block;
+    position: absolute;
+    bottom: 5px;
+    font-weight: bolder;
+    left: 10px;
+    font-size: 18px;
+    color: #676767;
+}
+#setting > button , #navigation > button{
+    border: none;
+}
+
+.content{
+    text-align: center;
+}
+.content > article{
+    display: inline-block;
+}

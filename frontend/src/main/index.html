@@ -2,11 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Wulin Academy of Arts - 武林书画院</title>
+    <title>{{ $t("index.title") }}</title>
 </head>
 <body>
-    <div id="topBar">
-        <topbar :nav="nav" :logo-src="logoSrc" :sets="sets" :current-title="currentTitle"></topbar>
+    <div id="topBar" class="topBar">
+        <base-drop-down ref="navigation" id="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+        <img v-if="logoSrc" class="logo" :src="logoSrc" />
+        <div class="currentTitle" v-if="currentTitle"> {{ currentTitle }} </div>
+        <base-drop-down ref="setting" id="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
+    </div>
+    <div id="content" class="content">
+        <article>
+            <router-view></router-view>
+        </article>
     </div>
 </body>
 </html>

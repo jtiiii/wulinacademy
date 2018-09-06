@@ -4,14 +4,17 @@
             {{ buttonText }} <slot></slot>
         </button>
         <div class="dropMenu" :class="direction" v-show="show">
-            <list v-for="group in groups" :key="group.name" :items="group.items" :title="group.name" :is-button-list="true" :click="itemClick"></list>
+            <list v-if="!isDoubleArray" ref="groups" :items="groups" :title="groups.name" :is-button-list="true" :click="itemClick"   ></list>
+            <list v-else :ref="group.name" v-for="group in groups" :key="group.name" :items="group.items" :title="group.name" :is-button-list="true" :click="itemClick"></list>
         </div>
     </div>
 </template>
 <script type="text/javascript">
-    import List from './list.vue';
-    let groupValidator = function(group){
-        return group.items instanceof Array;
+    import List from './BaseList.vue';
+    import Model from './BaseModel';
+    let groupValidator = function(groups){
+        return groups.every( group => group instanceof Model.ListItem )
+            || groups.every( group => group instanceof Model.GroupMenu );
     };
     const outsideclick = {
         bind: function(el, banding){
@@ -32,7 +35,7 @@
         }
     };
     export default {
-        name: 'dropDown',
+        name: 'BaseDropDown',
         components: {
             "list": List
         },
@@ -41,9 +44,7 @@
                 type: Array,
                 required: false,
                 default: () => [],
-                validator: value => {
-                    return value.every(groupValidator);
-                }
+                validator: groupValidator
             },
             buttonText: {
                 type: String,
@@ -72,6 +73,9 @@
                 let result = {};
                 result[this.menuDirect] = true;
                 return result;
+            },
+            isDoubleArray: function(){
+                return this.groups.every( group => group instanceof Model.GroupMenu );
             }
         },
         data: () =>{

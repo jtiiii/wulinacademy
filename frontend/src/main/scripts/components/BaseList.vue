@@ -1,22 +1,16 @@
 <template>
     <dl>
         <dt v-if="title"><hr/><span>&nbsp;{{ title }}&nbsp;</span></dt>
-        <dd v-for="item in items" :key="item.id" :dd-id="item.id" ><span v-if="!isButtonList">{{ item.text }}</span><button v-else @click="click(item)" >{{ item.text }}</button></dd>
+        <dd :class="{ select: item.select }" v-for="item in items" :key="item.id" :dd-id="item.id" ><span v-if="!isButtonList" v-html="item.text"></span><button v-else @click="click(item)" v-html="item.text" ></button></dd>
     </dl>
 </template>
 <script type="text/javascript">
+    import Model from './BaseModel';
     let validateItem = function(item){
-        if(!item){
-            return false;
-        }
-        if(!item.id){
-            return false;
-        }
-        let id = String(item.id);
-        return !(id === 'null' || id === '');
+        return item instanceof Model.ListItem;
     };
     export default {
-        name: 'list',
+        name: 'BaseList',
         props: {
             items:{
                 type: Array,
@@ -42,6 +36,17 @@
                 type: Function,
                 required: false,
                 default: ()=>{}
+            },
+        },
+        computed: {
+            selects: function(){
+                let result = [];
+                this.items.forEach(item => {
+                    if(item.select = true){
+                        result.push(item);
+                    }
+                });
+                return result;
             }
         }
     }
@@ -77,5 +82,9 @@
         border: none;
         text-align: left;
         cursor: pointer;
+    }
+    .select {
+        background: #e7f4f9;
+        border-radius: 4px;
     }
 </style>
