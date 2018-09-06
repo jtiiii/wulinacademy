@@ -7,7 +7,8 @@ export default {
         this.text = text;
         this.select = select || false;
     },
-    GroupMenu: function( name, items){
+    GroupMenu: function(id, name, items){
+        this.id = id;
         this.name = name;
         if(!items instanceof Array){
             throw new ModelError('arg: items must be Array');

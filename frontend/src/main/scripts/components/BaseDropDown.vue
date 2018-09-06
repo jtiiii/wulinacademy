@@ -5,7 +5,7 @@
         </button>
         <div class="dropMenu" :class="direction" v-show="show">
             <list v-if="!isDoubleArray" ref="groups" :items="groups" :title="groups.name" :is-button-list="true" :click="itemClick"   ></list>
-            <list v-else :ref="group.name" v-for="group in groups" :key="group.name" :items="group.items" :title="group.name" :is-button-list="true" :click="itemClick"></list>
+            <list v-else :ref="group.name" v-for="group in groups" :key="group.name" :items="group.items" :title="group.name" :is-button-list="true" :click="groupItemClick(group)"></list>
         </div>
     </div>
 </template>
@@ -63,7 +63,7 @@
                 validator: function( value ){
                     return value === 'left' || value === 'right';
                 }
-            }
+            },
         },
         directives:{
             outsideclick: outsideclick
@@ -89,6 +89,12 @@
             },
             hideMenu: function(){
                 this.show = false;
+            },
+            groupItemClick: function( group ){
+                let ic = this.itemClick;
+                return function(item){
+                    return ic(item,group.id);
+                }
             }
         }
     }

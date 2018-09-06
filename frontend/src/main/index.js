@@ -6,7 +6,7 @@ import navIcon from "./icons/list-icon.png";
 import setIcon from "./icons/setting-icon.png";
 import Vuex from "vuex";
 import VueI18n from "vue-i18n";
-import I18n,{ I18nLanguage, I18nCodes } from './i18n/i18n';
+import I18n,{ I18nLanguage, I18nCodes, I18nLocale } from './scripts/i18n';
 import VueRouter from 'vue-router';
 import router from './scripts/router';
 
@@ -15,7 +15,7 @@ import router from './scripts/router';
     //使用Vuex
     Vue.use(Vuex);
     //使用vue-i18n
-    // Vue.use(VueI18n);
+    Vue.use(VueI18n);
     //使用vue-router
     Vue.use(VueRouter);
 
@@ -25,27 +25,16 @@ import router from './scripts/router';
     }
 })();
 
-// const i18n = new VueI18n(I18n);
-
-function getMessage( name ){
-    let message = I18n.getLocaleMessage(I18n.locale);
-    name.split('.').forEach( key => {
-        message = message[key]
-    });
-    return message;
-}
-
 function I18nListItems( items ){
     let map = {};
     items.forEach(item => {
-        let m = new Model.ListItem(item.id,getMessage(item.i18nPath));
+        let m = new Model.ListItem(item.id,I18nLocale.getMessage(item.i18nPath));
         map[item.id] = item;
         item.model = m;
     });
     this.items = items;
     this.map = map;
 }
-
 I18nListItems.prototype = {
     constructor : I18nListItems,
     toArray : function(){
@@ -57,33 +46,14 @@ I18nListItems.prototype = {
     },
     refresh : function(){
         this.items.forEach(item => {
-            item.model.text = getMessage(item.i18nPath);
+            item.model.text = I18nLocale.getMessage(item.i18nPath);
         });
     }
 };
-
-let navObj = {
-    "home": 'index.nav.home',
-    "about": 'index.nav.about',
-    "news": 'index.nav.news',
-    "channel": 'index.nav.channel',
-    "apply": 'index.nav.apply'
-};
-
-let nav = undefined;
-(() => {
-    let navArr = [];
-    for(let key in navObj){
-        navArr.push({id: key, i18nPath: navObj[key]});
-    }
-    nav = new I18nListItems(navArr);
-})();
-
-
 function I18nGroupMenu( groups ){
     groups.forEach( group => {
         group.modelItem = new I18nListItems(group.items);
-        group.model = new Model.GroupMenu(getMessage(group.i18nPath), group.modelItem.toArray());
+        group.model = new Model.GroupMenu(group.id,I18nLocale.getMessage(group.i18nPath), group.modelItem.toArray());
     });
     this.groups = groups;
 }
@@ -98,51 +68,71 @@ I18nGroupMenu.prototype = {
     },
     refresh : function () {
         this.groups.forEach( group => {
-            group.model.name = getMessage(group.i18nPath);
+            group.model.name = I18nLocale.getMessage(group.i18nPath);
             group.modelItem.refresh();
         });
     }
 };
 
 
-let languagesItems = [];
-I18nCodes.forEach( code => {
-    languagesItems.push( new Model.ListItem(code,I18nLanguage[code]));
-});
-let setGroup = new I18nGroupMenu([]);
-let sets = setGroup.toArray();
-let languageGroup = new Model.GroupMenu(getMessage('index.sets.language'), languagesItems);
-sets.push(languageGroup);
-
-let Locale ={};
-Object.defineProperty(Locale,'value',{
-    get: function(){
-        return I18n.locale;
-    },
-    set: function( value ){
-        I18n.locale = value;
-        nav.refresh();
-        setGroup.refresh();
-        languageGroup.name = getMessage('index.sets.language');
-    }
-});
 window.topBar = new Vue({
     el: '#topBar',
     data:{
-        nav: nav.toArray(),
+        nav: [],
         logoSrc: logo,
         navIcon: navIcon,
         settingIcon: setIcon,
-        sets: sets,
-        currentTitle: getMessage('index.nav.home'),
-        setClick: ()=>{},
+        sets: [],
+        currentTitle: I18nLocale.getMessage('index.nav.home')
     },
     methods: {
         navClick: function( item ){
             this.currentTitle = item.text;
             router.push('/' + item.id);
             this.$refs.navigation.hideMenu();
+        },
+        setClick: function( item, groupId){
+            switch (groupId) {
+                case 'language':
+                    I18nLocale.code = item.id;
+                    break;
+                default: return;
+            }
+        },
+    },
+    created: function(){
+        let navObj = {
+            "home": 'index.nav.home',
+            "about": 'index.nav.about',
+            "news": 'index.nav.news',
+            "channel": 'index.nav.channel',
+            "apply": 'index.nav.apply'
+        };
+
+        let navArr = [];
+        for(let key in navObj){
+            navArr.push({id: key, i18nPath: navObj[key]});
         }
+        this.$nav = new I18nListItems(navArr);
+        this.nav = this.$nav.toArray();
+
+
+
+        let languagesItems = [];
+        I18nCodes.forEach( code => {
+            languagesItems.push( new Model.ListItem(code,I18nLanguage[code]));
+        });
+        let setGroup = new I18nGroupMenu([]);
+        this.sets = setGroup.toArray();
+        let languageGroup = new Model.GroupMenu('language',I18nLocale.getMessage('index.sets.language'), languagesItems);
+
+        this.sets.push(languageGroup);
+
+        I18nLocale.addResolve(() => {
+            this.$nav.refresh();
+            setGroup.refresh();
+            languageGroup.name = I18nLocale.getMessage('index.sets.language');
+        });
     },
     mounted: function(){
         router.beforeEach( (to, from, next ) => {
@@ -152,12 +142,12 @@ window.topBar = new Vue({
                     break;
 
                 case '/error':
-                    this.currentTitle = getMessage('index.nav.error');
+                    this.currentTitle = I18nLocale.getMessage('index.nav.error');
                     next();
                     break;
 
                 default:
-                    let item =nav.map[to.fullPath.substring(1)];
+                    let item =this.$nav.map[to.fullPath.substring(1)];
                     if( !item ){
                         next("/error");
                     }else{
@@ -182,3 +172,4 @@ window.title = new Vue({
 });
 
 window.i18n = I18n;
+window.I18nLocale = I18nLocale;

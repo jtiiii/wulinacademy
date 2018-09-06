@@ -6,7 +6,8 @@ export default {
             home : 'Home',
             news: 'News',
             channel : 'Channel',
-            apply: 'Apply'
+            apply: 'Apply',
+            error: 'Error'
         },
         sets: {
             language: 'language'

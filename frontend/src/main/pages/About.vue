@@ -18,7 +18,7 @@
 </template>
 <script type="text/javascript">
     import promotionalPic from '../images/photo2.jpeg';
-    import i18n from '../i18n/i18n';
+    import i18n from '../scripts/i18n';
     export default {
         i18n,
         data: ()=>{
