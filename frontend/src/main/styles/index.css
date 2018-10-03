@@ -1,9 +1,14 @@
+body{
+    padding: 0 5px;
+    position: relative;
+}
 .topBar{
     width: 100%;
     height: 80px;
     text-align: center;
     border-bottom: 2px solid #ccc;
     position: relative;
+    background: #fff;
 }
 .icon{
     width: 20px;
@@ -12,15 +17,15 @@
 .logo {
     width: 300px;
 }
-#navigation{
-    left: 0;
+.nav{
     position: absolute;
     top: 20px;
 }
-#setting{
+.navigation{
+    left: 0;
+}
+.setting{
     right: 0;
-    position: absolute;
-    top: 20px;
 }
 .currentTitle{
     display: inline-block;
@@ -31,7 +36,12 @@
     font-size: 18px;
     color: #676767;
 }
-#setting > button , #navigation > button{
+.currentFixed{
+    position: relative;
+    top: 10px;
+}
+
+.nav > div > button{
     border: none;
 }
 
@@ -40,4 +50,17 @@
 }
 .content > article{
     display: inline-block;
+}
+.contentFixed{
+    padding-top: 50px;
+}
+
+.fixed{
+    position: fixed;
+    height: 50px;
+    width: calc(100% - 27px);
+    top: 0;
+}
+.navFixed{
+    top: 10px;
 }

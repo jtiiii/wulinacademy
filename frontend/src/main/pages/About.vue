@@ -1,16 +1,17 @@
 <template>
     <div class="about">
         <nav>
-            <a>{{ nav.history }}</a>
-            <a>{{ nav.content }}</a>
-            <a>{{ nav.map }}</a>
+            <a>{{ $t('about.nav.history') }}</a>
+            <a>{{ $t('about.nav.contact') }}</a>
+            <a>{{ $t('about.nav.map') }}</a>
         </nav>
         <article>
             <img class="promotional" :src="src">
             <br/>
             <div class="introduction">
                 <h3>{{ $t('index.title') }}</h3>
-                <p>{{ msg }}</p>
+                <p>{{ $t('about.contact.phoneNumber') }} {{ phoneNumber }}</p>
+                <p>{{ $t('about.contact.email') }} {{ email }}</p>
             </div>
         </article>
 
@@ -25,12 +26,8 @@
             return {
                 title: '武林书画院',
                 src: promotionalPic,
-                msg: '联系方式：(086) 0571-85150209',
-                nav: {
-                    history: 'History of WA',
-                    content: 'Content US',
-                    map: 'Map'
-                }
+                phoneNumber: '0571-85150209',
+                email: 'xxx@xxx.com',
             };
         }
     };

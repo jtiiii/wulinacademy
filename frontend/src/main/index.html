@@ -5,13 +5,18 @@
     <title>{{ $t("index.title") }}</title>
 </head>
 <body>
-    <div id="topBar" class="topBar">
-        <base-drop-down ref="navigation" id="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+    <div id="topBar" :class="topBar">
+        <div :class="navigation">
+            <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+        </div>
         <img v-if="logoSrc" class="logo" :src="logoSrc" />
-        <div class="currentTitle" v-if="currentTitle"> {{ currentTitle }} </div>
-        <base-drop-down ref="setting" id="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
+        <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
+        <div :class="setting">
+            <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
+        </div>
+
     </div>
-    <div id="content" class="content">
+    <div id="content" :class="content">
         <article>
             <router-view></router-view>
         </article>

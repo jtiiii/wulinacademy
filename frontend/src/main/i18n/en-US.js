@@ -16,8 +16,20 @@ export default {
     about :{
         nav:{
             history: 'History of WA',
-            contact: 'Concat us',
+            contact: 'Contact us',
             map: 'Map'
+        },
+        contact:{
+            phoneNumber: 'Telephone Number: ',
+            email: 'E-Mail: '
         }
+    },
+    channel: {
+        twitter: 'twitter',
+        weibo: 'weibo',
+        wechat: 'wechat',
+        youtube: 'youtube',
+        facebook: 'facebook',
+        instagram: 'instagram'
     }
 };

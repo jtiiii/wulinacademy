@@ -78,12 +78,30 @@ I18nGroupMenu.prototype = {
 window.topBar = new Vue({
     el: '#topBar',
     data:{
+        topBar: {
+            'topBar': true,
+            'fixed': false
+        },
+        navigation:{
+            'navigation': true,
+            'nav': true,
+            'navFixed': false
+        },
+        setting: {
+            'setting': true,
+            'nav': true,
+            'navFixed': false
+        },
         nav: [],
         logoSrc: logo,
         navIcon: navIcon,
         settingIcon: setIcon,
         sets: [],
-        currentTitle: I18nLocale.getMessage('index.nav.home')
+        currentTitle: I18nLocale.getMessage('index.nav.home'),
+        currentTitleClass: {
+            'currentTitle': true,
+            'currentFixed': false
+        }
     },
     methods: {
         navClick: function( item ){
@@ -91,7 +109,7 @@ window.topBar = new Vue({
             router.push('/' + item.id);
             this.$refs.navigation.hideMenu();
         },
-        setClick: function( item, groupId){
+        setClick: function( item, groupId ){
             switch (groupId) {
                 case 'language':
                     I18nLocale.code = item.id;
@@ -99,6 +117,25 @@ window.topBar = new Vue({
                 default: return;
             }
         },
+        tofixedOrRelative: function(){
+            this.topBar.fixed = !this.topBar.fixed;
+            let flag = this.topBar.fixed;
+            content.content.contentFixed = flag;
+            this.logoSrc = flag? undefined: logo;
+            this.setting.navFixed = flag;
+            this.navigation.navFixed = flag;
+            this.currentTitleClass.currentFixed = flag;
+
+        },
+        handScroll: function(){
+            let flag = this.topBar.fixed;
+            if(!flag && window.scrollY >= 40){
+                this.tofixedOrRelative();
+            }else if(flag && window.scrollY <= 0){
+                this.tofixedOrRelative();
+            }
+        }
+
     },
     created: function(){
         let navObj = {
@@ -156,11 +193,18 @@ window.topBar = new Vue({
                     }
             }
         });
+        window.addEventListener('scroll',this.handScroll);
     }
 });
 
 window.content = new Vue({
     router,
+    data: {
+        content: {
+            'content': true,
+            'contentFixed': false
+        }
+    },
     el: '#content',
 });
 
