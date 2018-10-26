@@ -15,7 +15,7 @@ const I18n = new VueI18n({
 
 const I18nLanguage = {
     "zh-CN": "简体中文",
-    "zh-TW": "繁体中文",
+    // "zh-TW": "繁体中文",
     "en-US": "English - US"
 };
 const codes = [];

@@ -2,9 +2,12 @@
     <div>
         <img :src="logoSrc"/>
         <nav>
-            <a class="logo" :title="$t('channel.twitter')" :href="channel.twitter.address"><img :src="channel.twitter.logo"></a>
-            <a class="logo" :title="$t('channel.youtube')" :href="channel.youtube.address"><img :src="channel.youtube.logo"></a>
-            <a class="logo" :title="$t('channel.weibo')" :href="channel.weibo.address"><img :src="channel.weibo.logo"></a>
+            <a class="logo" :title="$t('channel.twitter')" ><img :src="channel.twitter.logo"></a>
+            <a class="logo" :title="$t('channel.youtube')" ><img :src="channel.youtube.logo"></a>
+            <a class="logo" :title="$t('channel.weibo')" ><img :src="channel.weibo.logo"></a>
+            <a class="logo" :title="$t('channel.wechat')" ><img :src="channel.wechat.logo"></a>
+            <a class="logo" :title="$t('channel.facebook')" ><img :src="channel.facebook.logo"></a>
+            <a class="logo" :title="$t('channel.instagram')" ><img :src="channel.instagram.logo"></a>
         </nav>
     </div>
 </template>
@@ -14,6 +17,9 @@
     import twitterLogo from '../icons/twitter-logo.png';
     import youtubeLogo from '../icons/youtube-logo.png';
     import weiboLogo from '../icons/weibo-logo.png';
+    import wechatLogo from '../icons/wechat-logo.png';
+    import facebookLogo from '../icons/facebook-logo.png';
+    import instagramLogo from '../icons/instagram-logo.png';
     export default {
         i18n,
         data: ()=>{
@@ -31,6 +37,17 @@
                     weibo: {
                         address: '',
                         logo: weiboLogo
+                    },
+                    wechat:{
+                        logo: wechatLogo,
+                    },
+                    facebook: {
+                        address: '',
+                        logo: facebookLogo
+                    },
+                    instagram: {
+                        address: '',
+                        logo: instagramLogo
                     }
                 }
             }

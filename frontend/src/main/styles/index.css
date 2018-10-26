@@ -1,6 +1,7 @@
 body{
     padding: 0 5px;
     position: relative;
+    min-width: 600px;
 }
 .topBar{
     width: 100%;
@@ -63,4 +64,19 @@ body{
 }
 .navFixed{
     top: 10px;
+}
+
+.footer{
+    margin-top: 20px;
+    padding-top: 10px;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+    border-top: 2px solid #ccc;
+    position: relative;
+    background: #fff;
+    color: rgb(113,113,113);
+}
+.footer > p{
+    margin: 5px auto;
 }

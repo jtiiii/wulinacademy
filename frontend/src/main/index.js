@@ -4,6 +4,7 @@ import Vue from "vue";
 import logo from "./images/logo-new.png";
 import navIcon from "./icons/list-icon.png";
 import setIcon from "./icons/setting-icon.png";
+import footerLogo from './images/footer-logo.jpg';
 import Vuex from "vuex";
 import VueI18n from "vue-i18n";
 import I18n,{ I18nLanguage, I18nCodes, I18nLocale } from './scripts/i18n';
@@ -206,6 +207,14 @@ window.content = new Vue({
         }
     },
     el: '#content',
+});
+
+window.footer = new Vue({
+    el: '#footer',
+    i18n: I18n,
+    data:{
+        footerLogo: footerLogo
+    }
 });
 
 window.Vue = Vue;

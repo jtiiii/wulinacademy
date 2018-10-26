@@ -11,6 +11,6 @@ export default new VueRouter({
         { path: '/about', component: About },
         { path: '/news', component: News},
         { path: '/channel', component: Channel},
-
+        { path: '/apply', component: PageError},
     ]
 });
