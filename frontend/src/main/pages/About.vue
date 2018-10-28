@@ -13,11 +13,11 @@
                 <br/>
                 <ul class="briefHistory">
                     <li>
-                        <img class="pic" :src="pics.pic3">
+                        <img class="pic" :src="pics.pic2">
                         <div class="picDescription">{{ $t('about.history.t1') }}</div>
                     </li>
                     <li>
-                        <img class="pic" :src="pics.pic2">
+                        <img class="pic" :src="pics.pic3">
                         <div class="picDescription">{{ $t('about.history.t2') }}</div>
                     </li>
                     <li>
@@ -55,9 +55,9 @@
                 phoneNumber: '(086) 0571-85150209',
                 email: 'wulinacademyarts@gmail.com',
                 pics:{
-                    pic2: pic2,
-                    pic3: pic3,
-                    pic4: pic4,
+                    pic2: pic3,
+                    pic3: pic4,
+                    pic4: pic2,
                     pic5: pic5
                 }
             };

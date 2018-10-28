@@ -17,11 +17,11 @@ module.exports = {
         rules: [
             { test: /\.vue$/, use: ['vue-loader']},
             { test: /\.css$/, use: ['style-loader','css-loader']},
-            { test: /\.(jpg|png|jpeg)$/, use:[{
+            { test: /\.(jpg|png|jpeg|ttf)$/, use:[{
                     loader: 'url-loader',
                     options: {
                         limit: 81920,
-                        outputPath: 'img'
+                        outputPath: 'assets'
                     }}]
             }
         ]

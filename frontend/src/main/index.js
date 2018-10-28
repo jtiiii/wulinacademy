@@ -11,7 +11,6 @@ import I18n,{ I18nLanguage, I18nCodes, I18nLocale } from './scripts/i18n';
 import VueRouter from 'vue-router';
 import router from './scripts/router';
 
-
 (() =>{
     //使用Vuex
     Vue.use(Vuex);
@@ -98,15 +97,22 @@ window.topBar = new Vue({
         navIcon: navIcon,
         settingIcon: setIcon,
         sets: [],
-        currentTitle: I18nLocale.getMessage('index.nav.home'),
+        currentTap: 'news',
+        // currentTitle: I18nLocale.getMessage('index.nav.news'),
         currentTitleClass: {
             'currentTitle': true,
             'currentFixed': false
         }
     },
+    computed: {
+        currentTitle: function(){
+            return I18nLocale.getMessage(this.$nav.map[this.currentTap].i18nPath);
+        }
+    },
     methods: {
         navClick: function( item ){
-            this.currentTitle = item.text;
+            // this.currentTitle = item.text;
+            this.currentTap = item.id;
             router.push('/' + item.id);
             this.$refs.navigation.hideMenu();
         },
@@ -140,9 +146,9 @@ window.topBar = new Vue({
     },
     created: function(){
         let navObj = {
-            "home": 'index.nav.home',
-            "about": 'index.nav.about',
+            // "home": 'index.nav.home',
             "news": 'index.nav.news',
+            "about": 'index.nav.about',
             "channel": 'index.nav.channel',
             "apply": 'index.nav.apply'
         };
@@ -176,11 +182,12 @@ window.topBar = new Vue({
         router.beforeEach( (to, from, next ) => {
             switch (to.fullPath) {
                 case '/':
-                    next('/home');
+                    next('/news');
                     break;
 
                 case '/error':
-                    this.currentTitle = I18nLocale.getMessage('index.nav.error');
+                    // this.currentTitle = I18nLocale.getMessage('index.nav.error');
+                    this.currentTap = 'error';
                     next();
                     break;
 
@@ -189,7 +196,9 @@ window.topBar = new Vue({
                     if( !item ){
                         next("/error");
                     }else{
-                        this.currentTitle = item.model.text;
+                        // this.currentTitle = item.model.text;
+                        this.currentTap = item.id;
+                        // this.currentTap =
                         next();
                     }
             }

@@ -1,4 +1,8 @@
+/*@import "../fonts/fonts.css";*/
+
 body{
+    font-family: Microsoft YaHei;
+    color: #777;
     padding: 0 5px;
     position: relative;
     min-width: 600px;

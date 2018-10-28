@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import zh_CN from '../i18n/zh-CN';
 import en_US from '../i18n/en-US';
+import zh_TW from '../i18n/zh-TW';
 
 Vue.use(VueI18n);
 
@@ -9,13 +10,14 @@ const I18n = new VueI18n({
     locale: 'zh-CN',
     messages : {
         'zh-CN': zh_CN,
-        'en-US': en_US
+        'en-US': en_US,
+        'zh-TW': zh_TW
     }
 });
 
 const I18nLanguage = {
     "zh-CN": "简体中文",
-    // "zh-TW": "繁体中文",
+    "zh-TW": "正體中文",
     "en-US": "English - US"
 };
 const codes = [];
