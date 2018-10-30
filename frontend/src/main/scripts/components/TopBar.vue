@@ -1,51 +1,220 @@
 <template>
-    <div class="topbar">
-        <dropDown ref="navigation" class="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></dropDown>
+    <div :class="topBar">
+        <div :class="navigation">
+            <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+        </div>
         <img v-if="logoSrc" class="logo" :src="logoSrc" />
-        <div class="currentTitle" v-if="currentTitle"> {{ currentTitle }} </div>
-        <dropDown ref="setting" class="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></dropDown>
+        <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
+        <div :class="setting">
+            <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
+        </div>
+
     </div>
 </template>
 <script type="text/javascript">
     import DropDown from './BaseDropDown.vue';
+    import logo from "../../images/logo-new.png";
     import navIcon from '../../icons/list-icon.png';
-    import settingIcon from '../../icons/setting-icon.png';
+    import setIcon from '../../icons/setting-icon.png';
+    import I18n,{ I18nLanguage, I18nCodes, I18nLocale } from '../i18n';
+    import Model from './BaseModel';
+
+    function I18nListItems( items ){
+        let map = {};
+        items.forEach(item => {
+            let m = new Model.ListItem(item.id,I18nLocale.getMessage(item.i18nPath));
+            map[item.id] = item;
+            item.model = m;
+        });
+        this.items = items;
+        this.map = map;
+    }
+    I18nListItems.prototype = {
+        constructor : I18nListItems,
+        toArray : function(){
+            let arr = [];
+            this.items.forEach(item => {
+                arr.push(item.model);
+            });
+            return arr;
+        },
+        refresh : function(){
+            this.items.forEach(item => {
+                item.model.text = I18nLocale.getMessage(item.i18nPath);
+            });
+        }
+    };
+    function I18nGroupMenu( groups ){
+        groups.forEach( group => {
+            group.modelItem = new I18nListItems(group.items);
+            group.model = new Model.GroupMenu(group.id,I18nLocale.getMessage(group.i18nPath), group.modelItem.toArray());
+        });
+        this.groups = groups;
+    }
+    I18nGroupMenu.prototype = {
+        constructor: I18nGroupMenu,
+        toArray: function(){
+            let arr = [];
+            this.groups.forEach( group => {
+                arr.push( group.model);
+            });
+            return arr;
+        },
+        refresh : function () {
+            this.groups.forEach( group => {
+                group.model.name = I18nLocale.getMessage(group.i18nPath);
+                group.modelItem.refresh();
+            });
+        }
+    };
     export default {
-        name: "top-bar",
-        components: {
-            "dropDown": DropDown
+        components:{
+            "base-drop-down" : DropDown
         },
-        props:{
-            nav: Array,
-            sets: Array,
-            navClick: Function,
-            setClick: Function,
-            logoSrc: {
-                type:String,
-                required: false,
-                default: undefined
+        props: {
+            navClickResolve: {
+                type: Function,
+                default: function(){},
+                required: false
             },
-            currentTitle: {
-                type: String,
-                required: false,
-                default: undefined
+            toFixedOrRelativeResolve: {
+                type: Function,
+                default: function(){},
+                required: false
+            },
+            setClickResolve:{
+                type: Function,
+                default: function(){},
+                required: false
+            },
+        },
+        data: function () {
+            return {
+                topBar: {
+                    'topBar': true,
+                    'fixed': false
+                },
+                navigation:{
+                    'navigation': true,
+                    'nav': true,
+                    'navFixed': false
+                },
+                setting: {
+                    'setting': true,
+                    'nav': true,
+                    'navFixed': false
+                },
+                nav: [],
+                logoSrc: logo,
+                navIcon: navIcon,
+                settingIcon: setIcon,
+                sets: [],
+                currentTap: '',
+                currentTitleClass: {
+                    'currentTitle': true,
+                    'currentFixed': false
+                }
+            };
+        },
+        computed: {
+            currentTitle: function(){
+                if(this.currentTap){
+                    return I18nLocale.getMessage(this.$nav.map[this.currentTap].i18nPath);
+                }
             }
         },
-        data: ()=> {
-            return {
-                navIcon: navIcon,
-                settingIcon: settingIcon
+        methods: {
+            navClick: function( item ){
+                this.currentTap = item.id;
+                this.$refs.navigation.hideMenu();
+                // router.push('/' + item.id);
+                setTimeout( () => {
+                    this.navClickResolve( item );
+                },1);
+            },
+            setClick: function( item, groupId ){
+                setTimeout(() => {
+                    this.setClickResolve( item, groupId );
+                },1);
+                switch (groupId) {
+                    case 'language':
+                        I18nLocale.code = item.id;
+                        break;
+                    default: return;
+                }
+            },
+            toFixedOrRelative: function(){
+                this.topBar.fixed = !this.topBar.fixed;
+                let flag = this.topBar.fixed;
+                this.logoSrc = flag? undefined: logo;
+                this.setting.navFixed = flag;
+                this.navigation.navFixed = flag;
+                this.currentTitleClass.currentFixed = flag;
+                //vContent.content.contentFixed = flag;
+                setTimeout( () => {
+                    this.toFixedOrRelative( flag );
+                },1);
+            },
+            handScroll: function(){
+                let flag = this.topBar.fixed;
+                if(!flag && window.scrollY >= 40){
+                    this.toFixedOrRelative();
+                }else if(flag && window.scrollY <= 0){
+                    this.toFixedOrRelative();
+                }
+            },
+            changeTap: function( id ){
+                let tap = this.$nav.map[id];
+                if(tap){
+                    this.currentTap = tap.id;
+                    return true;
+                }
+                return false;
             }
+
+        },
+        created: function(){
+            let navObj = {
+                // "home": 'index.nav.home',
+                "news": 'index.nav.news',
+                "about": 'index.nav.about',
+                "channel": 'index.nav.channel',
+                "apply": 'index.nav.apply'
+            };
+
+            let navArr = [];
+            for(let key in navObj){
+                navArr.push({id: key, i18nPath: navObj[key]});
+            }
+            this.$nav = new I18nListItems(navArr);
+            this.nav = this.$nav.toArray();
+            let languagesItems = [];
+            I18nCodes.forEach( code => {
+                languagesItems.push( new Model.ListItem(code,I18nLanguage[code]));
+            });
+            let setGroup = new I18nGroupMenu([]);
+            this.sets = setGroup.toArray();
+            let languageGroup = new Model.GroupMenu('language',I18nLocale.getMessage('index.sets.language'), languagesItems);
+
+            this.sets.push(languageGroup);
+
+            //添加钩子，当I18nLocale.code发生改变的时候触发
+            I18nLocale.addResolve((oldValue, newValue) => {
+                this.$nav.refresh();
+                setGroup.refresh();
+                languageGroup.name = I18nLocale.getMessage('index.sets.language');
+            });
         }
     };
 </script>
 <style scoped>
-    .topbar{
+    .topBar{
         width: 100%;
         height: 80px;
         text-align: center;
         border-bottom: 2px solid #ccc;
         position: relative;
+        background: #fff;
     }
     .icon{
         width: 20px;
@@ -56,13 +225,9 @@
     }
     .navigation{
         left: 0;
-        position: absolute;
-        top: 20px;
     }
     .setting{
         right: 0;
-        position: absolute;
-        top: 20px;
     }
     .currentTitle{
         display: inline-block;
@@ -70,11 +235,28 @@
         bottom: 5px;
         font-weight: bolder;
         left: 10px;
-        font-size: 24px;
+        font-size: 18px;
+        color: #676767;
     }
-</style>
-<style>
-    .setting > button , .navigation > button{
+    .fixed{
+        position: fixed;
+        height: 50px;
+        width: calc(100% - 27px);
+        top: 0;
+    }
+    .currentFixed{
+        position: relative;
+        top: 10px;
+    }
+    .nav{
+        position: absolute;
+        top: 20px;
+    }
+    /* 使用 >>> 来强制修改子模块样式 */
+    .nav >>> div > button{
         border: none;
+    }
+    .navFixed{
+        top: 10px;
     }
 </style>

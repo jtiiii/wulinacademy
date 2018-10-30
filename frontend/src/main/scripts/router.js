@@ -6,11 +6,11 @@ import News from '../pages/News.vue';
 import Channel from '../pages/Channel.vue';
 export default new VueRouter({
     routes: [
-        { path: '/error', component: PageError},
-        { path: '/home', component: Home},
-        { path: '/about', component: About },
-        { path: '/news', component: News},
-        { path: '/channel', component: Channel},
-        { path: '/apply', component: PageError},
+        { name: 'error', path: '/error', component: PageError},
+        { name: 'home', path: '/home', component: Home},
+        { name: 'about', path: '/about', component: About },
+        { name: 'news', path: '/news', component: News},
+        { name: 'channel', path: '/channel', component: Channel},
+        { name: 'apply', path: '/apply', component: PageError},
     ]
 });

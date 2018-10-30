@@ -1,86 +1,18 @@
 /*@import "../fonts/fonts.css";*/
 
 body{
-    font-family: Microsoft YaHei;
     color: #777;
     padding: 0 5px;
     position: relative;
     min-width: 600px;
 }
-.topBar{
-    width: 100%;
-    height: 80px;
-    text-align: center;
-    border-bottom: 2px solid #ccc;
-    position: relative;
-    background: #fff;
-}
-.icon{
-    width: 20px;
-    height: 20px;
-}
-.logo {
-    width: 300px;
-}
-.nav{
-    position: absolute;
-    top: 20px;
-}
-.navigation{
-    left: 0;
-}
-.setting{
-    right: 0;
-}
-.currentTitle{
-    display: inline-block;
-    position: absolute;
-    bottom: 5px;
-    font-weight: bolder;
-    left: 10px;
-    font-size: 18px;
-    color: #676767;
-}
-.currentFixed{
-    position: relative;
-    top: 10px;
-}
 
-.nav > div > button{
-    border: none;
-}
 
-.content{
-    text-align: center;
-}
-.content > article{
-    display: inline-block;
-}
-.contentFixed{
-    padding-top: 50px;
-}
 
-.fixed{
-    position: fixed;
-    height: 50px;
-    width: calc(100% - 27px);
-    top: 0;
-}
-.navFixed{
-    top: 10px;
-}
 
-.footer{
-    margin-top: 20px;
-    padding-top: 10px;
-    width: 100%;
-    font-size: 16px;
-    text-align: center;
-    border-top: 2px solid #ccc;
-    position: relative;
-    background: #fff;
-    color: rgb(113,113,113);
-}
-.footer > p{
-    margin: 5px auto;
-}
+
+
+
+
+
+

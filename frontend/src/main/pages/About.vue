@@ -1,12 +1,12 @@
 <template>
     <div class="about">
         <nav>
-            <a>{{ $t('about.nav.history') }}</a>
-            <a>{{ $t('about.nav.contact') }}</a>
+            <a @click="goto('history')">{{ $t('about.nav.history') }}</a>
+            <a @click="goto('contact')">{{ $t('about.nav.contact') }}</a>
             <a>{{ $t('about.nav.map') }}</a>
         </nav>
         <article class="content">
-            <div class="history">
+            <div ref="history" class="history">
                 <p>{{ $t('about.history.h1') }}</p>
                 <p>{{ $t('about.history.h2') }}</p>
                 <p>{{ $t('about.history.h3') }}</p>
@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <br/>
-            <div class="contact">
+            <div ref="contact" class="contact">
                 <h3>{{ $t('index.title') }}</h3>
                 <p>{{ $t('about.contact.phoneNumber') }} {{ phoneNumber }}</p>
                 <p>{{ $t('about.contact.email') }} {{ email }}</p>
@@ -42,7 +42,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import pic2 from '../images/photo2.jpeg';
+    import pic2 from '../images/photo6.jpeg';
     import pic3 from '../images/photo3.jpeg';
     import pic4 from '../images/photo4.jpeg';
     import pic5 from '../images/photo5.jpeg';
@@ -50,6 +50,12 @@
     import i18n from '../scripts/i18n';
     export default {
         i18n,
+        methods: {
+            goto: function( part ){
+                // console.info(this.$refs[part]);
+                this.$refs[part].scrollIntoView();
+            }
+        },
         data: ()=>{
             return {
                 phoneNumber: '(086) 0571-85150209',
@@ -65,8 +71,12 @@
     };
 </script>
 <style scoped>
+    .picDescription{
+        font-size: 13px;
+    }
     .about{
         text-align : center;
+        height: 100%;
     }
     .briefHistory{
         list-style-type: none;
@@ -84,12 +94,12 @@
     }
     .content{
         width: 600px;
+        height: 100%;
         text-align: left;
     }
     .contact{
         width: 100%;
         border-left: 5px solid #ccc;
-
         padding: 5px 15px;
         display: inline-block;
         box-sizing: border-box;

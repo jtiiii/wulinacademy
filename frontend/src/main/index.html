@@ -4,32 +4,11 @@
     <meta charset="UTF-8">
     <title>{{ $t("index.title") }}</title>
 </head>
-<body>
-    <div id="topBar" :class="topBar">
-        <div :class="navigation">
-            <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
-        </div>
-        <img v-if="logoSrc" class="logo" :src="logoSrc" />
-        <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
-        <div :class="setting">
-            <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
-        </div>
-
+<body >
+    <div id="body" :style="bodyStyle">
+        <v-top-bar ref="topBar" :nav-click-resolve="changePage" ></v-top-bar>
+        <v-content ref="content"></v-content>
+        <v-footer ref="footer"></v-footer>
     </div>
-    <div id="content" :class="content">
-        <article>
-            <router-view></router-view>
-        </article>
-    </div>
-    <footer id="footer" class="footer">
-        <p>{{ $t('index.footer.p1') }}</p>
-        <p>{{ $t('index.footer.p2') }}</p>
-        <p>{{ $t('index.footer.p3') }}</p>
-        <p>310000</p>
-        <p style="margin: 10px 0;font-size:12px;">&copy;{{ $t('index.footer.copy') }}</p>
-        <div style="background-color:rgb(169,161,154);">
-            <img style="position:relative; top:3px; width: 120px;" :src="footerLogo">
-        </div>
-    </footer>
 </body>
 </html>

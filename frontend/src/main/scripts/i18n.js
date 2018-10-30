@@ -7,7 +7,7 @@ import zh_TW from '../i18n/zh-TW';
 Vue.use(VueI18n);
 
 const I18n = new VueI18n({
-    locale: 'zh-CN',
+    locale: 'en-US',
     messages : {
         'zh-CN': zh_CN,
         'en-US': en_US,
@@ -26,6 +26,7 @@ for(let code in I18nLanguage){
 }
 
 const Locale ={};
+Locale._resolves_ = [];
 Object.defineProperty(Locale,'code',{
     get: function(){
         return I18n.locale;
@@ -39,7 +40,6 @@ Object.defineProperty(Locale,'code',{
 Locale.addResolve = function ( resolve ){
     this._resolves_.push(resolve);
 };
-Locale._resolves_ = [];
 Locale.getMessage = function( i18nPath ){
     let message = I18n.getLocaleMessage(I18n.locale);
     i18nPath.split('.').forEach( key => {
