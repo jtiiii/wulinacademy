@@ -35,8 +35,8 @@ export default {
             t4: 'Pum blossoms at Wulin Academy, 2018'
         },
         contact:{
-            phoneNumber: 'Telephone Number: ',
-            email: 'E-Mail: ',
+            phoneNumber: 'Tel: ',
+            email: 'Email: ',
             address: 'Address: ',
             physicalAddress:'298 WestLake Avenue, Hangzhou, China'
         }

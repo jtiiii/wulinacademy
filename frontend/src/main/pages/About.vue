@@ -113,6 +113,8 @@
         margin-right: 20px;
     }
     .about > nav > a{
+        font-size: 17px;
+        color: #444;
         margin: 10px 0;
         display: block;
     }

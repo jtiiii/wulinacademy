@@ -16,9 +16,9 @@ const I18n = new VueI18n({
 });
 
 const I18nLanguage = {
-    "zh-CN": "简体中文",
     "zh-TW": "正體中文",
-    "en-US": "English - US"
+    "zh-CN": "简体中文",
+    "en-US": "English"
 };
 const codes = [];
 for(let code in I18nLanguage){
