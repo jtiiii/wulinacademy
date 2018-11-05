@@ -70,8 +70,6 @@ window.vueBody = new Vue({
         }
     },
     mounted: function(){
-        Commons.$on('change-modal',this.changeModalInfo);
-
         let preProcessRouter = ()=>{
             router.beforeEach( (to, from, next ) => {
                 switch (to.fullPath) {
