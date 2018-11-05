@@ -1,5 +1,5 @@
 <template>
-    <div class="about">
+    <div class="about" style="display:inline-block;">
         <nav>
             <a @click="goto('history')">{{ $t('about.nav.history') }}</a>
             <a @click="goto('contact')">{{ $t('about.nav.contact') }}</a>
@@ -37,6 +37,11 @@
                 <p>{{ $t('about.contact.email') }} {{ email }}</p>
                 <p>{{ $t('about.contact.address') }} {{ $t('about.contact.physicalAddress') }}</p>
             </div>
+            <div class="dituAmap">
+                <div id="mapContainer">
+
+                </div>
+            </div>
         </article>
 
     </div>
@@ -52,11 +57,10 @@
         i18n,
         methods: {
             goto: function( part ){
-                // console.info(this.$refs[part]);
                 this.$refs[part].scrollIntoView();
             }
         },
-        data: ()=>{
+        data: ()=> {
             return {
                 phoneNumber: '(086) 0571-85150209',
                 email: 'wulinacademyarts@gmail.com',
@@ -67,6 +71,30 @@
                     pic5: pic5
                 }
             };
+        },
+        mounted: function(){
+            window.onLoad  = function(){
+                window.map = new AMap.Map('mapContainer');
+                // 创建一个 Marker 实例：
+                var marker = new AMap.Marker({
+                    position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    title: '武林书画院'
+                });
+
+                // 将创建的点标记添加到已有的地图实例：
+                window.map.add(marker);
+            };
+
+            var url = 'https://webapi.amap.com/maps?v=1.4.10&key=1accfe63ebc155603fd447be7681e05d&callback=onLoad';
+            var jsapi = document.createElement('script');
+            jsapi.charset = 'utf-8';
+            jsapi.src = url;
+            document.head.appendChild(jsapi);
+
+
+
+            // 移除已创建的 marker
+            // window.map.remove(marker);
         }
     };
 </script>
@@ -120,5 +148,12 @@
     }
     .about > article{
         float: left;
+    }
+
+    .dituAmap{
+        margin: 20px auto;
+    }
+    #mapContainer{
+        height: 500px
     }
 </style>

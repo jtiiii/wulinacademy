@@ -1,14 +1,15 @@
 <template>
-    <div :class="topBar">
-        <div :class="navigation">
-            <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+    <div>
+        <div :class="topBar" :style="topBarLineStyle">
+            <div :class="navigation" >
+                <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+            </div>
+            <img v-if="logoSrc" class="logo" :src="logoSrc" />
+            <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
+            <div :class="setting">
+                <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
+            </div>
         </div>
-        <img v-if="logoSrc" class="logo" :src="logoSrc" />
-        <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
-        <div :class="setting">
-            <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
-        </div>
-
     </div>
 </template>
 <script type="text/javascript">
@@ -114,6 +115,9 @@
                     'currentTitle': true,
                     'currentFixed': false
                 }
+                ,topBarLineStyle: {
+                    'height': '80px'
+                }
             };
         },
         computed: {
@@ -124,10 +128,12 @@
             }
         },
         methods: {
+            defaultForNavClick: function(){
+                this.navClick( this.nav[0] );
+            },
             navClick: function( item ){
                 this.currentTap = item.id;
                 this.$refs.navigation.hideMenu();
-                // router.push('/' + item.id);
                 setTimeout( () => {
                     this.navClickResolve( item );
                 },1);
@@ -143,24 +149,40 @@
                     default: return;
                 }
             },
-            toFixedOrRelative: function(){
-                this.topBar.fixed = !this.topBar.fixed;
-                let flag = this.topBar.fixed;
-                this.logoSrc = flag? undefined: logo;
-                this.setting.navFixed = flag;
-                this.navigation.navFixed = flag;
-                this.currentTitleClass.currentFixed = flag;
-                //vContent.content.contentFixed = flag;
-                setTimeout( () => {
-                    this.toFixedOrRelative( flag );
-                },1);
+            toFixedOrRelative: function( scroll ){
+                if(!scroll){
+                    this.topBar.fixed = !this.topBar.fixed;
+                    let flag = this.topBar.fixed;
+                    this.logoSrc = flag? undefined: logo;
+                    this.setting.navFixed = flag;
+                    this.navigation.navFixed = flag;
+                    this.currentTitleClass.currentFixed = flag;
+                    this.topBarLineStyle['height'] = flag? '50px' : '80px';
+                    this.shadowLineStyle['display'] = flag? 'block': 'none';
+                    setTimeout( () => {
+                        this.toFixedOrRelativeResolve( flag );
+                    },1);
+                    return true;
+                }
+                let height = 80 - scroll;
+                this.topBarLineStyle['height'] = height + 'px';
+
             },
             handScroll: function(){
                 let flag = this.topBar.fixed;
-                if(!flag && window.scrollY >= 40){
-                    this.toFixedOrRelative();
-                }else if(flag && window.scrollY <= 0){
-                    this.toFixedOrRelative();
+                let scroll = window.scrollY;
+                if(!flag && scroll > 0){
+                    if( scroll <= 15){
+                        this.toFixedOrRelative( window.scrollY*2 );
+                    }else{
+                        this.toFixedOrRelative();
+                    }
+                }else if(flag){
+                    if(window.scrollY <= 0){
+                        this.toFixedOrRelative();
+                    }else if( scroll <= 15 ){
+                        this.toFixedOrRelative( window.scrollY*2 );
+                    }
                 }
             },
             changeTap: function( id ){
@@ -215,6 +237,7 @@
         border-bottom: 2px solid #ccc;
         position: relative;
         background: #fff;
+        z-index: 999;
     }
     .icon{
         width: 20px;

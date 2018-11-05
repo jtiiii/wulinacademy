@@ -22,8 +22,8 @@ export default {
     about :{
         nav:{
             history: 'History of WA',
-            contact: 'Contact us',
-            map: 'Map'
+            contact: 'Contact Us',
+            map: 'View Map'
         },
         history:{
             h1: 'In 1980s, a group of artists and scholars from China Academy of Art, Zhejiang University, Nankai University and Xiling Seal Art Society came together to form an independent institution for Chinese art and culture studies that echoes to the Imperial Art Academy founded by Emperor Gaozong 800 years ago on the lakeside of Hangzhou.',

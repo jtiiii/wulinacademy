@@ -1,8 +1,6 @@
 <template>
     <div class="content">
-        <article>
-            <router-view></router-view>
-        </article>
+        <router-view ref="page"></router-view>
     </div>
 </template>
 <script type="text/javascript">
@@ -22,6 +20,7 @@
 <style scoped>
     .content{
         text-align: center;
+        width: 100%;
     }
     .content > article{
         display: inline-block;

@@ -53,6 +53,9 @@ window.vueBody = new Vue({
         changePage: function( item ){
             router.push('/' + item.id);
         },
+        fixTopBar: function( flag ){
+            // console.info(flag);
+        },
         changeFontFamily: function( locale ){
             let code = locale.substring(0,locale.indexOf("-"));
             switch (code){
@@ -60,9 +63,15 @@ window.vueBody = new Vue({
                 case 'en': this.bodyStyle["font-family"] = fontFamily.en; break;
                 default: this.bodyStyle["font-family"] = fontFamily.en;
             }
+        },
+        changeModalInfo: function( html ){
+            console.info(html);
+            this.modalInfo = html;
         }
     },
     mounted: function(){
+        Commons.$on('change-modal',this.changeModalInfo);
+
         let preProcessRouter = ()=>{
             router.beforeEach( (to, from, next ) => {
                 switch (to.fullPath) {
@@ -82,8 +91,14 @@ window.vueBody = new Vue({
                         }
                 }
             });
+            //若没有任何路由页面，跳转到默认页面
             if(!router.currentRoute.name){
-                router.push('/news');
+                this.$refs.topBar.defaultForNavClick();
+            }
+
+            //修复默认加载页面的topBar无法正常显示currentTap的问题
+            if(this.$refs.topBar.currentTap === ''){
+               this.$refs.topBar.changeTap(router.currentRoute.name);
             }
             return true;
         };
@@ -95,12 +110,16 @@ window.vueBody = new Vue({
         let preProcessLocale= ()=>{
             I18nLocale.code = getLocale();
         };
+        let preProcessEventListeners = ()=>{
+            document.addEventListener("scroll",this.$refs.topBar.handScroll );
+        };
 
         //预处理序列
         new Promise( resolve => resolve() )
             .then( preProcessRouter )
             .then( preProcessFontFamily )
-            .then( preProcessLocale );
+            .then( preProcessLocale )
+            .then( preProcessEventListeners );
     }
 });
 

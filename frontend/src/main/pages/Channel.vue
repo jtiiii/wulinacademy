@@ -1,13 +1,12 @@
 <template>
     <div style="width: 1200px">
-        <!--<img :src="logoSrc"/>-->
-        <div class="modal" :style="modalStyle" @click="hideModal">
-            <img :src="wechatQRCode">
-        </div>
+        <v-modal ref="modal" @click.native="hideModal">
+            <img class="wechatQRCode" :src="wechatQRCode">
+        </v-modal>
         <ul>
             <li><a class="logo" :title="$t('channel.facebook')" target="_blank" :href="channel.facebook.url"><img :src="channel.facebook.logo"></a></li>
             <li><a class="logo" :title="$t('channel.instagram')" target="_blank" :href="channel.instagram.url"><img :src="channel.instagram.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.wechat')" @click="showModal" ><img :src="channel.wechat.logo"></a></li>
+            <li><a class="logo" :title="$t('channel.wechat')" @click="showModal" style="cursor:pointer;" ><img :src="channel.wechat.logo"></a></li>
             <li><a class="logo" :title="$t('channel.twitter')" target="_blank" :href="channel.twitter.url"><img :src="channel.twitter.logo"></a></li>
             <li><a class="logo" :title="$t('channel.weibo')" target="_blank" :href="channel.weibo.url"><img :src="channel.weibo.logo"></a></li>
             <li><a class="logo" :title="$t('channel.youtube')" target="_blank" :href="channel.youtube.url"><img :src="channel.youtube.logo"></a></li>
@@ -16,6 +15,8 @@
 </template>
 <script type="text/javascript">
     import i18n from '../scripts/i18n';
+    import BaseModal from '../scripts/components/BaseModal.vue';
+
     import logo from '../images/logo-new.png';
     import twitterLogo from '../icons/twitter-logo.png';
     import youtubeLogo from '../icons/youtube-logo.png';
@@ -26,13 +27,16 @@
     import wechatQRCode from '../images/wechat-QRcode.jpg';
 
     export default {
+        components:{
+            'v-modal': BaseModal
+        },
         i18n,
         methods: {
             hideModal: function(){
-                this.modalStyle['display'] = "none";
+                this.$refs.modal.show(false);
             },
             showModal: function(){
-                this.modalStyle['display'] = "block";
+                this.$refs.modal.show(true);
             }
         },
         data: ()=>{
@@ -63,9 +67,6 @@
                         logo: instagramLogo,
                         url: 'https://www.instagram.com/wulinacademyarts/'
                     }
-                },
-                modalStyle: {
-                    'display': 'none'
                 }
             }
         }
@@ -82,16 +83,9 @@
         height: 100%;
         width: 100%;
     }
-    .modal{
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.25);
-    }
-    .modal > img{
+    .wechatQRCode{
         width: 200px;
         position: relative;
-        top: 100px;
     }
     ul {
         list-style-type: none;
