@@ -10,6 +10,8 @@
                 <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
             </div>
         </div>
+        <div class="shadow" :style="shadowLineStyle">
+        </div>
     </div>
 </template>
 <script type="text/javascript">
@@ -117,6 +119,9 @@
                 }
                 ,topBarLineStyle: {
                     'height': '80px'
+                },
+                shadowLineStyle: {
+                    'display': 'none'
                 }
             };
         },
@@ -281,5 +286,10 @@
     }
     .navFixed{
         top: 10px;
+    }
+    .shadow{
+        position:relative;
+        width: 100%;
+        height: 50px;
     }
 </style>

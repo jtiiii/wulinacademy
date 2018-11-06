@@ -1,6 +1,20 @@
+/*@font-face {*/
+    /*font-family: 'Meslo';*/
+    /*src: url('Meslo_LG_M_Regular_for_Powerline.ttf');*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+/*}*/
+
+/*@font-face {*/
+    /*font-family: 'STHeiti Medium';*/
+    /*src: url("STHeiti_Medium.ttc");*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+/*}*/
+
 @font-face {
-    font-family: 'Meslo';
-    src: url('Meslo_LG_M_Regular_for_Powerline.ttf');
+    font-family: 'Myriad Pro';
+    src: url("Myriad_Pro_Regular.ttf");
     font-weight: normal;
     font-style: normal;
 }

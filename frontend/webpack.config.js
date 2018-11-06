@@ -17,7 +17,7 @@ module.exports = {
         rules: [
             { test: /\.vue$/, use: ['vue-loader']},
             { test: /\.css$/, use: ['style-loader','css-loader']},
-            { test: /\.(jpg|png|jpeg|ttf)$/, use:[{
+            { test: /\.(jpg|png|jpeg|ttf|ttc)$/, use:[{
                     loader: 'url-loader',
                     options: {
                         limit: 81920,

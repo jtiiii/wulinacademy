@@ -5,7 +5,7 @@
             <a @click="goto('contact')">{{ $t('about.nav.contact') }}</a>
             <a>{{ $t('about.nav.map') }}</a>
         </nav>
-        <article class="content">
+        <article class="content" :style="contentHeight">
             <div ref="history" class="history">
                 <p>{{ $t('about.history.h1') }}</p>
                 <p>{{ $t('about.history.h2') }}</p>
@@ -33,9 +33,9 @@
             <br/>
             <div ref="contact" class="contact">
                 <h3>{{ $t('index.title') }}</h3>
-                <p>{{ $t('about.contact.phoneNumber') }} {{ phoneNumber }}</p>
-                <p>{{ $t('about.contact.email') }} {{ email }}</p>
-                <p>{{ $t('about.contact.address') }} {{ $t('about.contact.physicalAddress') }}</p>
+                <p><b>{{ $t('about.contact.phoneNumber') }}</b> {{ phoneNumber }}</p>
+                <p><b>{{ $t('about.contact.email') }}</b> {{ email }}</p>
+                <p><b>{{ $t('about.contact.address') }}</b> {{ $t('about.contact.physicalAddress') }}</p>
             </div>
             <div class="dituAmap">
                 <div id="mapContainer">
@@ -72,6 +72,13 @@
                 }
             };
         },
+        computed: {
+            contentHeight: function(){
+                return {
+                    'height': window.innerHeight + 'px'
+                };
+            }
+        },
         mounted: function(){
             window.onLoad  = function(){
                 window.map = new AMap.Map('mapContainer');
@@ -90,8 +97,6 @@
             jsapi.charset = 'utf-8';
             jsapi.src = url;
             document.head.appendChild(jsapi);
-
-
 
             // 移除已创建的 marker
             // window.map.remove(marker);
@@ -121,8 +126,9 @@
         text-align: center;
     }
     .content{
+        padding: 0 15px;
         width: 600px;
-        height: 100%;
+        overflow-y: scroll;
         text-align: left;
     }
     .contact{
@@ -145,6 +151,9 @@
         color: #444;
         margin: 10px 0;
         display: block;
+    }
+    .about > nav{
+        width: 120px;
     }
     .about > article{
         float: left;
