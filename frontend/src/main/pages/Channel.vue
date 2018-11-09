@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 1200px">
+    <div style="width: 100%">
         <v-modal ref="modal" @click.native="hideModal">
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
@@ -88,8 +88,15 @@
         position: relative;
     }
     ul {
+        width: 100%;
+        height: 100%;
+        text-align: center;
         list-style-type: none;
         margin : 0 auto;
+        padding: 0;
+    }
+    ul > li{
+        text-align: center;
     }
 
 </style>

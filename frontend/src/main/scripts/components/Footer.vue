@@ -5,7 +5,7 @@
         <p>{{ $t('index.footer.p3') }}</p>
         <p>310000</p>
         <p style="margin: 10px 0;font-size:12px;">&copy; {{ $t('index.footer.copy') }}</p>
-        <div style="background-color:rgb(169,161,154);">
+        <div style="height:29px;background-color:rgb(169,161,154);">
             <img style="position:relative; top:3px; width: 120px;" :src="footerLogo">
         </div>
     </div>

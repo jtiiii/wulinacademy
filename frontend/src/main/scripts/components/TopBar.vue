@@ -202,7 +202,7 @@
         },
         created: function(){
             let navObj = {
-                // "home": 'index.nav.home',
+                "home": 'index.nav.home',
                 "news": 'index.nav.news',
                 "about": 'index.nav.about',
                 "channel": 'index.nav.channel',
@@ -269,7 +269,8 @@
     .fixed{
         position: fixed;
         height: 50px;
-        width: calc(100% - 27px);
+        /*width: calc(100% - 27px);*/
+        width: 100%;
         top: 0;
     }
     .currentFixed{

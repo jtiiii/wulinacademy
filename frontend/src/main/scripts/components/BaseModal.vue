@@ -1,5 +1,5 @@
 <template>
-    <div id="modal" :class="classes.modal" :style="modalSize">
+    <div id="modal" :class="classes.modal">
         <div class="shadow" ></div>
         <dialog open :style="dialogSize">
             <slot></slot>
@@ -45,12 +45,6 @@
                     result['height'] = this.height + 'px';
                 }
                 return result;
-            },
-            modalSize: function(){
-                return {
-                    'width': window.innerWidth + 'px',
-                    'height': window.innerHeight + 'px'
-                };
             }
         },
         methods: {
@@ -67,6 +61,8 @@
 </script>
 <style type="text/css" scoped>
     .modal{
+        width: 100%;
+        height: 100%;
         text-align: center;
         z-index: 999;
         position: fixed;
@@ -82,6 +78,8 @@
         animation: hide-smooth 0.2s;
     }
     dialog{
+        display: inline-block;
+        height: auto;
         border: none;
         border-radius: 5px;
         margin: 30px auto;
