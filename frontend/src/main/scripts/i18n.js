@@ -5,25 +5,23 @@ import en_US from '../i18n/en-US';
 import zh_TW from '../i18n/zh-TW';
 
 Vue.use(VueI18n);
-
+const Language = {
+    'zh-CN': {message: zh_CN, text: "简体中文"},
+    'zh-TW': {message: zh_TW, text: "正體中文"},
+    'en-US': {message: en_US, text: "English"}
+};
+let messages = {};
+const I18nLanguage = {};
+for(let code in Language){
+    messages[code] = Language[code].message;
+    I18nLanguage[code] = Language[code].text;
+    //在每个语言文件里面添加一份 i18n 翻译
+    messages[code].i18n = I18nLanguage;
+}
 const I18n = new VueI18n({
     locale: 'en-US',
-    messages : {
-        'zh-CN': zh_CN,
-        'en-US': en_US,
-        'zh-TW': zh_TW
-    }
+    messages : messages,
 });
-
-const I18nLanguage = {
-    "zh-TW": "正體中文",
-    "zh-CN": "简体中文",
-    "en-US": "English"
-};
-const codes = [];
-for(let code in I18nLanguage){
-    codes.push(code);
-}
 
 const Locale ={};
 Locale._resolves_ = [];
@@ -48,5 +46,5 @@ Locale.getMessage = function( i18nPath ){
     return message;
 };
 
-export { codes as I18nCodes, I18nLanguage, Locale as I18nLocale };
+export { I18nLanguage, Locale as I18nLocale };
 export default I18n;

@@ -4,14 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+    // mode: 'production',
     mode: 'development',
     devtool: 'source-map',
-    entry: {
-        wulinacademy: './src/main/index.js',
-    },
+    entry: './src/main/entries/main.js',
     output: {
         path: path.join( __dirname ,'build'),
-        filename: '[name].bundle.js'
+        filename: '[name].bundle.js',
+        // chunkFilename: '[name].chunk.js',
     },
     module: {
         rules: [
@@ -23,21 +23,24 @@ module.exports = {
                         limit: 81920,
                         outputPath: 'assets'
                     }}]
-            }
+            },
+            { test: /\.pdf$/, use: [{
+                    loader:'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'pdfs/'
+                    }
+            }]}
         ]
     },
     plugins:[
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'src/main/index.html',
+            template: 'src/main/public/index.html',
             favicon: 'src/main/icons/favicon.ico',
-            chunks: ['wulinacademy']
+            // chunks: ['index']
         }),
-        // new HtmlWebpackPlugin({
-        //     filename: 'pages/home.html',
-        //     template: 'src/main/pages/home.html'
-        // }),
         new CleanWebpackPlugin('build')
     ],
     resolve: {

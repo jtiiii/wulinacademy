@@ -7,10 +7,12 @@ export default {
                 news: '新聞',
                 channel : '頻道',
                 apply: '申請',
-                error: '錯誤頁面'
+                error: '錯誤頁面',
+                test: '測試',
         },
         sets: {
-            language: '語言'
+            language: '語言',
+            system: '系統'
         },
         footer:{
             p1: '武林書畫院南山院區',

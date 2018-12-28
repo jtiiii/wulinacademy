@@ -1,10 +1,5 @@
 <template>
     <div>
-        <!--<v-modal ref="modal" :width="700" :height="500">-->
-            <!--<v-news-detail :time="newsDetail.time" :title="newsDetail.title">-->
-                <!--<article v-html="newsDetail.detailHtml"></article>-->
-            <!--</v-news-detail>-->
-        <!--</v-modal>-->
         <dl style="display:inline-block">
             <dd v-for="message in news" :key="message.id" >
                 <figure class="thumbnail">
@@ -22,9 +17,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import p1 from '../images/photo1.png';
-    import NewsDetail from './NewsDetail.vue';
-    // import Modal from '../scripts/components/BaseModal.vue';
+    import NewsDetail from './news/NewsDetail.vue';
     import newsPic1 from '../images/news/news1.jpeg';
     import newsPic2 from '../images/news/news2.jpeg';
     import newsPic3 from '../images/news/news3.jpeg';
@@ -33,7 +26,6 @@
 
     export default {
         components:{
-            // "v-modal": Modal,
             "v-news-detail": NewsDetail
         },
         data: function() {
@@ -93,16 +85,6 @@
                     detailHtml: null
                 }
             }
-        },
-        methods: {
-            // getPdf: function(){
-            //     let _this = this;
-            //
-            //     PDFJs.getDocument('../pdfs/陳嘯風先生中國畫展在杭州大劇院舉行.pdf').then(function (pdf) {
-            //         _this.newsDetail.detailHtml = pdf;
-            //     });
-            //
-            // }
         }
     }
 </script>

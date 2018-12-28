@@ -17,7 +17,7 @@
 │   │   ├── icons #图标
 │   │   ├── images #图片
 │   │   ├── index.html #主页
-│   │   ├── index.js #打包执行
+│   │   ├── main.js #打包执行
 │   │   ├── pages #其他页面
 │   │   ├── scripts #脚本文件
 │   │   │   └── components #vue组件

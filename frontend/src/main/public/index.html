@@ -7,11 +7,16 @@
     <title>武林書畫院 - Wulin Academy of Arts - 武林书画院</title>
     <meta name="keywords" content="武林书画院,武林書畫院,Wulin,Academy,of,Art,Arts,wulin,academy,of,art,arts,WulinAcademyOfArts,wulinacademyofarts,Wulin Academy Of Arts"/>
 </head>
-<body >
-    <div id="body" :style="bodyStyle">
-        <v-top-bar ref="topBar" :nav-click-resolve="changePage" :to-fixed-or-relative-resolve="fixTopBar" ></v-top-bar>
-        <v-content ref="content"></v-content>
-        <v-footer ref="footer"></v-footer>
-    </div>
+<body>
+    <div id="main"></div>
 </body>
+<style type="text/css">
+    body{
+        color: #777;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        min-width: 600px;
+    }
+</style>
 </html>

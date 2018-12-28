@@ -4,7 +4,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import router from '../router';
+    import router from '../pages';
     export default {
         router,
         data: function(){

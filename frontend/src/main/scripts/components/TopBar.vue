@@ -2,7 +2,7 @@
     <div>
         <div :class="topBar" :style="topBarLineStyle">
             <div :class="navigation" >
-                <base-drop-down ref="navigation" :groups="nav" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
+                <base-drop-down ref="navigation" :groups="nav.items" :item-click="navClick"><img class="icon" :src="navIcon"/></base-drop-down>
             </div>
             <img v-if="logoSrc" class="logo" :src="logoSrc" />
             <div :class="currentTitleClass" v-if="currentTitle"> {{ currentTitle }} </div>
@@ -19,57 +19,9 @@
     import logo from "../../images/logo-new.png";
     import navIcon from '../../icons/list-icon.png';
     import setIcon from '../../icons/setting-icon.png';
-    import I18n,{ I18nLanguage, I18nCodes, I18nLocale } from '../i18n';
-    import Model from './BaseModel';
+    import nav from '../navigation';
+    import sets from '../setting';
 
-    function I18nListItems( items ){
-        let map = {};
-        items.forEach(item => {
-            let m = new Model.ListItem(item.id,I18nLocale.getMessage(item.i18nPath));
-            map[item.id] = item;
-            item.model = m;
-        });
-        this.items = items;
-        this.map = map;
-    }
-    I18nListItems.prototype = {
-        constructor : I18nListItems,
-        toArray : function(){
-            let arr = [];
-            this.items.forEach(item => {
-                arr.push(item.model);
-            });
-            return arr;
-        },
-        refresh : function(){
-            this.items.forEach(item => {
-                item.model.text = I18nLocale.getMessage(item.i18nPath);
-            });
-        }
-    };
-    function I18nGroupMenu( groups ){
-        groups.forEach( group => {
-            group.modelItem = new I18nListItems(group.items);
-            group.model = new Model.GroupMenu(group.id,I18nLocale.getMessage(group.i18nPath), group.modelItem.toArray());
-        });
-        this.groups = groups;
-    }
-    I18nGroupMenu.prototype = {
-        constructor: I18nGroupMenu,
-        toArray: function(){
-            let arr = [];
-            this.groups.forEach( group => {
-                arr.push( group.model);
-            });
-            return arr;
-        },
-        refresh : function () {
-            this.groups.forEach( group => {
-                group.model.name = I18nLocale.getMessage(group.i18nPath);
-                group.modelItem.refresh();
-            });
-        }
-    };
     export default {
         components:{
             "base-drop-down" : DropDown
@@ -89,7 +41,7 @@
                 type: Function,
                 default: function(){},
                 required: false
-            },
+            }
         },
         data: function () {
             return {
@@ -107,11 +59,11 @@
                     'nav': true,
                     'navFixed': false
                 },
-                nav: [],
+                nav: nav,
                 logoSrc: logo,
                 navIcon: navIcon,
                 settingIcon: setIcon,
-                sets: [],
+                sets: sets,
                 currentTap: '',
                 currentTitleClass: {
                     'currentTitle': true,
@@ -128,31 +80,26 @@
         computed: {
             currentTitle: function(){
                 if(this.currentTap){
-                    return I18nLocale.getMessage(this.$nav.map[this.currentTap].i18nPath);
+                    return this.currentTap.text;
                 }
+                return '';
             }
         },
         methods: {
             defaultForNavClick: function(){
-                this.navClick( this.nav[0] );
+                this.navClick( this.nav.default );
             },
             navClick: function( item ){
-                this.currentTap = item.id;
                 this.$refs.navigation.hideMenu();
                 setTimeout( () => {
                     this.navClickResolve( item );
                 },1);
             },
             setClick: function( item, groupId ){
+                item.resolve( item );
                 setTimeout(() => {
                     this.setClickResolve( item, groupId );
                 },1);
-                switch (groupId) {
-                    case 'language':
-                        I18nLocale.code = item.id;
-                        break;
-                    default: return;
-                }
             },
             toFixedOrRelative: function( scroll ){
                 if(!scroll){
@@ -190,47 +137,9 @@
                     }
                 }
             },
-            changeTap: function( id ){
-                let tap = this.$nav.map[id];
-                if(tap){
-                    this.currentTap = tap.id;
-                    return true;
-                }
-                return false;
+            refreshTapForPath: function( path ){
+                this.currentTap = this.nav.map[path];
             }
-
-        },
-        created: function(){
-            let navObj = {
-                "home": 'index.nav.home',
-                "news": 'index.nav.news',
-                "about": 'index.nav.about',
-                "channel": 'index.nav.channel',
-                "apply": 'index.nav.apply'
-            };
-
-            let navArr = [];
-            for(let key in navObj){
-                navArr.push({id: key, i18nPath: navObj[key]});
-            }
-            this.$nav = new I18nListItems(navArr);
-            this.nav = this.$nav.toArray();
-            let languagesItems = [];
-            I18nCodes.forEach( code => {
-                languagesItems.push( new Model.ListItem(code,I18nLanguage[code]));
-            });
-            let setGroup = new I18nGroupMenu([]);
-            this.sets = setGroup.toArray();
-            let languageGroup = new Model.GroupMenu('language',I18nLocale.getMessage('index.sets.language'), languagesItems);
-
-            this.sets.push(languageGroup);
-
-            //添加钩子，当I18nLocale.code发生改变的时候触发
-            I18nLocale.addResolve((oldValue, newValue) => {
-                this.$nav.refresh();
-                setGroup.refresh();
-                languageGroup.name = I18nLocale.getMessage('index.sets.language');
-            });
         }
     };
 </script>

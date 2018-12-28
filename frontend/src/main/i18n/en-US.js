@@ -7,10 +7,12 @@ export default {
             news: 'News',
             channel : 'Channel',
             apply: 'Apply',
-            error: 'Error'
+            error: 'Error',
+            test: 'Test'
         },
         sets: {
-            language: 'language'
+            language: 'language',
+            system: 'system'
         },
         footer:{
             p1: 'Wulin Academy Nanshan Campus',
