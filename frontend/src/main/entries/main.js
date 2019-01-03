@@ -31,6 +31,11 @@ window.title = new Vue({
 window.main = new Vue({
     render( h ){
         return h(Index)
+    },
+    computed:{
+        Index: function(){
+            return this.$children[0];
+        }
     }
 }).$mount("#main");
 

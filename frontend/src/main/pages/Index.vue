@@ -32,6 +32,11 @@
                 }
             };
         },
+        computed: {
+            Content: function(){
+                return this.$refs['content'].$children[0];
+            }
+        },
         methods: {
             changePage: function( item ){
                 router.push(item.path);

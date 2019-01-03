@@ -1,22 +1,52 @@
 <template>
-    <div>
-        <dl style="display:inline-block">
-            <dd v-for="message in news" :key="message.id" >
-                <figure class="thumbnail">
-                    <img :src="message.thumbnail" />
-                </figure>
-                <article>
-                    <h3>{{ message.title }}</h3>
-                    <span style="font-size:14px;">{{ message.time }}</span>
-                    <br/>
-                    <p>{{ message.content }}</p>
-                </article>
+    <div class="news">
+        <v-new-modal :width="700" :height="500">Test</v-new-modal>
+        <div class="toolbar">
+            <label>
+                <input class="searchBox" placeholder="搜索..." type="text" />
+            </label>
+            <label class="toolBtn">
+                <button class="tool"><img class="btnImg" :src="icon.add"></button>
+            </label>
+        </div>
+        <dl>
+            <dd v-for="message in news" :key="message.id" @mouseover="expandAnimate(true,message)" @mouseout="expandAnimate(false,message)" >
+                <div class="toolbar-news">
+                    <label class="toolBtn">
+                        <button class="tool"><img class="btnImg" :src="icon.edit"></button>
+                    </label>
+                    <label class="toolBtn">
+                        <button class="tool"><img class="btnImg" :src="icon.pickUp"></button>
+                    </label>
+                    <label class="toolBtn">
+                        <button class="tool"><img class="btnImg" :src="icon.pickDown"></button>
+                    </label>
+                </div>
+                <label class="deleteBtn">
+                    <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+                </label>
+                <div class="news-simple":class="message.ddClass">
+                    <figure class="thumbnail">
+                        <img :src="message.thumbnail" />
+                    </figure>
+                    <article>
+                        <h3>{{ message.title }}</h3>
+                        <span style="font-size:14px;">{{ message.time }}</span>
+                        <br/>
+                        <p>{{ message.content }}</p>
+                    </article>
+                </div>
             </dd>
         </dl>
 
     </div>
 </template>
 <script type="text/javascript">
+    import editIcon from '../icons/edit.png';
+    import addIcon from '../icons/add.png';
+    import pickUpIcon from '../icons/caret-up.png';
+    import pickDownIcon from '../icons/caret-down.png';
+    import deleteIcon from '../icons/delete.png';
     import NewsDetail from './news/NewsDetail.vue';
     import newsPic1 from '../images/news/news1.jpeg';
     import newsPic2 from '../images/news/news2.jpeg';
@@ -24,12 +54,24 @@
     import newsPic5 from '../images/news/news5.jpeg';
     import noPic from '../images/news/no-pic.png';
 
+    import BaseModal from '../scripts/components/BaseModal.vue';
+
     export default {
         components:{
-            "v-news-detail": NewsDetail
+            "v-news-detail": NewsDetail,
+            "v-new-modal": BaseModal
         },
         data: function() {
             return {
+                mode: { MANAGE: "manage", SHOW: "show"},
+                currentMode: "manage",
+                icon:{
+                    edit: editIcon,
+                    add: addIcon,
+                    delete: deleteIcon,
+                    pickUp: pickUpIcon,
+                    pickDown: pickDownIcon
+                },
                 news: [
                     {
                         id: 5,
@@ -40,7 +82,8 @@
                             " 陳嘯風畢業於南開大學東方藝術系，現任杭州武林書畫院院長、南昌理工學院客座教授、中國美術研究院研究員等職。嘯風先生生於浙江浦江，師從吳山明、範曾、鄭慶衡、楊淑濤等名家，筆法幹練、堅實。其作品以人物爲主，間以山水、花卉、飛禽、走獸，尤其擅長大幅鉅作。畫風清新雅緻、淳樸空靈，一如神來之筆，謂之一奇。\n" +
                             "\n" +
                             " 此次展覽將持續至10月7日，適逢重陽、國慶雙節，大家有空不妨到博物館欣賞下大師筆墨。（東陽市博物館）",
-                        thumbnail: newsPic5
+                        thumbnail: newsPic5,
+                        ddClass: { expand: false, shrink: false , select: true}
                     },
                     {
                         id: 4,
@@ -51,7 +94,8 @@
                             "       書畫社將採取聘請專家授課、專人輔導、書畫展覽、寫生風采、著名運動員與書畫家聯誼等方式展開活動。從明年起，每年將舉辦一屆書畫展覽，並邀請專家對作品進行點評，前三名將獲得榮譽證書。值得一提的是,書畫社還將利用節假日休息定期舉辦講座。\n" +
                             "       近年來，省體育局在全力推進全民健身、競技體育和體育產業的同時，不斷強化體育文化建設，孕育了具有浙江特色的體育文化底蘊，此次成立書畫興趣小組也是順應發展。不僅培養浙江體育人對文化事業的興趣和愛好，也響應省委、省政府對文化建設方面提出的要求，爲營造良好的文化環境做出積極努力。\n" +
                             "       應邀參加書畫社成立儀式的書畫家也表達了希望通過相互學習和探討，能夠將體育和書畫相互結合，將二者提升到更高的高度。（浙江省體育局）",
-                        thumbnail: noPic
+                        thumbnail: noPic,
+                        ddClass: { expand: false, shrink: false, select: false}
                     },
                     {
                         id: 3,
@@ -59,7 +103,8 @@
                         time: '2012-07-04',
                         content: "由浙江省政協書畫社、浦江縣政協聯合舉辦的“陳嘯風——中國畫展”，將於7月4日至10日在浦江美術館開展。\n" +
                             "  浦江籍浙派畫家陳嘯風畢業於南開大學東方藝術系，師從吳山明、範曾、鄭慶衡、楊淑濤等名家，現任杭州武林書畫院院長、南昌理工學院客座教授。其作品多以人物爲主，間或山水、花卉、飛禽、走獸，尤擅大幅巨幀之作。畫風清新高古，道法自然，淳樸空靈。 （錢江晚報）",
-                        thumbnail: newsPic3
+                        thumbnail: newsPic3,
+                        ddClass: { expand: false, shrink: false, select: false }
                     },
                     {
                         id: 2,
@@ -67,7 +112,8 @@
                         time: '2010-07-06',
                         content: "7月9日至16日，陳嘯風、沈立新、章建明“錢塘三傑”書畫印聯展將在桐廬美術館展出。桐廬縣文廣新局主辦、武林书画院承办的這次展覽由中國畫、篆刻、書法三部分組成，共120餘件，均爲三人近年來各自領域的得意之作。\n" +
                             "  陳嘯風，杭州武林書畫院院長，作品被北京榮寶齋等處收藏；沈立新，西湖印社社長，其書法、篆刻及刻字作品歷年來多次入選國際級展會；章建明，浙江省書法研究會副會長兼祕書長，其作品傾向於表現清雅之氣，提倡書法作品真實反映作者情性和心態。（浙江在线）",
-                        thumbnail: newsPic2
+                        thumbnail: newsPic2,
+                        ddClass: { expand: false , shrink: false, select: false}
                     },
                     {
                         id: 1,
@@ -76,19 +122,102 @@
                         content: "9月19日，由杭州大劇院、武林書畫院主辦陳嘯風先生個人人物畫展，今日在杭州大劇院隆重亮相。本次參展的80多幅作品，均來自嘯風先生對古代人物生活的思考和提煉，擁有很高的藝術價值。\n" +
                             "\n" +
                             "嘯風先生畢業於南開大學，曾師從吳山明、範曾、鄭慶衡等教授，其繪畫作品簡淨雅緻，清新高古，風格獨特。他的許多作品被海內外友人收藏，其在校期間創作的大幅歷史畫卷《勿忘國恥》爲母校南開大學所收藏。這次展出時間將一直持續到10月11日，在此期間，市民都可到大劇院領略國畫大師的神來之筆和精湛的繪畫水平。（杭州日報）",
-                        thumbnail: newsPic1
+                        thumbnail: newsPic1,
+                        ddClass: { expand: false , shrink: false, select: false}
                     }
-                ],
-                newsDetail:{
-                    title: '测试新闻',
-                    time: '2018-11-02',
-                    detailHtml: null
+                ]
+            }
+        },
+        methods:{
+            expandAnimate: function(isExpand, message){
+                if(this.currentMode === this.mode.MANAGE){
+                    return false;
                 }
+                if(isExpand){
+                    return this.amplify(message);
+                }
+                return this.reduce(message);
+            },
+            amplify: function( message ){
+                message.ddClass.expand = true;
+                message.ddClass.shrink = false;
+            },
+            reduce: function( message ){
+                message.ddClass.expand = false;
+                message.ddClass.shrink = true;
             }
         }
     }
 </script>
 <style scoped>
+    .news{
+        width: 700px;
+        display:inline-block;
+    }
+    .news-simple{
+        width:100%;height: 100%; position: absolute
+    }
+    .toolbar-news{
+        width: 30px;
+        position: absolute;
+        left: -40px;
+        border: none;
+    }
+    .toolbar > label{
+        float: left;
+        margin: 10px 10px;
+    }
+    .toolBtn{
+        margin: 5px;
+    }
+    /*.btnImg-sm{*/
+        /*display: inline-block;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+        /*position: relative;*/
+        /*left: -7px;*/
+        /*top: -2px;*/
+    /*}*/
+    .btnImg{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        /*left: -7px;*/
+        /*top: -2px;*/
+    }
+    .tool{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: none;
+        padding: 0;
+    }
+    .tool-sm{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: none;
+        padding: 0;
+    }
+    .toolbar{
+        width: 700px;
+        clear: both;
+    }
+
+    .searchBox{
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border: 2px solid #aaa;
+        border-top: 0;
+        height: 30px;
+        outline: none;
+        width: 250px;
+        font-size: 20px;
+    }
+    .searchBox::placeholder{
+        color: #efefef;
+    }
     .thumbnail{
         overflow: hidden;
         width: 280px;
@@ -100,14 +229,26 @@
     .thumbnail > img{
         width: 100%;
     }
+    dl{
+        width: 700px;
+        clear: both;
+        /*display: inline-block;*/
+    }
     dl > dd{
         width: 700px;
         height: 200px;
-        margin: 10px;
+        margin: 15px;
+        /*background: #efefef;*/
+        position: relative;
+        border-radius: 5px;
+        text-align: center;
+    }
+    dl > dd > .news-simple{
         background: #efefef;
+        position: relative;
         border-radius: 5px;
     }
-    dl > dd > article{
+    dl > dd article{
         text-align: left;
         float: left;
         width: 380px;
@@ -116,4 +257,53 @@
         overflow-y: scroll;
         margin: 10px
     }
+
+    @keyframes expand-animate {
+        0%{
+            padding: 0;
+            left: 0;
+            top: 0;
+        }
+        100%{
+            padding: 8px 4px;
+            left: -4px;
+            top: -8px;
+        }
+    }
+    @keyframes shrink-animate {
+        0%{
+            padding: 8px 4px;
+            left: -4px;
+            top: -8px;
+        }
+        100%{
+            padding: 0;
+            left: 0;
+            top: 0;
+        }
+    }
+    .expand{
+        padding: 8px 4px;
+        animation: expand-animate 0.2s;
+        left: -4px;
+        top: -8px;
+    }
+    .shrink{
+        animation: shrink-animate 0.2s;
+        padding: 0;
+        left: 0;
+        top: 0;
+    }
+    .select{
+        background: #daecff;
+    }
+    .deleteBtn{
+        display: block;
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        z-index: 9;
+    }
+
+
 </style>
