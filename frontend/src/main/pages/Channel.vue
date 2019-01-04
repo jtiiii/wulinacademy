@@ -1,12 +1,12 @@
 <template>
     <div style="width: 100%">
-        <v-modal ref="modal" @click.native="hideModal">
+        <v-modal ref="modal" :show="modal.show" @click.native="hideModal">
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
         <ul>
             <li><a class="logo" :title="$t('channel.facebook')" target="_blank" :href="channel.facebook.url"><img :src="channel.facebook.logo"></a></li>
             <li><a class="logo" :title="$t('channel.instagram')" target="_blank" :href="channel.instagram.url"><img :src="channel.instagram.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.wechat')" @click="showModal" style="cursor:pointer;" ><img :src="channel.wechat.logo"></a></li>
+            <li><a class="logo" :title="$t('channel.wechat')" @click="showQR" style="cursor:pointer;" ><img :src="channel.wechat.logo"></a></li>
             <li><a class="logo" :title="$t('channel.twitter')" target="_blank" :href="channel.twitter.url"><img :src="channel.twitter.logo"></a></li>
             <li><a class="logo" :title="$t('channel.weibo')" target="_blank" :href="channel.weibo.url"><img :src="channel.weibo.logo"></a></li>
             <li><a class="logo" :title="$t('channel.youtube')" target="_blank" :href="channel.youtube.url"><img :src="channel.youtube.logo"></a></li>
@@ -33,14 +33,18 @@
         i18n,
         methods: {
             hideModal: function(){
-                this.$refs.modal.show(false);
+                // this.$refs.modal.show(false);
+                this.modal.show = false;
             },
-            showModal: function(){
-                this.$refs.modal.show(true);
+            showQR: function(){
+                this.modal.show = true;
             }
         },
         data: ()=>{
             return {
+                modal: {
+                    show: false
+                },
                 logoSrc: logo,
                 wechatQRCode: wechatQRCode,
                 channel: {

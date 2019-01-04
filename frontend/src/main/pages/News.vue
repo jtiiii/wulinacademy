@@ -1,44 +1,53 @@
 <template>
-    <div class="news">
-        <v-new-modal :width="700" :height="500">Test</v-new-modal>
-        <div class="toolbar">
+    <div>
+        <v-new-modal ref="modal" class="news-modal" :show="showEditor" :width="700" :height="500">
+            <label class="deleteBtn">
+                <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+            </label>
             <label>
-                <input class="searchBox" placeholder="搜索..." type="text" />
+                <input class="edit-title" type="text" value="Title" />
             </label>
-            <label class="toolBtn">
-                <button class="tool"><img class="btnImg" :src="icon.add"></button>
-            </label>
-        </div>
-        <dl>
-            <dd v-for="message in news" :key="message.id" @mouseover="expandAnimate(true,message)" @mouseout="expandAnimate(false,message)" >
-                <div class="toolbar-news">
-                    <label class="toolBtn">
-                        <button class="tool"><img class="btnImg" :src="icon.edit"></button>
-                    </label>
-                    <label class="toolBtn">
-                        <button class="tool"><img class="btnImg" :src="icon.pickUp"></button>
-                    </label>
-                    <label class="toolBtn">
-                        <button class="tool"><img class="btnImg" :src="icon.pickDown"></button>
-                    </label>
-                </div>
-                <label class="deleteBtn">
-                    <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+            <v-new-editor></v-new-editor>
+        </v-new-modal>
+        <div class="news">
+            <div class="toolbar">
+                <label>
+                    <input class="searchBox" placeholder="搜索..." type="text" />
                 </label>
-                <div class="news-simple":class="message.ddClass">
-                    <figure class="thumbnail">
-                        <img :src="message.thumbnail" />
-                    </figure>
-                    <article>
-                        <h3>{{ message.title }}</h3>
-                        <span style="font-size:14px;">{{ message.time }}</span>
-                        <br/>
-                        <p>{{ message.content }}</p>
-                    </article>
-                </div>
-            </dd>
-        </dl>
-
+                <label v-show="manage" class="toolBtn">
+                    <button class="tool"><img class="btnImg" :src="icon.add"></button>
+                </label>
+            </div>
+            <dl>
+                <dd v-for="message in news" :key="message.id" @mouseover="expandAnimate(true,message)" @mouseout="expandAnimate(false,message)" >
+                    <div v-show="manage" class="toolbar-news">
+                        <label class="toolBtn">
+                            <button class="tool"><img class="btnImg" :src="icon.edit"></button>
+                        </label>
+                        <label class="toolBtn">
+                            <button class="tool"><img class="btnImg" :src="icon.pickUp"></button>
+                        </label>
+                        <label class="toolBtn">
+                            <button class="tool"><img class="btnImg" :src="icon.pickDown"></button>
+                        </label>
+                    </div>
+                    <label v-show="manage" class="deleteBtn">
+                        <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+                    </label>
+                    <div class="news-simple":class="message.ddClass">
+                        <figure class="thumbnail">
+                            <img :src="message.thumbnail" />
+                        </figure>
+                        <article>
+                            <h3>{{ message.title }}</h3>
+                            <span style="font-size:14px;">{{ message.time }}</span>
+                            <br/>
+                            <p>{{ message.content }}</p>
+                        </article>
+                    </div>
+                </dd>
+            </dl>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
@@ -47,7 +56,7 @@
     import pickUpIcon from '../icons/caret-up.png';
     import pickDownIcon from '../icons/caret-down.png';
     import deleteIcon from '../icons/delete.png';
-    import NewsDetail from './news/NewsDetail.vue';
+
     import newsPic1 from '../images/news/news1.jpeg';
     import newsPic2 from '../images/news/news2.jpeg';
     import newsPic3 from '../images/news/news3.jpeg';
@@ -55,16 +64,22 @@
     import noPic from '../images/news/no-pic.png';
 
     import BaseModal from '../scripts/components/BaseModal.vue';
+    import NewsDetail from './news/NewsDetail.vue';
+    import BaseEditor from '../scripts/components/BaseEditor.vue';
+
+    import Common from '../scripts/Common';
+
 
     export default {
         components:{
             "v-news-detail": NewsDetail,
-            "v-new-modal": BaseModal
+            "v-new-modal": BaseModal,
+            'v-new-editor': BaseEditor
         },
         data: function() {
             return {
-                mode: { MANAGE: "manage", SHOW: "show"},
-                currentMode: "manage",
+                manage: false,
+                showEditor: false,
                 icon:{
                     edit: editIcon,
                     add: addIcon,
@@ -129,8 +144,11 @@
             }
         },
         methods:{
+            refreshManage: function(){
+                this.manage = Common.data.isManage;
+            },
             expandAnimate: function(isExpand, message){
-                if(this.currentMode === this.mode.MANAGE){
+                if(this.manage){
                     return false;
                 }
                 if(isExpand){
@@ -146,12 +164,23 @@
                 message.ddClass.expand = false;
                 message.ddClass.shrink = true;
             }
+        },
+        created(){
+            Common.addDataResolve('status', ()=>{this.refreshManage();} );
         }
     }
 </script>
 <style scoped>
+    .edit-title{
+        width: 100%;
+        height: 30px;
+        font-size: 25px;
+        font-weight: bolder;
+        margin-bottom: 15px;
+    }
     .news{
-        width: 700px;
+        width: auto;
+        position: relative;
         display:inline-block;
     }
     .news-simple{
@@ -170,21 +199,12 @@
     .toolBtn{
         margin: 5px;
     }
-    /*.btnImg-sm{*/
-        /*display: inline-block;*/
-        /*width: 100%;*/
-        /*height: 100%;*/
-        /*position: relative;*/
-        /*left: -7px;*/
-        /*top: -2px;*/
-    /*}*/
+
     .btnImg{
         display: inline-block;
         width: 100%;
         height: 100%;
         position: relative;
-        /*left: -7px;*/
-        /*top: -2px;*/
     }
     .tool{
         display: inline-block;
@@ -230,15 +250,12 @@
         width: 100%;
     }
     dl{
-        width: 700px;
         clear: both;
-        /*display: inline-block;*/
     }
     dl > dd{
         width: 700px;
         height: 200px;
         margin: 15px;
-        /*background: #efefef;*/
         position: relative;
         border-radius: 5px;
         text-align: center;
@@ -303,6 +320,11 @@
         right: -10px;
         top: -10px;
         z-index: 9;
+    }
+    .news-modal{
+        width: 100%;
+        height: 100%;
+        position: absolute;
     }
 
 

@@ -1,5 +1,5 @@
 <template>
-    <div id="modal" :class="classes.modal">
+    <div class="modal" :class="classes.modal" :status="modalStatus">
         <div class="shadow" ></div>
         <dialog open :style="dialogSize">
             <slot></slot>
@@ -20,6 +20,11 @@
             click: {
                 type: Function,
                 required: false
+            },
+            show:{
+                type: Boolean,
+                required: false,
+                default: true,
             }
         },
         data: function(){
@@ -27,7 +32,6 @@
                 open: true,
                 classes:{
                     modal:{
-                        'modal': true,
                         'hidden': true,
                         'show': false,
                         'hide': false
@@ -45,10 +49,14 @@
                     result['height'] = this.height + 'px';
                 }
                 return result;
+            },
+            modalStatus: function(){
+                this.showAction(this.show);
+                return this.show;
             }
         },
         methods: {
-            show: function( flag ){
+            showAction: function( flag ){
                 this.classes.modal['show'] = flag;
                 this.classes.modal['hide'] = !flag;
                 setTimeout(()=>{

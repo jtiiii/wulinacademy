@@ -1,15 +1,28 @@
 <template>
     <div>
         <div id="editor-toolbar"></div>
-        <div id="editor">
+        <div id="editor" :style="editorStyle">
         </div>
     </div>
 </template>
 <script type="text/javascript">
     import Quill from 'quill/dist/quill';
     import 'quill/dist/quill.snow.css';
+
     export default {
         name:"BaseEditor",
+        props:{
+            textHeight: {
+                type: Number,
+                required: false,
+                default: 300
+            },
+            textWidth:{
+                type: Number,
+                required: false,
+                default: 0
+            }
+        },
         data() {
             return {
                 editor: null,
@@ -28,6 +41,14 @@
                     [{ 'align': [] }],
                     ['clean']                                         // remove formatting button
                 ]
+            }
+        },
+        computed:{
+            editorStyle(){
+                return {
+                    width: this.textWidth ? this.textWidth + 'px' : '100%',
+                    height: this.textHeight + 'px'
+                };
             }
         },
         mounted(){

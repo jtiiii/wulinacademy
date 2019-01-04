@@ -5,6 +5,7 @@ import VueI18n from "vue-i18n";
 import I18n,{ I18nLocale } from '../scripts/i18n';
 import VueRouter from 'vue-router';
 import Index from '../pages/Index.vue';
+import Common from '../scripts/Common';
 
 
 (() =>{
@@ -22,6 +23,7 @@ import Index from '../pages/Index.vue';
 })();
 
 window.Vue = Vue;
+window.Common = Common;
 
 window.title = new Vue({
     el: 'title',
