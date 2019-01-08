@@ -1,9 +1,10 @@
 <template>
     <div>
-        <v-new-modal ref="modal" class="news-modal" :show="showEditor" :width="700" :height="500">
-            <label class="deleteBtn">
-                <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+        <v-new-modal class="news-modal" :show="showEditor" :width="700" :height="500">
+            <label class="closeBtn">
+                <button class="tool"><img class="btnImg" :src="icon.close" @click="showEditor = false"></button>
             </label>
+            <br/>
             <label>
                 <input class="edit-title" type="text" value="Title" />
             </label>
@@ -15,7 +16,7 @@
                     <input class="searchBox" placeholder="搜索..." type="text" />
                 </label>
                 <label v-show="manage" class="toolBtn">
-                    <button class="tool"><img class="btnImg" :src="icon.add"></button>
+                    <button class="tool"><img class="btnImg" :src="icon.add" @click="openEditor(true)"></button>
                 </label>
             </div>
             <dl>
@@ -24,15 +25,15 @@
                         <label class="toolBtn">
                             <button class="tool"><img class="btnImg" :src="icon.edit"></button>
                         </label>
-                        <label class="toolBtn">
-                            <button class="tool"><img class="btnImg" :src="icon.pickUp"></button>
-                        </label>
-                        <label class="toolBtn">
-                            <button class="tool"><img class="btnImg" :src="icon.pickDown"></button>
-                        </label>
+                        <!--<label class="toolBtn">-->
+                            <!--<button class="tool"><img class="btnImg" :src="icon.pickUp"></button>-->
+                        <!--</label>-->
+                        <!--<label class="toolBtn">-->
+                            <!--<button class="tool"><img class="btnImg" :src="icon.pickDown"></button>-->
+                        <!--</label>-->
                     </div>
                     <label v-show="manage" class="deleteBtn">
-                        <button class="tool-sm"><img class="btnImg" :src="icon.delete"></button>
+                        <button class="tool-sm"><img class="btnImg" :src="icon.delete" @click="Api_deleteNews(message)" ></button>
                     </label>
                     <div class="news-simple":class="message.ddClass">
                         <figure class="thumbnail">
@@ -56,6 +57,7 @@
     import pickUpIcon from '../icons/caret-up.png';
     import pickDownIcon from '../icons/caret-down.png';
     import deleteIcon from '../icons/delete.png';
+    import closeIcon from '../icons/close.png';
 
     import newsPic1 from '../images/news/news1.jpeg';
     import newsPic2 from '../images/news/news2.jpeg';
@@ -85,7 +87,8 @@
                     add: addIcon,
                     delete: deleteIcon,
                     pickUp: pickUpIcon,
-                    pickDown: pickDownIcon
+                    pickDown: pickDownIcon,
+                    close: closeIcon
                 },
                 news: [
                     {
@@ -163,10 +166,26 @@
             reduce: function( message ){
                 message.ddClass.expand = false;
                 message.ddClass.shrink = true;
+            },
+            openEditor: function( clear ){
+                if(clear){
+                    //TODO RESET Editor
+                }
+                this.showEditor = true;
+            },
+            Api_deleteNews( news ){
+                console.log('Test - delete',news);
+            },
+            Api_getNews( news ){
+
+            },
+            Api_listNews( news ){
+
             }
         },
         created(){
             Common.addDataResolve('status', ()=>{this.refreshManage();} );
+            this.refreshManage();
         }
     }
 </script>
@@ -313,6 +332,13 @@
     }
     .select{
         background: #daecff;
+    }
+    .closeBtn{
+        display: block;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        z-index: 9;
     }
     .deleteBtn{
         display: block;
