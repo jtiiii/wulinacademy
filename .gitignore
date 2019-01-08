@@ -1,5 +1,7 @@
 .idea
 *.DS_Store
+*/target
+*.iml
 
 #前端部分
 frontend/node_modules
