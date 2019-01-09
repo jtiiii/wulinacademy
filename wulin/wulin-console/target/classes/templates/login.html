@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Author" content="Jackson_J">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>武林书画学院</title>
+  <link rel="stylesheet"  th:href="@{/asserts/css/common.css}"/>
+  <link rel="stylesheet"  th:href="@{/asserts/css/login.css}"/>
+  <link rel="stylesheet"  th:href="@{/asserts/fontsome/font-awesome.min.css}"/>
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+<!--
+<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+	 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+-->
+ </head>
+ <body>
+	
+
+	<div id="loginbox">
+		<form id="loginform" action="" method="post">
+			<div class="normal_text"> <h3><img th:src="@{/asserts/images/logo.png}" src="images/logo.png" alt="Logo">管理后台</h3></div>
+			<div class="control-group">
+				<div class="controls">
+					<div class="main_input_box">
+						<span class="add-on bg_lg"><i class="fa fa-user"></i></span><input type="text" placeholder="请输入账号...">
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<div class="main_input_box">
+						<span class="add-on bg_ly"><i class="fa fa-lock"></i></span><input type="password" placeholder="请输入密码...">
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<span><a type="submit" href="javascript:void(0);" class="btn btn-success jslogin">登陆</a></span>
+			</div>
+		</form>
+	</div>
+	
+
+
+	<script type="text/javascript">
+		$(function(){
+			$(".jslogin").click(function () {
+				window.location.href = "http://localhost:8080/manager-index";
+            });
+		});
+	</script>
+ </body>
+</html>

@@ -1,0 +1,80 @@
+@charset "UTF-8";
+* {word-wrap: break-word;;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+html {-webkit-text-size-adjust: none; }
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,span{padding:0;margin:0;}
+body{font:normal 13px/24px "微软雅黑","冬青黑体简体中文 w3","宋体"; }
+fieldset,img,html,body,iframe{border:0;}
+/** 重置表格元素 **/
+table{border-collapse:collapse;border-spacing:0;}
+ol,ul{list-style:none;}
+address,caption,cite,code,dfn,em,strong,th,var{font-weight:normal;font-style:normal;}
+caption,th{text-align:left;}
+em,i,small,caption,th{font-weight:normal;font-style:normal;font-size:100%;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;font-size:100%;}
+q:before,q:after{content:'';}
+.clearfix{*zoom:1;}
+.clearfix:after{content:"."; display:block;clear:both;visibility:hidden;line-height:0;height:0;}
+a {color: #9D9C9C;text-decoration: none;}
+a img {border: none;outline:none;}
+a,button{ outline:none; border:0;}
+input,select{border:1px solid #ccc;}
+button::-moz-focus-inner{border:0;padding:0;margin:0;}
+textarea,input,button,select{outline:0;font-size:inherit;line-height:inherit;color:inherit;font-family:inherit;}
+textarea{overflow:auto;resize:none;}
+.hide,.none{display: none}
+.hidden{visibility: hidden;}
+.show,.block{display: block;}
+img{ vertical-align:middle}
+input:disabled,select:disabled,textarea:disabled{background:#ccc;}
+.fl{float: left;}
+.fr{float: right;}
+.red{color:red;}
+.green{color:green;}
+
+::-webkit-scrollbar{width:10px;height:10px;background:#333;}
+::-webkit-scrollbar-button{background-color:#e5e5e5;}
+::-webkit-scrollbar-track{background:#999;}
+::-webkit-scrollbar-track-piece{background:#ccc}
+::-webkit-scrollbar-thumb{background:#666;}
+::-webkit-scrollbar-corner{background:#82AFFF;}
+::-webkit-scrollbar-resizer{background:#FF0BEE;}
+scrollbar{-moz-appearance:none !important;background:rgb(0,255,0) !important;}
+scrollbarbutton{-moz-appearance:none !important;background-color:rgb(0,0,255) !important;}
+scrollbarbutton:hover{-moz-appearance:none !important;background-color:rgb(255,0,0) !important;}
+/* 隐藏上下箭头 */
+ scrollbarbutton{display:none !important;}
+/* 纵向滚动条宽度 */
+ scrollbar[orient="vertical"]{min-width:6px !important;}
+ /*
+ 	1366*768 1440*900 div---如果你是用fixed的div层的高度一定要控制在：520px以内 
+ */
+ .w30{width: 30px;}
+ .w50{width: 50px;}
+ .w70{width: 75px;}
+ .w100{width: 100px;}
+ .w120{width: 120px;}
+ .w180{width: 164px;}
+ .w200{width: 200px;}
+ .w220{width: 220px;}
+ .w240{width: 240px;}
+ .w248{width: 248px;}
+ .w260{width: 260px;}
+ .w360{width: 360px;}
+ .w375{width: 375px;}
+ .w640{width:640px;}
+ .fs12{font-size:12px;}
+.mr{margin-right:5px;}
+.mr15{margin-right:15px;}
+.mr30{margin-right:30px;}
+.mt20{margin-top:20px;}
+.mt45{margin-top:45px;}
+.pl5{padding-left: 5px;}
+.pl10{padding-left: 10px;}
+.pt30{padding-top:30px;}
+.pt10{padding-top:10px;}
+.pt15{padding-top:15px;}
+.pt20{padding-top:20px;}
+.pl20{padding-left:20px;}
+ .tmui-ellipsis{display:inline-block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+ /*阴影层*/
+.tzui-loading-overlay,.tmui-overlay,.tmui-box-overlay{width:100%;height:100%;background:#141414;position:fixed;top:0;left:0;z-index:101;-moz-opacity:0.4;-khtml-opacity:0.4;opacity:0.4;}

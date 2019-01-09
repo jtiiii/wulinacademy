@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss # \u65F6\u95F4\u683C\u5F0F\u5316
+  thymeleaf:
+    cache: false  # \u7981\u7528\u6A21\u677F\u7F13\u5B58
+  datasource:
+    #   数据源基本配置
+    username: wulin_dev
+    password: 2ayk6Oe!UvHLo2HZ
+    # driver-class-name: com.mysql.jdbc.Driver  已被弃用 com.mysql.cj.jdbc.Driver 代替 一般不需要主动配置
+    url: jdbc:mysql://funeralobjects.cn:3306/dev_wulinacademy?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    type: com.alibaba.druid.pool.DruidDataSource
+    #   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    #schema:
+    #   - classpath:sql/department.sql
+    #   - classpath:sql/employee.sql
+    #initialization-mode: always   #spring boot 2.0版本之后 主动执行创建脚本需要指明该配置
+server: #\u7AEF\u53E3
+  port: 8080
+
+mybatis:
+  # 指定全局配置文件位置
+  config-location: classpath:mybatis/mybatis-config.xml
+  # 指定sql映射文件位置
+  mapper-locations: classpath:mybatis/mapper/*/*.xml
+  type-aliases-package: com.funeral.wulinapi.model
+---
+spring:
+  profiles: prod
