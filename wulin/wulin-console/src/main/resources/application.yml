@@ -33,10 +33,9 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-    #schema:
-    #   - classpath:sql/department.sql
-    #   - classpath:sql/employee.sql
-    #initialization-mode: always   #spring boot 2.0版本之后 主动执行创建脚本需要指明该配置
+    schema:
+       - classpath:sql/tbl_admin_user.sql
+    initialization-mode: never   #spring boot 2.0版本之后 主动执行创建脚本需要指明该配置 always
 server: #\u7AEF\u53E3
   port: 8080
 
