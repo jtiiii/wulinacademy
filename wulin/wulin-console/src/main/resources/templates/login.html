@@ -16,8 +16,6 @@
 -->
  </head>
  <body>
-	
-
 	<div id="loginbox">
 		<form id="loginform" action="" method="post">
 			<div class="normal_text"> <h3><img th:src="@{/asserts/images/logo.png}" src="images/logo.png" alt="Logo">管理后台</h3></div>
@@ -35,13 +33,20 @@
 					</div>
 				</div>
 			</div>
+			<div class="control-group" id="codebox" style="display:none">
+				<div class="controls">
+					<div class="main_input_box" style="position:relative">
+						<span class="add-on bg_ly"><i class="fa fa-coffee"></i></span><input type="text" id="code" maxlength="4" autocomplete="off" placeholder="请输入验证码">
+						<img  id ="imgcode" alt="验证码" src="${basePath}/kaptcha/code" th:src="@{/kaptcha/code}" onclick="this.src='/kaptcha/code?Math.random()'">
+					</div>
+				</div>
+			</div>
 			<div class="form-actions">
 				<span><a type="submit" href="javascript:void(0);" class="btn btn-success jslogin">登陆</a></span>
+				<p>&copy-wuLin 1.0</p>
 			</div>
 		</form>
 	</div>
-	
-
 
 	<script type="text/javascript">
 		$(function(){

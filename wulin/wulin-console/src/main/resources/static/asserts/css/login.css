@@ -2,9 +2,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .btn, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{ box-shadow:none;}
 .progress, .progress-success .bar, .progress .bar-success, .progress-warning .bar, .progress .bar-warning, .progress-danger .bar, .progress .bar-danger, .progress-info .bar, .progress .bar-info, .btn, .btn-primary{background-image:none;}
 .accordion-heading h5{ width:70%; }
-
 .label-important, .badge-important{ background:#f74d4d;}
-
 /*Metro Background color class*/
 .bg_lb{ background:#27a9e3;}
 .bg_db{ background:#2295c9;}
@@ -17,7 +15,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .bg_lr{ background:#f74d4d;}
 .bg_lv{ background:#603bbc;}
 .bg_lh{ background:#b6b3b3;}
-
+input[type="text"],input[type="password"]{color:#333}
 body { background:radial-gradient(circle,#2E363F,#28B779) repeat-y; background-size:cover;  padding: 0;    margin-top:10%;}
 #logo, #loginbox {width: 32%; min-width:280px;  margin-left: auto;    margin-right: auto;    position: relative;}
 #logo img {  margin: 0 auto;    display: block;}
@@ -35,7 +33,7 @@ body { background:radial-gradient(circle,#2E363F,#28B779) repeat-y; background-s
 #loginbox .control-group{ padding:20px 0; margin-bottom:0px;}
 .form-vertical, .form-actions {  margin-bottom: 0; background:none; text-align:center}
 #loginbox .normal_text{ padding:15px 10px; text-align:center; font-size:14px; line-height:20px;  color:#fff; }
-
+#imgcode{position:absolute;right:32px;bottom:6px}
 .btn {
  display: inline-block;
  padding: 4px 12px;
