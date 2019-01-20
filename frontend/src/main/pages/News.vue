@@ -8,7 +8,7 @@
             <label>
                 <input class="edit-title" type="text" value="Title" />
             </label>
-            <v-new-editor></v-new-editor>
+            <v-new-editor @text-change="textChangeListener"></v-new-editor>
         </v-new-modal>
         <div class="news">
             <div class="toolbar">
@@ -172,6 +172,9 @@
                     //TODO RESET Editor
                 }
                 this.showEditor = true;
+            },
+            textChangeListener( content ){
+                console.info(JSON.stringify(content));
             },
             Api_deleteNews( news ){
                 console.log('Test - delete',news);

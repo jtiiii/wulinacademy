@@ -4,12 +4,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
-    devtool: 'source-map',
-    entry: './src/test/test.js',
+    mode: 'production',
+    entry: './src/main/entries/main.js',
     output: {
         path: path.join( __dirname ,'build'),
         filename: '[name].bundle.js',
+        // chunkFilename: '[name].chunk.js',
     },
     module: {
         rules: [
@@ -22,21 +22,22 @@ module.exports = {
                         outputPath: 'assets'
                     }}]
             },
-            // { test: /\.pdf$/, use: [{
-            //         loader:'file-loader',
-            //         options: {
-            //             name: '[name].[ext]',
-            //             outputPath: 'pdfs/'
-            //         }
-            //     }]}
+            { test: /\.pdf$/, use: [{
+                    loader:'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'pdfs/'
+                    }
+                }]}
         ]
     },
     plugins:[
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'src/test/test.html',
+            template: 'src/main/public/index.html',
             favicon: 'src/main/icons/favicon.ico',
+            // chunks: ['index']
         }),
         new CleanWebpackPlugin('build')
     ],

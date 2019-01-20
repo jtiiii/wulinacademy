@@ -10,21 +10,23 @@
 .
 ├── README.md
 ├── package-lock.json
-├── package.json #npm 项目配置文件
-├── src #源码
-│   ├── main #主要内容
+├── package.json #npm项目配置文件
+├── src
+│   ├── main
+│   │   ├── config #webpack的通用配置
+│   │   ├── entries #构建入口
+│   │   ├── fonts #外部字体
 │   │   ├── i18n #国际化
 │   │   ├── icons #图标
 │   │   ├── images #图片
-│   │   ├── index.html #主页
-│   │   ├── main.js #打包执行
-│   │   ├── pages #其他页面
+│   │   ├── pages #vue页面
+│   │   ├── pdfs #pdf文件
+│   │   ├── public #一些静态资源
 │   │   ├── scripts #脚本文件
-│   │   │   └── components #vue组件
-│   │   └── styles #通用/统一样式
-│   └── test
-├── webpack.config.js #webpack 打包配置文件
-└── webpack.test-config.js #webpack 测试打包配置
+│   │   └── styles #css样式文件
+│   └── test #测试文件夹
+├── webpack.config.dev.js #开发模式的配置
+└── webpack.config.js #生产环境的配置
 ```
 
 
@@ -54,3 +56,9 @@ $npm run build
 
 此时会在当前目录中生成 `/build` 目录。
 
+## 开发构建
+```shell
+$npm run dev
+```
+
+此时会在开发状态下构建项目，并且启动简易web容器。并自动打开浏览器。

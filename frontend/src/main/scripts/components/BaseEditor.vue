@@ -9,6 +9,20 @@
     import Quill from 'quill/dist/quill';
     import 'quill/dist/quill.snow.css';
 
+    function editorProcessor( vm ){
+        vm.editor = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: vm.toolbarOptions
+            }
+        });
+
+        vm.editor.on('text-change', () => {
+            vm.$emit('text-change',vm.editor.getContents());
+        });
+        return vm;
+    }
+
     export default {
         name:"BaseEditor",
         props:{
@@ -51,13 +65,12 @@
                 };
             }
         },
+        methods:{
+        },
         mounted(){
-            this.editor = new Quill('#editor', {
-                theme: 'snow',
-                modules: {
-                    toolbar: this.toolbarOptions
-                }
-            });
+            const vm = this;
+            new Promise( resolve => resolve(vm) )
+                .then( editorProcessor );
         }
     }
 </script>
