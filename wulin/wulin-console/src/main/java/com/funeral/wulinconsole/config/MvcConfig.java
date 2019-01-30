@@ -32,7 +32,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor (new LoginHandlerInterceptor ())
-                .addPathPatterns ("/manager/**");
+                .addPathPatterns ("/permission/**");
     }
 
 }

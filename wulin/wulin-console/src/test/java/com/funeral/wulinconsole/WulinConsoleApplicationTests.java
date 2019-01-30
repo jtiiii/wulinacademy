@@ -1,12 +1,14 @@
 package com.funeral.wulinconsole;
 import com.funeral.wulinapi.model.user.AdminUserModel;
 import com.funeral.wulincore.service.user.IAdminUserService;
+import com.funeral.wulincore.utils.WuLinStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,8 +31,20 @@ public class WulinConsoleApplicationTests {
 	 */
 	@Test
 	public void testMybatisConfig () {
-		AdminUserModel adminUserById = this.adminUserService.getAdminUserById("1");
-		System.out.println(adminUserById);
+    /*    // 初始化一个默认用户
+		AdminUserModel adminUserModel = new AdminUserModel();
+		adminUserModel.setId(WuLinStringUtils.getRandomString(30));
+		adminUserModel.setAccount("admin@wulin.com");
+		adminUserModel.setUserName("admin");
+		adminUserModel.setPassword(WuLinStringUtils.md5Base64("123456"));
+		adminUserModel.setAddress("本地");
+		adminUserModel.setAge(200);
+		adminUserModel.setBirthday(new Date());
+		adminUserModel.setCreateTime(new Date());
+		adminUserModel.setIsDelete(0);
+		adminUserModel.setForbiden(1);
+		adminUserModel.setMale(2);
+		this.adminUserService.insert(adminUserModel);*/
 	}
 
 }

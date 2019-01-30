@@ -1,5 +1,6 @@
 package com.funeral.wulinconsole.filter;
 
+import com.funeral.wulinapi.Enum.SessionCodeEnum;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +19,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor{
     // 目标 Controller 执行前
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object user = request.getSession().getAttribute("loginUser");
+        Object user = request.getSession().getAttribute(SessionCodeEnum.SESSION_USER.getVal());
         if(user == null){
             //未登陆，返回登陆页面
             request.setAttribute("msg","没有权限请先登陆");

@@ -6,10 +6,9 @@
   <meta name="Keywords" content="">
   <meta name="Description" content="">
   <title>武林书画学院</title>
-  <link rel="stylesheet"  th:href="@{/asserts/css/common.css}"/>
+	 <!--引入公共资源-->
+	 <div th:replace="common/taglib::#commonScript"></div>
   <link rel="stylesheet"  th:href="@{/asserts/css/login.css}"/>
-  <link rel="stylesheet"  th:href="@{/asserts/fontsome/font-awesome.min.css}"/>
-  <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
 <!--
 <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 	 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
@@ -22,14 +21,14 @@
 			<div class="control-group">
 				<div class="controls">
 					<div class="main_input_box">
-						<span class="add-on bg_lg"><i class="fa fa-user"></i></span><input type="text" placeholder="请输入账号...">
+						<span class="add-on bg_lg"><i class="fa fa-user"></i></span><input type="text" id="account" placeholder="请输入账号...">
 					</div>
 				</div>
 			</div>
 			<div class="control-group">
 				<div class="controls">
 					<div class="main_input_box">
-						<span class="add-on bg_ly"><i class="fa fa-lock"></i></span><input type="password" placeholder="请输入密码...">
+						<span class="add-on bg_ly"><i class="fa fa-lock"></i></span><input id="password" type="password" placeholder="请输入密码...">
 					</div>
 				</div>
 			</div>
@@ -37,23 +36,16 @@
 				<div class="controls">
 					<div class="main_input_box" style="position:relative">
 						<span class="add-on bg_ly"><i class="fa fa-coffee"></i></span><input type="text" id="code" maxlength="4" autocomplete="off" placeholder="请输入验证码">
-						<img  id ="imgcode" alt="验证码" src="${basePath}/kaptcha/code" th:src="@{/kaptcha/code}" onclick="this.src='/kaptcha/code?Math.random()'">
+						<img  id ="imgcode" alt="验证码" th:src="@{/kaptcha/code}" th:onclick="|flushCode()|" />
 					</div>
 				</div>
 			</div>
 			<div class="form-actions">
-				<span><a type="submit" href="javascript:void(0);" class="btn btn-success jslogin">登陆</a></span>
+				<span><a type="submit" href="javascript:void(0);" onclick="An_login(this)" class="btn btn-success jslogin">登陆</a></span>
 				<p>&copy-wuLin 1.0</p>
 			</div>
 		</form>
 	</div>
-
-	<script type="text/javascript">
-		$(function(){
-			$(".jslogin").click(function () {
-				window.location.href = "http://localhost:8080/manager-index";
-            });
-		});
-	</script>
+	<script type="text/javascript" th:src="@{/asserts/js/login.js}"></script>
  </body>
 </html>
