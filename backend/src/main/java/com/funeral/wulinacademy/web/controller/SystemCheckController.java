@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * System check controller
  *
  * @author FuneralObjects
- * CreateTime 2018-12-27 19:11
+ * @date 2018-12-27 19:11
  */
 @RestController
 @RequestMapping("/system-check")
