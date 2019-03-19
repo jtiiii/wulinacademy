@@ -1,72 +1,50 @@
 package com.funeral.wulinacademy.web.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 /**
  * 新闻实体类
  *
  * @author FuneralObjects
- * CreateTime 2019-01-06 01:41
+ * @date 2019-01-06 01:41
  */
+@Setter
+@Getter
 public class News {
     /**
      * 主键ID
      */
+    @Id
     private Integer newsId;
     /**
      * 标题
      */
     private String title;
     /**
-     * 创建日期
+     * 事件日期
      */
-    private Date createDate;
+    private Date eventDate;
     /**
-     * 更新日期
+     * 状态 ，VISIBLE - 可见 | INVISIBLE - 不可见 | DELETED - 删除
      */
-    private Long updateTIme;
-    /**
-     * 状态 ，VISIBLE - 可见 | INVISIBLE - 不可见 | DELETE - 删除
-     */
-    private String status;
+    private Status status;
 
-    public Integer getNewsId() {
-        return newsId;
-    }
-
-    public void setNewsId(Integer newsId) {
-        this.newsId = newsId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Long getUpdateTIme() {
-        return updateTIme;
-    }
-
-    public void setUpdateTIme(Long updateTIme) {
-        this.updateTIme = updateTIme;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public enum Status{
+        /**
+         * 可见
+         */
+        VISIBLE,
+        /**
+         * 不可见
+         */
+        INVISIBLE,
+        /**
+         * 删除的
+         */
+        DELETED
     }
 }
