@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * security的config配置
  *
  * @author FuneralObjects
- * CreateTime 2018-12-27 12:52
+ * @date 2018-12-27 12:52
  */
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
