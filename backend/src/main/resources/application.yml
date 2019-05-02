@@ -1,2 +1,23 @@
 server:
   port: 9000
+logging:
+  level:
+    ROOT: info
+spring:
+  application:
+    name: wulinacademy
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/xxxxxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    username: xxxxx
+    password: xxxxx
+  http:
+    encoding:
+      charset: UTF-8
+  messages:
+    encoding: UTF-8
+---
+cors:
+  allow-origin: ''

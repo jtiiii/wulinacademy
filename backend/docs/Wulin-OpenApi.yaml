@@ -1,0 +1,297 @@
+openapi: 3.0.2
+
+info:
+  title: 武林书画院项目
+  version: SNAPSHOT-1.0.0
+  description: 用于设计后台接口以及调试的的文件
+  contact:
+    name: 陪葬品<FuneralObjects>
+    email: funeral_objects@qq.com
+    url: https://github.com/jtiiii/wulinacademy
+
+servers:
+  - url: http://localhost:9000
+    description: 本地开发环境
+
+tags:
+  - name: auth
+    description: 权限服务
+  - name: news
+    description: 新闻信息服务
+  - name: news-content
+    description: 新闻正文内容服务
+  - name: system
+    description: 系统服务
+
+paths:
+  /news/page-{number}-{size}:
+    get:
+      tags:
+        - news
+      parameters:
+        - $ref: '#/components/parameters/path-page-number'
+        - $ref: '#/components/parameters/path-page-size'
+        - name: eventTime
+          in: query
+          description: 发布日期
+          schema:
+            type: string
+            format: yyyy-MM-dd'T'HH:mm:ss
+        - $ref: '#/components/parameters/search'
+      responses:
+        200:
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/page'
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/news'
+        5XX:
+          $ref: '#/components/responses/5XX'
+
+  /news:
+    post:
+      summary: 添加新闻
+      tags:
+        - news
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/news-save'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+
+  /news/{id}:
+    put:
+      summary: 修改新闻信息
+      tags:
+        - news
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/news-save'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+        5XX:
+          $ref: '#/components/responses/5XX'
+    delete:
+      summary: 删除新闻
+      tags:
+        - news
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /news/content/{id}:
+    get:
+      summary: 查看某条新闻正文
+      tags:
+        - news-content
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+        404:
+          $ref: '#/components/responses/404'
+        5XX:
+          $ref: '#/components/responses/5XX'
+
+
+components:
+  schemas:
+    id:
+      type: string
+      description: 主键Id
+
+    status:
+      type: integer
+      description: 状态 [VISIBLE(1)/可见，INVISIBLE(0)/ 不可见，DELETED(-1)/ 删除]
+      example: 1
+
+    timestamp:
+      type: string
+      description: 时间戳 - 精确到ms
+      format: yyyy-MM-dd'T'HH:mm:ss
+
+    full-date:
+      type: string
+      description: 日期
+      format: yyyy-MM-dd
+
+
+    createTime:
+      type: string
+      description: 创建日期
+      format: yyyy-MM-dd'T'HH:mm:ss
+
+    updateTime:
+      type: string
+      description: 更新日期
+      format: yyyy-MM-dd'T'HH:mm:ss
+
+    news:
+      allOf:
+        - $ref: '#/components/schemas/news-save'
+        - type: object
+          properties:
+            newsId:
+              $ref: '#/components/schemas/id'
+              # createTime:
+              #   $ref: '#/components/schemas/createTime'
+              # updateTime:
+              #   $ref: '#/components/schemas/updateTime'
+
+    news-content:
+      type: object
+      properties:
+        newsId:
+          $ref: '#/components/schemas/id'
+        timestamp:
+          $ref: '#/components/schemas/timestamp'
+        header:
+          type: string
+          description: 头部信息说明[额外]
+        content:
+          type: string
+          description: 完整内容
+        simple:
+          type: string
+          description: 简介
+    news-save:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 标题
+        eventDate:
+          type: string
+          description: 发布日期
+          format: timestamp
+        preview:
+          type: string
+          description: 预览信息
+        thumbnail:
+          type: string
+          description: 缩略图
+        status:
+          $ref: '#/components/schemas/status'
+    page:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: 分页序号（即页码-1）
+        size:
+          type: integer
+          description: 每页条数
+        totalPages:
+          type: integer
+          description: 总页数
+        totalElements:
+          type: integer
+          format: int32
+          description: 总记录数
+        content:
+          type: array
+          description: 实际列表内容
+          items:
+            type: object
+        first:
+          type: boolean
+          description: true - 为首页
+        last:
+          type: boolean
+          description: true - 为末页
+        numberOfElements:
+          type: integer
+          description: 当前页条数
+        empty:
+          type: boolean
+          description: 是否为空页面
+
+
+  parameters:
+
+    path-page-number:
+      name: number
+      in: path
+      required: true
+      description: 从0开始
+      schema:
+        type: integer
+
+    path-page-size:
+      name: size
+      in: path
+      required: true
+      description: 页面条数
+      schema:
+        type: integer
+
+    startTime:
+      name: startTime
+      in: query
+      description: 开始时间
+      schema:
+        $ref: '#/components/schemas/timestamp'
+
+    endTime:
+      name: endTime
+      in: query
+      description: 结束时间
+      schema:
+        $ref: '#/components/schemas/timestamp'
+
+    search:
+      name: search
+      in: query
+      description: 查询关键字
+      schema:
+        type: string
+
+    id:
+      name: id
+      in: path
+      description: 主键ID
+      required: true
+      schema:
+        type: string
+
+    authToken:
+      name: auth-token
+      in: header
+      description: CSRF 校验 Token
+      schema:
+        type: string
+
+  responses:
+    204:
+      description: 执行成功，无数据返回
+    404:
+      description: 找不到资源
+    5XX:
+      description: 服务器错误，需要联系管理员
+      content:
+        text/plain:
+          schema:
+            type: string
+            description: 错误日志ID
+            example: '[POST]20170912234200-123'
+
+
+
+    

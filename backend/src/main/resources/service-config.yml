@@ -1,0 +1,16 @@
+SECURITY:
+  TOKEN:
+    IN_HEADER_NAME: auth-token
+    IN_PARAM_NAME: _authToken
+  LOGIN:
+    USERNAME_OF_LOGIN_NAME: username
+    PASSWORD_OF_LOGIN_NAME: password
+---
+login-users:
+  users:
+    - username: login
+      password: login
+      status: 1
+    - username: test
+      password: test
+      status: 0

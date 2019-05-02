@@ -1,8 +1,11 @@
 package com.funeral.wulinacademy.web.config;
 
+import com.funeral.wulinacademy.web.controller.aspect.RestControllerAspect;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * web-mvc的配置
@@ -13,6 +16,25 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.funeral.wulinacademy.web.controller")
-public class WebMvcConfig {
+public class WebMvcConfig implements WebMvcConfigurer {
 
+
+//    @Bean
+//    public CorsFilter corsFilter(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.addAllowedOrigin("*"); // 1允许任何域名使用
+//        corsConfiguration.addAllowedHeader("*"); // 2允许任何头
+//        corsConfiguration.addAllowedMethod("*"); // 3允许任何方法（post、get等）
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//        return new CorsFilter(source);
+//    }
+
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("*")
+//                .allowedHeaders("*");
+//    }
 }
