@@ -80,4 +80,5 @@
 </script>
 <style>
     @import "../fonts/fonts.css";
+    @import "../styles/index.css";
 </style>

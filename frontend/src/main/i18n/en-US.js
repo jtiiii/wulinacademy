@@ -50,5 +50,14 @@ export default {
         youtube: 'youtube',
         facebook: 'facebook',
         instagram: 'instagram'
+    },
+    login: {
+        username: 'Username',
+        password: 'Password',
+        login: 'Login',
+        logout: 'Logout',
+    },
+    manager:{
+        managerMode: 'Manager Mode'
     }
 };

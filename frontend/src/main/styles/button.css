@@ -1,4 +1,4 @@
-button {
+.btn {
     height: 24px;
     width: auto;
     background: rgba(0,0,0,0);
@@ -8,6 +8,20 @@ button {
     cursor: pointer;
     font-size: 14px;
 }
-button:active {
+.btn:active {
     background: #eee;
+    color: #aaa;
+}
+.btn:disabled {
+    background: #eee;
+    color: #aaa;
+}
+.btn-ok {
+    background: #90ee7f;
+    border: #90ee90;
+    color: #008a00;
+}
+.btn-ok:active {
+    background-color: #90ee7f96;
+    color: #008a0096;
 }

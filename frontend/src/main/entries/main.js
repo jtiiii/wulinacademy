@@ -6,7 +6,9 @@ import I18n,{ I18nLocale } from '../scripts/i18n';
 import VueRouter from 'vue-router';
 import Index from '../pages/Index.vue';
 import Common from '../scripts/Common';
+import CheckService from '../scripts/api/CheckService';
 
+window.systemCheck = CheckService;
 
 (() =>{
     //使用Vuex
@@ -24,13 +26,13 @@ import Common from '../scripts/Common';
 
 window.Vue = Vue;
 window.Common = Common;
-
 window.title = new Vue({
     el: 'title',
     i18n : I18n
 });
 
 window.main = new Vue({
+    i18n : I18n,
     render( h ){
         return h(Index)
     },
@@ -44,6 +46,8 @@ window.main = new Vue({
 function getLocale(){
     return window.navigator.language;
 }
+
 I18nLocale.code = getLocale();
 window.i18n = I18n;
 window.I18nLocale = I18nLocale;
+

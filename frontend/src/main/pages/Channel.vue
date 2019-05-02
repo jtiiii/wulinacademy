@@ -33,7 +33,6 @@
         i18n,
         methods: {
             hideModal: function(){
-                // this.$refs.modal.show(false);
                 this.modal.show = false;
             },
             showQR: function(){

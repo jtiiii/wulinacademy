@@ -50,5 +50,14 @@ export default {
         youtube: '油管',
         facebook: '脸谱网',
         instagram: '图享'
+    },
+    login: {
+        username: '用户名',
+        password: '密码',
+        login: '登陆',
+        logout: '登出',
+    },
+    manager:{
+        managerMode: '管理员模式'
     }
 };

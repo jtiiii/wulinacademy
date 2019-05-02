@@ -1,0 +1,81 @@
+<template>
+    <div class="root filling">
+
+        <div v-if="isLogin.value" >
+            登陆成功！
+        </div>
+        <div v-else="isLogin.value">
+            <label>{{ $t('login.username') }}</label>
+            <input class="loginInput" type="text" v-model="username">
+            <br/>
+            <label>{{ $t('login.password') }}</label>
+            <input class="loginInput" type="password" v-model="password">
+            <br/>
+            <button class="loginBtn btn btn-ok" type="button" @click="login()">
+                {{ $t('login.login') }}
+            </button>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+    import i18n from '../i18n';
+    import Common from '../Common';
+
+    import SecurityService from '../api/SecurityService';
+
+
+
+    export default {
+        i18n,
+        data(){
+            return {
+                onLogin: false,
+                username: "",
+                password: "",
+                isLogin: SecurityService.isLogin
+            };
+        },
+        methods:{
+            login(){
+                let _vue = this;
+                SecurityService.login(this.username,this.password).then( isLogin=> {
+                    if(isLogin){
+                        _vue.loginSucc();
+                    }
+                });
+            },
+            logout(){
+            },
+            loginSucc(){
+                this.$emit('loginSuccessful');
+            }
+        }
+    }
+</script>
+<style scoped>
+    @import url('../../styles/box.css');
+    .root{
+        padding: 10px;
+    }
+    input {
+        outline: none;
+        margin: 5px;
+    }
+    label{
+        display: inline-block;
+        width: 60px;
+    }
+    .loginInput {
+        border: 1px solid #a9a9a9;
+        border-radius: 4px;
+        height: 20px;
+        width: 130px;
+        font-size: 16px;
+    }
+    .loginBtn{
+        position: relative;
+        top: 20px;
+        width: calc(100% - 20px);
+        height: 40px;
+    }
+</style>

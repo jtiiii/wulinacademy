@@ -14,6 +14,5 @@ export default {
             throw new ModelError('arg: items must be Array');
         }
         this.items = items;
-
     }
 }

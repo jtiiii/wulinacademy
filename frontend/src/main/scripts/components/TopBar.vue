@@ -10,20 +10,35 @@
                 <base-drop-down ref="setting" :menu-direct="'right'" :groups="sets" :item-click="setClick"><img class="icon" :src="settingIcon"/></base-drop-down>
             </div>
         </div>
-        <div class="shadow" :style="shadowLineStyle">
+
+        <div v-show="loginModal.show" class="login box" :style="loginStyle" v-outsideclick="loginOutSideClick">
+            <v-login @loginSuccessful="loginSuccHandle" ></v-login>
         </div>
     </div>
 </template>
 <script type="text/javascript">
     import DropDown from './BaseDropDown.vue';
+    import Login from './Login.vue';
+
     import logo from "../../images/logo-new.png";
     import navIcon from '../../icons/list-icon.png';
     import setIcon from '../../icons/setting-icon.png';
     import nav from '../navigation';
-    import sets from '../setting';
+    import sets,{SetUtils} from '../setting';
+    import Utils from '../utils';
+    import SecurityService from '../api/SecurityService';
+
+
+
+    function initSetting(sets,vue){
+        SetUtils.addGroup('login','login.login')
+            .addItem('manager', 'manager.managerMode',vue.showLoginClick);
+    }
+
 
     export default {
         components:{
+            "v-login": Login,
             "base-drop-down" : DropDown
         },
         props: {
@@ -45,6 +60,11 @@
         },
         data: function () {
             return {
+                loginModal:{
+                    hideActive: true,
+                    show: false,
+                    isLogin: false
+                },
                 topBar: {
                     'topBar': true,
                     'fixed': false
@@ -68,14 +88,17 @@
                 currentTitleClass: {
                     'currentTitle': true,
                     'currentFixed': false
-                }
-                ,topBarLineStyle: {
+                },
+                topBarLineStyle: {
                     'height': '80px'
                 },
-                shadowLineStyle: {
-                    'display': 'none'
+                loginStyle: {
+                    'display': 'block',
                 }
             };
+        },
+        directives:{
+            outsideclick: Utils.outsideClick
         },
         computed: {
             currentTitle: function(){
@@ -97,6 +120,7 @@
             },
             setClick: function( item, groupId ){
                 item.resolve( item );
+                this.$refs.setting.hideMenu();
                 setTimeout(() => {
                     this.setClickResolve( item, groupId );
                 },1);
@@ -110,7 +134,6 @@
                     this.navigation.navFixed = flag;
                     this.currentTitleClass.currentFixed = flag;
                     this.topBarLineStyle['height'] = flag? '50px' : '80px';
-                    this.shadowLineStyle['display'] = flag? 'block': 'none';
                     setTimeout( () => {
                         this.toFixedOrRelativeResolve( flag );
                     },1);
@@ -139,11 +162,36 @@
             },
             refreshTapForPath: function( path ){
                 this.currentTap = this.nav.map[path];
+            },
+            showLogin: function(){
+                this.loginModal.show = true;
+            },
+            hideLogin: function(){
+                this.loginModal.show = false;
+            },
+            showLoginClick: function(){
+                this.showLogin();
+                this.loginModal.hideActive = false;
+            },
+            loginOutSideClick: function(){
+                if(this.loginModal.hideActive){
+                    this.hideLogin();
+                }else{
+                    this.loginModal.hideActive = true;
+                }
+            },
+            loginSuccHandle: function(){
+                this.hideLogin();
             }
+        },
+        mounted(){
+            initSetting(sets,this);
         }
     };
 </script>
 <style scoped>
+    @import url("../../styles/box.css");
+
     .topBar{
         width: 100%;
         height: 80px;
@@ -202,4 +250,12 @@
         width: 100%;
         height: 50px;
     }
+    .login{
+        position: fixed;
+        right: 0;
+        z-index: 999;
+        width: 240px;
+        height: 150px;
+    }
+
 </style>

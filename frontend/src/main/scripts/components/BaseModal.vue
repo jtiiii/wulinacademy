@@ -17,10 +17,6 @@
                 type: Number,
                 required: false
             },
-            click: {
-                type: Function,
-                required: false
-            },
             show:{
                 type: Boolean,
                 required: false,

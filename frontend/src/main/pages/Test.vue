@@ -1,12 +1,14 @@
 <template>
     <div>
-        <base-editor class="editor"></base-editor>
+        <login></login>
     </div>
 </template>
 <script>
     import BaseEditor from '../scripts/components/BaseEditor.vue';
+    import Login from '../scripts/components/Login.vue';
     export default {
         components:{
+            "login": Login,
             "base-editor": BaseEditor
         }
     }

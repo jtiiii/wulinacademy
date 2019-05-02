@@ -1,6 +1,6 @@
 import Model from './components/BaseModel';
 import {I18nLanguage, I18nLocale } from './i18n';
-function SettingItem(id, i18Key, resolve,){
+function SettingItem(id, i18Key, resolve){
     Model.ListItem.apply(this,[id,I18nLocale.getMessage(i18Key),false]);
     this.resolve = resolve;
     this.i18key = i18Key;
@@ -19,6 +19,10 @@ SettingGroupMenu.prototype._refresh_ = function(){
     this.name = I18nLocale.getMessage( this.i18key );
     this.items.forEach( item => item._refresh_());
 };
+SettingGroupMenu.prototype.addItem = function(id,i18key,resolve){
+    this.items.push(new SettingItem(id,i18key,resolve));
+    return this;
+};
 
 const sets = [];
 //初始化语言设置
@@ -35,8 +39,14 @@ const sets = [];
 I18nLocale.addResolve(()=>{
     sets.forEach( set => set._refresh_() );
 });
-
-
 export default sets;
+export const SetUtils = {
+    _sets_: sets,
+    addGroup(id,i18key){
+        let group = new SettingGroupMenu(id,i18key,[]);
+        this._sets_.push(group);
+        return group;
+    }
+};
 
 

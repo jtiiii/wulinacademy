@@ -1,6 +1,6 @@
 <template>
-    <div class="dropDown" v-outsideclick="hideMenu">
-        <button @click="showMenu()">
+    <div class="dropDown" v-outsideclick="outSideClick">
+        <button class="btn" @click="showMenu()">
             {{ buttonText }} <slot></slot>
         </button>
         <div class="dropMenu" :class="direction" v-show="show">
@@ -12,27 +12,11 @@
 <script type="text/javascript">
     import List from './BaseList.vue';
     import Model from './BaseModel';
+    import Utils from '../utils';
+
     let groupValidator = function(groups){
         return groups.every( group => group instanceof Model.ListItem )
             || groups.every( group => group instanceof Model.GroupMenu );
-    };
-    const outsideclick = {
-        bind: function(el, banding){
-            let documentHandle = function(e){
-                if(el.contains(e.target)){
-                    return false;
-                }
-                if(banding.expression) {
-                    banding.value(e);
-                }
-            };
-            el._outsideclick_ = documentHandle;
-            document.addEventListener("click", documentHandle);
-        },
-        unbind: function (el) {
-            document.removeEventListener("click", el._outsideclick_);
-            delete el._outsideclick_;
-        }
     };
     export default {
         name: 'BaseDropDown',
@@ -66,7 +50,7 @@
             },
         },
         directives:{
-            outsideclick: outsideclick
+            outsideclick: Utils.outsideClick
         },
         computed: {
             direction: function(){
@@ -89,11 +73,17 @@
             },
             hideMenu: function(){
                 this.show = false;
+                console.info('hideMenu');
             },
             groupItemClick: function( group ){
                 let ic = this.itemClick;
                 return function(item){
                     return ic(item,group.id);
+                }
+            },
+            outSideClick: function(){
+                if(this.show){
+                    this.hideMenu();
                 }
             }
         }

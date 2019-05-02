@@ -50,5 +50,14 @@ export default {
             youtube: '油管',
             facebook: '臉譜網',
             instagram: '圖享'
+    },
+    login: {
+        username: 'Username',
+        password: 'Password',
+        login: 'Login',
+        logout: 'Logout',
+    },
+    manager:{
+        managerMode: 'Manager Mode'
     }
 };
