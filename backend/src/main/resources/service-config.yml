@@ -1,10 +1,12 @@
-SECURITY:
-  TOKEN:
-    IN_HEADER_NAME: auth-token
-    IN_PARAM_NAME: _authToken
-  LOGIN:
-    USERNAME_OF_LOGIN_NAME: username
-    PASSWORD_OF_LOGIN_NAME: password
+security:
+  csrf:
+    token:
+      inHeaderName: auth-token
+      inParamName: _authToken
+      stranger: 'stranger'
+  login:
+    usernameOfParamName: username
+    passwordOfParamName: password
 ---
 login-users:
   users:

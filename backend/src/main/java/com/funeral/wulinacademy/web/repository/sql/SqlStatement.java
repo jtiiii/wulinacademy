@@ -1,7 +1,5 @@
 package com.funeral.wulinacademy.web.repository.sql;
 
-import com.funeral.wulinacademy.web.common.standard.DateStandard;
-import com.funeral.wulinacademy.web.util.CollectionUtils;
 import com.funeral.wulinacademy.web.util.NativeMySqlUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

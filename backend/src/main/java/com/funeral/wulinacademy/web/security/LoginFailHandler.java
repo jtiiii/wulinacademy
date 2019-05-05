@@ -12,9 +12,9 @@ import java.io.IOException;
  * @author FuneralObjects
  * @date 2019-04-13 00:00
  */
-public class AuthFailHandler implements AuthenticationFailureHandler {
+public class LoginFailHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.sendError(403,"No Login.");
+        response.sendError(403,"Cannot login. Please check if username or password is correct info.");
     }
 }

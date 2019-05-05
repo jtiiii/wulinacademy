@@ -1,7 +1,6 @@
 package com.funeral.wulinacademy.web.controller.model.news;
 
 import com.funeral.wulinacademy.web.entity.News;
-import com.funeral.wulinacademy.web.entity.NewsContent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

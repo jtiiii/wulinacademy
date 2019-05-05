@@ -23,7 +23,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return null;
         LoginUser loginUser = loginUserRepository.findLoginUserByUsername(username);
         if(loginUser == null){
             throw new UsernameNotFoundException(username);
@@ -34,6 +33,5 @@ public class UserServiceImpl extends BaseService implements UserService {
                 .authorities(new String[]{})
                 .build();
     }
-
 
 }

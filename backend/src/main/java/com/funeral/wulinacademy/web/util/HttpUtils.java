@@ -2,14 +2,11 @@ package com.funeral.wulinacademy.web.util;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -110,6 +107,7 @@ public class HttpUtils {
             return "Request:" +
                     "\r\n\tUrl: " + url +
                     "\r\n\tMethod: " + method +
+                    "\r\n\tHeaders:" + headers +
                     "\r\n\tParameters: " + parameters +
                     "\r\n\tCookies: " + cookies +
                     "\r\n\tContent-Type: "+ contentType +

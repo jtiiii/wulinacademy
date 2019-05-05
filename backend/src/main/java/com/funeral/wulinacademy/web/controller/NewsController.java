@@ -9,7 +9,6 @@ import com.funeral.wulinacademy.web.controller.model.news.NewsContentSaveModel;
 import com.funeral.wulinacademy.web.controller.model.news.NewsModel;
 import com.funeral.wulinacademy.web.controller.model.news.NewsSaveModel;
 import com.funeral.wulinacademy.web.entity.News;
-import com.funeral.wulinacademy.web.entity.NewsContent;
 import com.funeral.wulinacademy.web.service.NewsService;
 import com.funeral.wulinacademy.web.service.exception.ValidateException;
 import com.funeral.wulinacademy.web.util.StringUtils;

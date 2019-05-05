@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.servlet.ServletException;
-
 /**
  * Servlet访问基础异常类
  * 扩展

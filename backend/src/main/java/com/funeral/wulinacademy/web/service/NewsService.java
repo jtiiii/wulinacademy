@@ -1,6 +1,5 @@
 package com.funeral.wulinacademy.web.service;
 
-import com.funeral.wulinacademy.web.common.standard.StatusStandard;
 import com.funeral.wulinacademy.web.entity.News;
 import com.funeral.wulinacademy.web.entity.NewsContent;
 import com.funeral.wulinacademy.web.service.exception.ValidateException;

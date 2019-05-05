@@ -1,6 +1,5 @@
 package com.funeral.wulinacademy.web.controller.filter;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
