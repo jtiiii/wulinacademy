@@ -15,4 +15,6 @@ public interface BaseRepository<T extends ParseId<ID>,ID> extends CrudRepository
      * @param <S> 保存类
      */
     <S extends T> void saveBatch(Iterable<S> entities);
+
+    void deleteByIdThroughStatus(ID id);
 }

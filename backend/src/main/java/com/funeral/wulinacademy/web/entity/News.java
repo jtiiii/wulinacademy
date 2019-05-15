@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-@Table("t_news")
+@Table("v_news")
 public class News implements ParseId<Integer> {
     /**
      * 主键ID

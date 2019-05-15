@@ -1,6 +1,7 @@
 package com.funeral.wulinacademy.web.repository;
 
 import com.funeral.wulinacademy.web.entity.NewsContent;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author FuneralObjects

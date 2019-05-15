@@ -255,6 +255,8 @@ public abstract class BaseRepositoryImpl<T extends ParseId<ID>,ID> implements Ba
         return result;
     }
 
+    @Override
+    public void deleteByIdThroughStatus(ID id) {
 
-
+    }
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author FuneralObjects
  * @date 2019-04-25 01:47
  */
-public class BadRequestException extends BaseServletException {
+public class  BadRequestException extends BaseServletException {
     private static final int STATUS = HttpServletResponse.SC_BAD_REQUEST;
 
     public BadRequestException(String message) {

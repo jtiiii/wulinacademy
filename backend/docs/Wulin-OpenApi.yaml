@@ -22,6 +22,15 @@ tags:
     description: 新闻正文内容服务
   - name: system
     description: 系统服务
+  - name: folder
+    description: 文件夹服务
+
+security:
+  type: apiKey
+  description: 安全密钥
+  name: auth-token
+  in: header
+
 
 paths:
   /news/page-{number}-{size}:
@@ -95,7 +104,7 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
-  /news/content/{id}:
+  /news/{id}/content:
     get:
       summary: 查看某条新闻正文
       tags:
@@ -109,6 +118,20 @@ paths:
           $ref: '#/components/responses/404'
         5XX:
           $ref: '#/components/responses/5XX'
+
+  /folder:
+    post:
+      summary: 添加文件夹
+      tags:
+        - folder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/folder-save'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
 
 
 components:
@@ -150,10 +173,10 @@ components:
           properties:
             newsId:
               $ref: '#/components/schemas/id'
-              # createTime:
-              #   $ref: '#/components/schemas/createTime'
-              # updateTime:
-              #   $ref: '#/components/schemas/updateTime'
+            createTime:
+              $ref: '#/components/schemas/createTime'
+            updateTime:
+              $ref: '#/components/schemas/updateTime'
 
     news-content:
       type: object
@@ -171,6 +194,36 @@ components:
         simple:
           type: string
           description: 简介
+    folder-save:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 文件夹名
+        parent:
+          type: string
+          description: 父级id
+        user:
+          type: string
+          description: 所属用户
+        status:
+          $ref: '#/components/schemas/status'
+
+    folder:
+      allOf:
+        - $ref: '#/components/schemas/folder-save'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+            createTime:
+              $ref: '#/components/schemas/createTime'
+            updateTime:
+              $ref: '#/components/schemas/updateTime'
+            path:
+              type: string
+              description: 文件夹路径
+
     news-save:
       type: object
       properties:
@@ -225,6 +278,15 @@ components:
 
 
   parameters:
+    auth-token:
+      name: auth-token
+      in: header
+      required: true
+      description: csrf 以及 权限密钥
+      schema:
+        type: string
+        default: 'stranger'
+
 
     path-page-number:
       name: number

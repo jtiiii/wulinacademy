@@ -34,7 +34,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private CorsConfigurationSource corsConfigurationSource;
 
     @Value("${cors.allow-origin}")
-    private String CORS_ALLOW_ORIGIN;
+    private String corsAllowOrigin;
+
+    @Value("${spring.profiles.active}")
+    private String active;
 
 
     @PostConstruct
@@ -44,20 +47,27 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin(CORS_ALLOW_ORIGIN);
+        configuration.addAllowedOrigin(corsAllowOrigin);
         source.registerCorsConfiguration("/**",configuration);
         this.corsConfigurationSource = source;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        if("dev".equals(active)){
+            http
+                    .authorizeRequests()
+                    .anyRequest()
+                    .permitAll();
+        } else{
+            http
+                    .authorizeRequests()
                     .antMatchers("/check/available").permitAll()
                     .antMatchers(HttpMethod.GET,"/news/**").permitAll()
                     .anyRequest()
-                    .authenticated()
-                    .and()
+                    .authenticated();
+        }
+        http
                 .formLogin()
                     .loginProcessingUrl("/login")
                     .successHandler( new LoginSuccHandler())
@@ -83,7 +93,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(userService).passwordEncoder(new EmptyPasswordEncoder());
     }
 
