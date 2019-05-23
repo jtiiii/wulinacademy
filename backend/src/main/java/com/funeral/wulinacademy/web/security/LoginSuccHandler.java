@@ -1,6 +1,5 @@
 package com.funeral.wulinacademy.web.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.funeral.wulinacademy.web.config.ServiceSecurityConfig;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -17,8 +16,15 @@ import java.io.IOException;
 public class LoginSuccHandler implements AuthenticationSuccessHandler {
 
 
+    public LoginSuccHandler(String tokenHeaderName) {
+        this.tokenHeaderName = tokenHeaderName;
+    }
+
+    private String tokenHeaderName;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        response.getWriter().println("SUCCESS");
+        String token = response.getHeader(tokenHeaderName);
+        response.getWriter().println(token);
     }
 }

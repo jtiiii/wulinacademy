@@ -22,6 +22,10 @@ public class FolderImages implements ParseId<Integer> {
      * 图片ID
      */
     private Integer imageId;
+    /**
+     * 图片名称
+     */
+    private String imageName;
 
     @Override
     public Integer parse(String id) {

@@ -257,6 +257,12 @@ public abstract class BaseRepositoryImpl<T extends ParseId<ID>,ID> implements Ba
 
     @Override
     public void deleteByIdThroughStatus(ID id) {
-
+        Map<String,Object> params = new HashMap<>(1);
+        params.put(this.id,id);
+        new SqlStatement(this.jdbcTemplate,params)
+                .UPDATE(this.table)
+                    .SET("status = -1")
+                    .WHERE().EQUALSE(propertyColumnMap.get(this.id),NativeMySqlUtils.convertPropertyToParam( this.id,true))
+                    .END_Condition().update();
     }
 }

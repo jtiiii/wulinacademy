@@ -16,3 +16,6 @@ login-users:
     - username: test
       password: test
       status: 0
+---
+folder:
+  root-id: 0

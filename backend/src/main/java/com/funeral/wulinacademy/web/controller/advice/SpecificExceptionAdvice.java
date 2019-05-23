@@ -9,9 +9,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 
 /**
  * @author FuneralObjects
@@ -29,6 +29,11 @@ public class SpecificExceptionAdvice {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<String> businessExceptionHandler(BusinessException be){
         return this.servletError(new NotAcceptableException(be.getMessage(),be));
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<String> multipartExceptionHandler(MultipartException me){
+        return this.servletError(new BadRequestException(me.getMessage(),me));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

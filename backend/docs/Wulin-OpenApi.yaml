@@ -24,15 +24,32 @@ tags:
     description: 系统服务
   - name: folder
     description: 文件夹服务
-
-security:
-  type: apiKey
-  description: 安全密钥
-  name: auth-token
-  in: header
-
+  - name: image
+    description: 图片服务
 
 paths:
+  /login:
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: 登陆成功返回auth-token
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /news/page-{number}-{size}:
     get:
       tags:
@@ -63,7 +80,6 @@ paths:
                           $ref: '#/components/schemas/news'
         5XX:
           $ref: '#/components/responses/5XX'
-
   /news:
     post:
       summary: 添加新闻
@@ -77,6 +93,8 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
+      security:
+        - auth-token: ['stranger']
 
   /news/{id}:
     put:
@@ -95,6 +113,8 @@ paths:
           $ref: '#/components/responses/204'
         5XX:
           $ref: '#/components/responses/5XX'
+      security:
+        - auth-token: ['stranger']
     delete:
       summary: 删除新闻
       tags:
@@ -104,6 +124,8 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
+      security:
+        - auth-token: ['stranger']
   /news/{id}/content:
     get:
       summary: 查看某条新闻正文
@@ -118,7 +140,6 @@ paths:
           $ref: '#/components/responses/404'
         5XX:
           $ref: '#/components/responses/5XX'
-
   /folder:
     post:
       summary: 添加文件夹
@@ -129,6 +150,61 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/folder-save'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+      security:
+        - auth-token: ['stranger']
+
+  /folder/{id}:
+    delete:
+      summary: 删除文件夹
+      tags:
+        - folder
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+      security:
+        - auth-token: ['stranger']
+
+  /folder/{id}/son:
+    get:
+      summary: 查看子文件夹
+      tags:
+        - folder
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/folder'
+      security:
+        - auth-token: ['stranger']
+
+  /image:
+    post:
+      summary: 上传图片
+      tags:
+        - image
+      parameters:
+        - name: name
+          in: query
+          description: 文件名称
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
       responses:
         204:
           $ref: '#/components/responses/204'
@@ -339,6 +415,13 @@ components:
       description: CSRF 校验 Token
       schema:
         type: string
+
+  securitySchemes:
+    auth-token:
+      type: apiKey
+      description: 安全密钥
+      name: auth-token
+      in: header
 
   responses:
     204:

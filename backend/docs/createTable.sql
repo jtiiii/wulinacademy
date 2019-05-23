@@ -45,11 +45,13 @@ CREATE TABLE IF NOT EXISTS t_image(
         COMMENT 'MD5值',
     site VARCHAR(255) NOT NULL
         COMMENT '图片位置',
+    suffix VARCHAR(10) NOT NULL
+        COMMENT '后缀',
     status INT(1) NOT NULL DEFAULT 1
         COMMENT '状态值，VISIBLE(1) - 可见 | INVISIBLE(0) - 不可见 | DELETED(-1) - 删除',
     create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
         COMMENT '创建时间',
-    UNIQUE KEY ( md5, status)
+    UNIQUE KEY (md5, status)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8
     COMMENT '图片表';
 DROP VIEW IF EXISTS v_image;
@@ -90,10 +92,19 @@ CREATE TABLE IF NOT EXISTS t_folder_tree(
 
 DROP TABLE IF EXISTS t_folder_images;
 CREATE TABLE IF NOT EXISTS t_folder_images(
-    folder_id INT(11) NOT NULL PRIMARY KEY
+    folder_id INT(11) NOT NULL
         COMMENT '文件夹ID',
     image_id INT(11) NOT NULL
         COMMENT '图像ID',
-    UNIQUE KEY (folder_id, image_id)
+    image_name VARCHAR(40) NOT NULL
+        COMMENT '图像名称',
+    UNIQUE KEY (folder_id, image_name)
 )ENGINE=INNODB DEFAULT CHARSET=UTF8
     COMMENT '文件夹图像关联表';
+
+DROP VIEW IF EXISTS v_image_relate;
+CREATE VIEW v_image_relate AS
+SELECT image.*, relate.image_name ,folder.folder_id, folder.folder_name
+FROM(SELECT * FROM t_folder folder WHERE status <> -1) folder
+INNER JOIN  t_folder_images relate on relate.folder_id = folder.folder_id AND folder.status <> -1
+INNER JOIN t_image image ON relate.image_id = image.image_id AND image.status <> -1;

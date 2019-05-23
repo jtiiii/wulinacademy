@@ -1,5 +1,6 @@
 package com.funeral.wulinacademy.web.repository.sql;
 
+import com.funeral.wulinacademy.web.util.CollectionUtils;
 import com.funeral.wulinacademy.web.util.NativeMySqlUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -67,6 +68,14 @@ public class SqlStatement{
                 .relate(sqlStatement)
                 .CLOSE().AS(alias);
     }
+    public SqlStatement UPDATE(String table){
+        return this.append(" UPDATE ").append(table);
+    }
+
+    public SqlStatement SET(String condition){
+        return this.append(" SET ").append(condition);
+    }
+
     public SqlStatement FROM(String table){
         return this.FROM(table,null);
     }
@@ -345,6 +354,14 @@ public class SqlStatement{
     public <T> List<T> query( Class<T> tClass){
         Object[] args = getArgsAndProcessStatement();
         return this.jdbcTemplate.query(this.statement.toString(),args,NativeMySqlUtils.createRowMapper(tClass));
+    }
+
+    public <T> T queryOne(Class<T> tClass){
+        List<T> ts = this.query(tClass);
+        if(CollectionUtils.isEmptyAfterRemoveNull(ts)){
+            return null;
+        }
+        return ts.get(0);
     }
 
     public int modify(){

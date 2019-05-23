@@ -10,7 +10,12 @@ import java.util.List;
  */
 public interface FolderRepository extends BaseRepository<Folder,Integer> {
 
-    List<Folder> findByParentId(Integer parentId);
+    List<Folder> findAllByParentId(Integer parentId);
 
     boolean existsFolderByParentId(Integer parentId);
+
+    boolean existsByFolderIdAndUserId(Integer folderId, String userId);
+
+    List<Folder> findFoldersByParentIdAndUserId(Integer parentId,String userId);
+
 }

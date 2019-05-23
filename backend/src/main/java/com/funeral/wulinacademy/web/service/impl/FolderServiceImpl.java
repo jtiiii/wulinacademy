@@ -5,12 +5,12 @@ import com.funeral.wulinacademy.web.entity.FolderTree;
 import com.funeral.wulinacademy.web.repository.FolderRepository;
 import com.funeral.wulinacademy.web.repository.FolderTreeRepository;
 import com.funeral.wulinacademy.web.service.FolderService;
-import com.funeral.wulinacademy.web.service.exception.BusinessException;
 import com.funeral.wulinacademy.web.service.exception.ValidateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author FuneralObjects
@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 @Service
 public class FolderServiceImpl implements FolderService {
 
-    private static final Integer ROOT_ID = 0;
 
     @Resource
     private FolderRepository folderRepository;
@@ -45,6 +44,25 @@ public class FolderServiceImpl implements FolderService {
         if(hasSon(folderId)){
             throw new ValidateException("The folder delete failed. It has son.");
         }
+        folderRepository.deleteByIdThroughStatus(folderId);
+    }
+
+    @Override
+    public List<Folder> findByParentId(Integer parentId) throws ValidateException{
+        if(parentId == null){
+            throw new ValidateException("Invalid parentId[null].");
+        }
+        return folderRepository.findAllByParentId(parentId);
+    }
+
+    @Override
+    public boolean belongUser(Integer folder, String user) {
+        return folderRepository.existsByFolderIdAndUserId(folder,user);
+    }
+
+    @Override
+    public List<Folder> findRootFolderByUserId(String userId) {
+        return folderRepository.findFoldersByParentIdAndUserId(ROOT_ID,userId);
     }
 
     private FolderTree createTree(Folder folder,Integer parentId){

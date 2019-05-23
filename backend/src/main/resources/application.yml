@@ -18,6 +18,15 @@ spring:
       charset: UTF-8
   messages:
     encoding: UTF-8
+  security:
+    debug: false
 ---
 cors:
   allow-origin: ''
+
+location:
+  images: './images/'
+
+upload:
+    image:
+      max-size: 2097152

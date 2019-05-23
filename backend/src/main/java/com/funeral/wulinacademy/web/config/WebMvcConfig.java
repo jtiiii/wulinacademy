@@ -1,8 +1,10 @@
 package com.funeral.wulinacademy.web.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -16,23 +18,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan("com.funeral.wulinacademy.web.controller")
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    @Value("${location.images}")
+    private String imageLocation;
 
-//    @Bean
-//    public CorsFilter corsFilter(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.addAllowedOrigin("*"); // 1允许任何域名使用
-//        corsConfiguration.addAllowedHeader("*"); // 2允许任何头
-//        corsConfiguration.addAllowedMethod("*"); // 3允许任何方法（post、get等）
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**",corsConfiguration);
-//        return new CorsFilter(source);
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:./images/");
+    }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("*")
-//                .allowedHeaders("*");
-//    }
 }

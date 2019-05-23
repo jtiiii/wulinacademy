@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -36,8 +37,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${cors.allow-origin}")
     private String corsAllowOrigin;
 
-    @Value("${spring.profiles.active}")
-    private String active;
+    @Value("${spring.security.debug}")
+    private Boolean debug;
 
 
     @PostConstruct
@@ -47,6 +48,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
+        configuration.addExposedHeader("auth-token,Content-Type");
         configuration.addAllowedOrigin(corsAllowOrigin);
         source.registerCorsConfiguration("/**",configuration);
         this.corsConfigurationSource = source;
@@ -54,7 +56,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        if("dev".equals(active)){
+        if(debug){
             http
                     .authorizeRequests()
                     .anyRequest()
@@ -70,11 +72,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .formLogin()
                     .loginProcessingUrl("/login")
-                    .successHandler( new LoginSuccHandler())
+                    .successHandler( new LoginSuccHandler(serviceConfig.getCsrf().getToken().getInHeaderName()))
                     .failureHandler( new LoginFailHandler())
                     .usernameParameter(serviceConfig.getLogin().getUsernameOfParamName())
                     .passwordParameter(serviceConfig.getLogin().getPasswordOfParamName())
                     .and()
+//                .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessHandler(new LogoutSuccHandler())
