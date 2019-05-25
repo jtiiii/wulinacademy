@@ -3,6 +3,7 @@
 
         <div v-if="isLogin.value" >
             登陆成功！
+            <button type="button" class="loginBtn btn" @click="logout"> 登出 </button>
         </div>
         <div v-else="isLogin.value">
             <label>{{ $t('login.username') }}</label>
@@ -11,7 +12,7 @@
             <label>{{ $t('login.password') }}</label>
             <input class="loginInput" type="password" v-model="password">
             <br/>
-            <button class="loginBtn btn btn-ok" type="button" @click="login()">
+            <button class="loginBtn btn btn-ok" type="button" @click="login">
                 {{ $t('login.login') }}
             </button>
         </div>
@@ -19,13 +20,12 @@
 </template>
 <script type="text/javascript">
     import i18n from '../i18n';
-    import Common from '../Common';
-
     import SecurityService from '../api/SecurityService';
 
-
-
     export default {
+        components:{
+
+        },
         i18n,
         data(){
             return {
@@ -38,13 +38,14 @@
         methods:{
             login(){
                 let _vue = this;
-                SecurityService.login(this.username,this.password).then( isLogin=> {
-                    if(isLogin){
+                SecurityService.login(this.username,this.password).then( loginResult => {
+                    if(loginResult){
                         _vue.loginSucc();
                     }
                 });
             },
             logout(){
+                SecurityService.logout();
             },
             loginSucc(){
                 this.$emit('loginSuccessful');

@@ -1,5 +1,5 @@
-function News({newsId,title,eventDate,status,preview,thumbnail}){
-    this.newsId = newsId;
+function News({id,title,eventDate,status,preview,thumbnail}){
+    this.id = id;
     this.title = title;
     this.eventDate = eventDate;
     this.status = status;
@@ -11,14 +11,18 @@ News.prototype.ofSave = function(){
 };
 News.of = obj => obj instanceof News? obj: new News(obj);
 
-function NewsContent({newsId,header,content,simple}){
-    this.newsId = newsId;
+/* ---------------------------------------------------- */
+
+function NewsContent({id,header,content,simple}){
+    this.id = id;
     this.content = content;
     this.header = header;
     this.simple = simple;
 }
 NewsContent.prototype.ofSave = function(){ return {content: this.content};};
 NewsContent.of = obj => obj instanceof NewsContent? obj: new NewsContent(obj);
+
+/* ---------------------------------------------------- */
 
 function PageData({content,number,size,first,last,totalElements,totalPages,numberOfElements,empty}){
     this.content = content;
@@ -31,10 +35,28 @@ function PageData({content,number,size,first,last,totalElements,totalPages,numbe
     this.numberOfChannels = numberOfElements;
     this.empty = empty;
 }
-
 PageData.of = data => data instanceof PageData? data: new PageData(data);
 
+/* ---------------------------------------------------- */
+
+function Folder({id, name, path, user, status, parent, createTime, updateTime }){
+    this.id = id;
+    this.name = name;
+    this.path = path;
+    this.user = user;
+    this.status = status;
+    this.parent = parent;
+    this.createTime = createTime;
+    this.updateTime = updateTime;
+}
+Folder.prototype = {
+    constructor: Folder,
+};
+Folder.of = obj => obj instanceof Folder ? obj: new Folder(obj);
+
+/* ---------------------------------------------------- */
+
 const Model = {
-    News,NewsContent,PageData
+    News,NewsContent,PageData,Folder
 };
 export default Model;

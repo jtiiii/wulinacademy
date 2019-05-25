@@ -1,4 +1,9 @@
 export default {
+    button:{
+        submit: '提交',
+        reset: '重置',
+        cancel: '取消',
+    },
     index :{
         title: "武林书画院",
         nav: {
@@ -8,7 +13,8 @@ export default {
             channel : '频道',
             apply: '申请',
             error: '错误页面',
-            test: '测试'
+            test: '测试',
+            manager: '管理员页面'
         },
         sets: {
             language: '语言',

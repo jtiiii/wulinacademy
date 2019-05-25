@@ -1,18 +1,21 @@
-import Api from './Api';
+// import Api from './Api';
+import Api from './FetchApi';
 const SecurityService = {
     __login__: {
-        username: '',
-        token: false
+        username: ''
     },
     login( username, password){
-        this.isLogin.value = true;
-        // if(username && password){
-        //     Api.FormPost('/login',{username: username,password:password});
-        // }else{
-        //     console.error("error!");
-        // }
-        return new Promise( resolve => resolve(true));
-        // return this.isLogin.value;
+        let _this = this;
+        return Api.FormPost('/login',{username: username,password:password}).then( () => {
+            _this.isLogin.value = true;
+        });
+    },
+    logout(){
+        let _this = this;
+        return Api.Post('/logout').then( () => {
+                _this.__login__.username = '';
+                _this.isLogin.value = false;
+        });
     },
     isLogin: {
         value: false

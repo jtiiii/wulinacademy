@@ -4,31 +4,25 @@
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
         <ul>
-            <li><a class="logo" :title="$t('channel.facebook')" target="_blank" :href="channel.facebook.url"><img :src="channel.facebook.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.instagram')" target="_blank" :href="channel.instagram.url"><img :src="channel.instagram.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.wechat')" @click="showQR" style="cursor:pointer;" ><img :src="channel.wechat.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.twitter')" target="_blank" :href="channel.twitter.url"><img :src="channel.twitter.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.weibo')" target="_blank" :href="channel.weibo.url"><img :src="channel.weibo.logo"></a></li>
-            <li><a class="logo" :title="$t('channel.youtube')" target="_blank" :href="channel.youtube.url"><img :src="channel.youtube.logo"></a></li>
+            <li><v-logo :logo="channel.facebook"></v-logo></li>
+            <li><v-logo :logo="channel.instagram"></v-logo></li>
+            <li><v-logo :logo="channel.wechat" @click="showQR"></v-logo></li>
+            <li><v-logo :logo="channel.twitter"></v-logo></li>
+            <li><v-logo :logo="channel.youtube"></v-logo></li>
+            <li><v-logo :logo="channel.weibo"></v-logo></li>
         </ul>
     </div>
 </template>
 <script type="text/javascript">
     import i18n from '../scripts/i18n';
     import BaseModal from '../scripts/components/BaseModal.vue';
-
-    import logo from '../images/logo-new.png';
-    import twitterLogo from '../icons/twitter-logo.png';
-    import youtubeLogo from '../icons/youtube-logo.png';
-    import weiboLogo from '../icons/weibo-logo.png';
-    import wechatLogo from '../icons/wechat-logo.png';
-    import facebookLogo from '../icons/facebook-logo.png';
-    import instagramLogo from '../icons/instagram-logo.png';
-    import wechatQRCode from '../images/wechat-QRcode.jpg';
+    import Logo from '../scripts/components/logo.vue';
+    import ChannelData from '../scripts/sample/channel-data';
 
     export default {
         components:{
-            'v-modal': BaseModal
+            'v-modal': BaseModal,
+            'v-logo': Logo
         },
         i18n,
         methods: {
@@ -44,36 +38,12 @@
                 modal: {
                     show: false
                 },
-                logoSrc: logo,
-                wechatQRCode: wechatQRCode,
-                channel: {
-                    twitter: {
-                        logo: twitterLogo,
-                        url: 'https://twitter.com/theWulinAcademy'
-                    },
-                    youtube: {
-                        logo: youtubeLogo,
-                        url: 'https://www.youtube.com/channel/UCrZ3aTzVtNgTjETzTa90Ihw'
-                    },
-                    weibo: {
-                        logo: weiboLogo,
-                        url: 'https://www.weibo.com/u/6603591190'
-                    },
-                    wechat:{
-                        logo: wechatLogo,
-                    },
-                    facebook: {
-                        logo: facebookLogo,
-                        url: 'https://www.facebook.com/theWulinAcademy/'
-                    },
-                    instagram: {
-                        logo: instagramLogo,
-                        url: 'https://www.instagram.com/wulinacademyarts/'
-                    }
+                logoSrc: ChannelData.website.logo,
+                wechatQRCode: ChannelData.wechat.QR,
+                channel: ChannelData
                 }
             }
         }
-    }
 </script>
 <style type="text/css" scoped>
     .logo{
@@ -82,10 +52,10 @@
         display: inline-block;
         margin: 15px;
     }
-    .logo > img{
-        height: 100%;
-        width: 100%;
-    }
+    /*.logo > img{*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*}*/
     .wechatQRCode{
         width: 200px;
         position: relative;

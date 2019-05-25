@@ -1,21 +1,29 @@
 <template>
-    <div>
-        <login></login>
+    <div style="width:100%;height:800px;">
+        <v-news-editor :mode="mode" @load="loadEditor" @submit="submit"></v-news-editor>
     </div>
 </template>
 <script>
-    import BaseEditor from '../scripts/components/BaseEditor.vue';
-    import Login from '../scripts/components/Login.vue';
+    import NewsEditor from '../scripts/components/news-editor/NewsEditor.vue'
+
     export default {
         components:{
-            "login": Login,
-            "base-editor": BaseEditor
+            "v-news-editor": NewsEditor
+        },
+        data(){
+            return {
+                mode: 'preview'
+            }
+        },
+        methods:{
+            loadEditor( load ){
+                load({content:JSON.parse('{"ops":[{"insert":"sdf\\nsdf\\n\\n"}]}'),title:'test-title'});
+            },
+            submit( news){
+                console.info(news);
+            }
         }
     }
 </script>
 <style scoped>
-    .editor{
-        width: 700px;
-        height: 500px;
-    }
 </style>

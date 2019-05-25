@@ -19,11 +19,11 @@ public class NewsModel extends NewsSaveModel {
      * 新闻主键
      */
     @NotNull
-    private Integer newsId;
+    private Integer id;
 
     public NewsModel(){}
     public NewsModel(News news) {
-        this.newsId = news.getNewsId();
+        this.id = news.getNewsId();
         setTitle(news.getTitle());
         setEventDate(news.getEventDate());
         setStatus(news.getStatus());
@@ -32,7 +32,7 @@ public class NewsModel extends NewsSaveModel {
     }
 
     public NewsModel(Integer newsId,NewsSaveModel newsSaveModel){
-        this.newsId = newsId;
+        this.id = newsId;
         setTitle(newsSaveModel.getTitle());
         setEventDate(newsSaveModel.getEventDate());
         setStatus(newsSaveModel.getStatus());
@@ -42,7 +42,7 @@ public class NewsModel extends NewsSaveModel {
 
     @Override
     public News toEntity(){
-        return super.toEntity().setNewsId(newsId);
+        return super.toEntity().setNewsId(id);
     }
 
 }

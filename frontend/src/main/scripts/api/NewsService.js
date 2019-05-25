@@ -1,4 +1,4 @@
-import Api from './Api';
+import Api from './FetchApi';
 import DateUtils from '../utils/DateUtils';
 import Model from './Model';
 import StringUtils from '../utils/StringUtils';
@@ -13,6 +13,7 @@ const NewsService = {
         }
         news.preview = StringUtils.fixLength(news.preview,200,"");
         news.status = 1;
+        // return Api.Post(this.__context__,news).then( response => response.data);
         return Api.Post(this.__context__,news);
     },
     update(obj){
@@ -20,7 +21,7 @@ const NewsService = {
         if(news.eventDate instanceof Date){
             news.eventDate = DateUtils.getDateTimeString(news.eventDate);
         }
-        return Api.Put(this.__context__+'/'+news.newsId,news.ofSave());
+        return Api.Put(this.__context__+'/'+news.id,news.ofSave());
     },
     delete(newsId){
         return Api.Delete(this.__context__+'/'+newsId);
@@ -30,7 +31,7 @@ const NewsService = {
         if(!StringUtils.isString(newsContent.content)){
             newsContent.content = JSON.stringify(newsContent.content);
         }
-        return Api.Post(this.__context__+ "/"+newsContent.newsId+"/content",newsContent.ofSave());
+        return Api.Post(this.__context__+ "/"+newsContent.id+"/content",newsContent.ofSave());
     },
     getContent(newsId){
         return Api.Get(this.__context__+'/'+newsId+'/content').then(data => Model.NewsContent.of(data))

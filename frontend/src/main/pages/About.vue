@@ -53,6 +53,8 @@
     import pic5 from '../images/photo5.jpeg';
 
     import i18n from '../scripts/i18n';
+    import Map from '../scripts/amap/Map';
+
     export default {
         i18n,
         methods: {
@@ -69,7 +71,9 @@
                     pic3: pic4,
                     pic4: pic2,
                     pic5: pic5
-                }
+                },
+                // Amap: null,
+                amap: null,
             };
         },
         computed: {
@@ -80,27 +84,33 @@
             }
         },
         mounted: function(){
-            window.onLoad  = function(){
-                window.map = new AMap.Map('mapContainer');
-                // 创建一个 Marker 实例：
-                var marker = new AMap.Marker({
-                    position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                    title: '武林书画院'
+            Map.loadScript().then( amap => {
+                // this.Amap = amap;
+                this.amap = new Map('mapContainer');
+                this.amap.marker({longitude: 120.161118, latitude: 30.246205, title: 'home'});
+                // this.amap.addZoomControl();
+                let map = this.amap.map;
+                Map.loadUIScript().then( () => {
+                    AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+                        //添加一个缩放控件
+                        map.addControl(new BasicControl.Zoom({
+                            position: 'lt'
+                        }));
+
+                        //缩放控件，显示Zoom值
+                        map.addControl(new BasicControl.Zoom({
+                            position: 'lb',
+                            showZoomNum: true
+                        }));
+
+                        //图层切换控件
+                        map.addControl(new BasicControl.LayerSwitcher({
+                            position: 'rt'
+                        }));
+                    });
                 });
-
-                // 将创建的点标记添加到已有的地图实例：
-                window.map.add(marker);
-            };
-
-            var url = 'https://webapi.amap.com/maps?v=1.4.10&key=1accfe63ebc155603fd447be7681e05d&callback=onLoad';
-            var jsapi = document.createElement('script');
-            jsapi.charset = 'utf-8';
-            jsapi.src = url;
-            document.head.appendChild(jsapi);
-
-            // 移除已创建的 marker
-            // window.map.remove(marker);
-        }
+            });
+        },
     };
 </script>
 <style scoped>

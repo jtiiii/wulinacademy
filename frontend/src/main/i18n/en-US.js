@@ -1,4 +1,9 @@
 export default {
+    button:{
+        submit: 'submit',
+        reset: 'reset',
+        cancel: 'cancel',
+    },
     index :{
         title: "Wulin Academy of Arts",
         nav: {
@@ -8,7 +13,8 @@ export default {
             channel : 'Channel',
             apply: 'Apply',
             error: 'Error',
-            test: 'Test'
+            test: 'Test',
+            manager: 'Manager'
         },
         sets: {
             language: 'language',

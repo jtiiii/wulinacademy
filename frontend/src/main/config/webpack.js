@@ -39,11 +39,12 @@ module.exports = {
             favicon: 'src/main/icons/favicon.ico',
             // chunks: ['index']
         }),
-        new CleanWebpackPlugin('build')
+        new CleanWebpackPlugin()
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js' // 用 webpack 1 时需用 'vue/dist/vue.common.js'
+            'vue$': 'vue/dist/vue.esm.js', // 用 webpack 1 时需用 'vue/dist/vue.common.js'
+            'fetch': 'node-fetch'
         }
     }
 };

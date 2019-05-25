@@ -39,7 +39,14 @@
         },
         methods: {
             changePage: function( item ){
-                router.push(item.path);
+                if(item.defaultValue){
+                    router.push({
+                        name:item.name,
+                        params:item.defaultValue
+                    });
+                }else{
+                    router.push({name:item.name});
+                }
             },
             fixTopBar: function( flag ){
                 // console.info(flag);

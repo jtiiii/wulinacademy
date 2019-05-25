@@ -1,4 +1,9 @@
 export default {
+    button:{
+        submit: '提交',
+        reset: '重置',
+        cancel: '取消',
+    },
     index :{
         title: "武林書畫院",
             nav: {
@@ -9,6 +14,7 @@ export default {
                 apply: '申請',
                 error: '錯誤頁面',
                 test: '測試',
+                manager: '管理員頁面'
         },
         sets: {
             language: '語言',

@@ -10,10 +10,12 @@ import { I18nLocale } from './i18n';
  * @param i18key 国际化Key
  * @constructor
  */
-function NavItem(name,path,i18key){
+function NavItem({name,path,i18key,defaultValue}){
     Model.ListItem.apply(this,[name,I18nLocale.getMessage(i18key),false]);
     this.i18key = i18key;
     this.path = path;
+    this.name = name;
+    this.defaultValue = defaultValue;
 }
 NavItem.prototype = new Model.ListItem();
 NavItem.prototype._refresh_= function(){
@@ -26,7 +28,7 @@ const Nav = {
     map: {}
 };
 Pages.forEach( page => {
-    let item = new NavItem( page.id, page.path, page.i18key );
+    let item = new NavItem(page);
     if(!page.hidden){
         Nav.items.push(item);
     }

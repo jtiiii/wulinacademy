@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Common from '../Common';
+
 const Scheme = {
     HTTP: 'http',
     HTTPS: 'https'
@@ -17,11 +17,17 @@ const Method ={
     PUT: 'PUT',
     DELETE: 'DELETE'
 };
+const AuthToken = {
+    header: 'auth-token',
+    stranger: 'stranger'
+};
 
 const Handler = {
     SUCCESS( response ) {
         console.log('success', response);
-        return response.data;
+        let result = ResponseModel.of(response);
+        console.log('result',result);
+        return result;
     },
     ERROR( error ){
         error = error.response.data || error;
@@ -30,19 +36,33 @@ const Handler = {
     }
 };
 
+function ResponseModel({data, status}){
+    this.data = data;
+    this.status = status;
+}
+ResponseModel.prototype.isOK = function(){
+    return (this.status - 200) < 100;
+};
+ResponseModel.of = function(obj){
+    return obj instanceof ResponseModel? obj: new ResponseModel(obj);
+};
 
-function createClient(devMode){
+
+function createClient(devMode,authToken){
     let baseUrl = devMode? Path.LOCAL: Path.PRODUCT;
+    let headers = {'Content-Type': 'application/json;charset=utf-8'};
+    headers[AuthToken.header] = authToken;
     return axios.create({
         baseURL: baseUrl,
         crossDomain: true,
         withCredentials: true,
-        headers:{'Content-Type': 'application/json;charset=utf-8'}
+        headers: headers
     });
 }
 
 const Api = {
-    _axios_: createClient(true),
+    _axios_: createClient(true,AuthToken.stranger),
+    _authToken_: AuthToken.stranger,
     Get(url, param){
         return this._get(url, param);
     },
@@ -65,11 +85,16 @@ const Api = {
         });
     },
     _form_post(url,param){
+        let data = new FormData();
+        Object.keys( param ).forEach( key => {
+            data.append(key,param[key]);
+        });
+
         return this._fetch_(url,{
             method: Method.POST,
             params: param,
             headers:{
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                'Content-Type': 'multipart/form-data'
             }
         });
     },
@@ -92,9 +117,30 @@ const Api = {
         });
     },
     _fetch_(url,option){
-        return this._axios_(url,option).then( Handler.SUCCESS ).catch( Handler.ERROR );
+        let _api = this;
+        option.url = url;
+        option.headers['Content-Type'] = 'multipart/form-data';
+        return this._axios_(option).then( response => {
+            if(response.headers[AuthToken.header]){
+                _api.authToken = response.headers[AuthToken.header];
+            }
+            return response;
+        }).then( Handler.SUCCESS ).catch( Handler.ERROR );
     }
 };
+
+Object.defineProperty(Api,"authToken",{
+    set: function( token ){
+        if( token === this._authToken_){
+            return;
+        }
+        this._authToken_ = token;
+        this._axios_ = createClient(true,token);
+    },
+    get: function(){
+        return this._authToken_;
+    }
+});
 
 export default Api;
 export { Method };
