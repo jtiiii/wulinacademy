@@ -148,7 +148,7 @@
                 let scroll = window.scrollY;
                 if(!flag && scroll > 0){
                     if( scroll <= 15){
-                        this.toFixedOrRelative( window.scrollY*2 );
+                        this.toFixedOrRelative( window.scrollY );
                     }else{
                         this.toFixedOrRelative();
                     }
@@ -156,7 +156,7 @@
                     if(window.scrollY <= 0){
                         this.toFixedOrRelative();
                     }else if( scroll <= 15 ){
-                        this.toFixedOrRelative( window.scrollY*2 );
+                        this.toFixedOrRelative( window.scrollY );
                     }
                 }
             },
@@ -197,7 +197,7 @@
         height: 80px;
         text-align: center;
         border-bottom: 2px solid #ccc;
-        position: relative;
+        position: absolute;
         background: #fff;
         z-index: 999;
     }

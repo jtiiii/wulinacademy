@@ -304,7 +304,7 @@
         min-height: 400px;
     }
     .news{
-        width: auto;
+        width: 700px;
         position: relative;
         display:inline-block;
     }

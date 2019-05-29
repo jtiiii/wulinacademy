@@ -114,7 +114,7 @@
     }
     .broadcast-img{
         height: 600px;
-        margin: 30px 0 20px 0;
+        /*margin: 30px 0 20px 0;*/
     }
     .broadcast-img > img{
         max-width: 100%;

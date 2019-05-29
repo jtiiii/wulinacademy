@@ -1,8 +1,9 @@
 import fetch from 'fetch';
 
-
+const UAT = 'http://47.99.153.169:9000';
+const DEV = 'http://localhost:9000';
 const Api = {
-    __context__: 'http://localhost:9000',
+    __context__: DEV,
     __token__ : 'stranger',
     FormPost(url,data){
         let param = new FormData();

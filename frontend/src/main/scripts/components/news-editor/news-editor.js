@@ -52,7 +52,6 @@ export default {
         },
         refreshHtml(){
             this.html = this.editor.container.firstChild.innerHTML;
-            console.log('refresh - html',this.html);
         }
     },
     computed:{
@@ -69,9 +68,6 @@ export default {
             if(this.editor){
                 this.editor.enable( mode === 'editing');
             }
-            if(this.isPreview){
-                this.refreshHtml();
-            }
         }
     },
     created(){
@@ -79,9 +75,8 @@ export default {
             this.news.content = content;
             this.news.title = title;
             this.news.eventDate = eventDate;
-            console.log('content',content);
-            console.log('set content');
             this.editor.setContents(content);
+            this.refreshHtml();
         };
         this.$emit('load',load.bind(this));
     }

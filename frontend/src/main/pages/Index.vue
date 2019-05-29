@@ -1,8 +1,8 @@
 <template>
     <div :style="fontStyle">
-        <v-top-bar ref="topBar" :nav-click-resolve="changePage" :to-fixed-or-relative-resolve="fixTopBar" ></v-top-bar>
-        <v-content ref="content"></v-content>
-        <v-footer ref="footer"></v-footer>
+        <v-top-bar class="top" ref="topBar" :nav-click-resolve="changePage" :to-fixed-or-relative-resolve="fixTopBar" ></v-top-bar>
+        <v-content class="content" ref="content"></v-content>
+        <v-footer class="footer" ref="footer"></v-footer>
     </div>
 </template>
 <script type="text/javascript">
@@ -88,4 +88,14 @@
 <style>
     @import "../fonts/fonts.css";
     @import "../styles/index.css";
+</style>
+<style scoped>
+    .content{
+        position: relative;
+        top: 100px;
+    }
+    .footer{
+        position: relative;
+        top: 100px;
+    }
 </style>

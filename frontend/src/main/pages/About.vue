@@ -5,7 +5,8 @@
             <a @click="goto('contact')">{{ $t('about.nav.contact') }}</a>
             <a>{{ $t('about.nav.map') }}</a>
         </nav>
-        <article class="content" :style="contentHeight">
+<!--        <article class="content" :style="contentHeight">-->
+        <article class="content">
             <div ref="history" class="history">
                 <p>{{ $t('about.history.h1') }}</p>
                 <p>{{ $t('about.history.h2') }}</p>
@@ -138,8 +139,6 @@
     .content{
         padding: 0 15px;
         width: 600px;
-        overflow-y: scroll;
-        text-align: left;
     }
     .contact{
         width: 100%;

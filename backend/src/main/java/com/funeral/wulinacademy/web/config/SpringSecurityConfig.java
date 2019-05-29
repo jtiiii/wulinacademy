@@ -64,8 +64,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         } else{
             http
                     .authorizeRequests()
-                    .antMatchers("/check/available").permitAll()
-                    .antMatchers(HttpMethod.GET,"/news/**").permitAll()
+                    .antMatchers("/check/available","/images/**").permitAll()
+                    .antMatchers(HttpMethod.GET,"*").permitAll()
                     .anyRequest()
                     .authenticated();
         }
@@ -92,7 +92,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .accessDeniedHandler(new NotRedirectAccessDeniedHandler())
                     .and()
                 .csrf()
-                    .ignoringAntMatchers("/login","/logout")
+                    .ignoringAntMatchers("/login","/logout","/images/**")
                     .csrfTokenRepository(new HeaderCsrfTokenRepository(serviceConfig));
     }
 
