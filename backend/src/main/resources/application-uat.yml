@@ -7,7 +7,7 @@ spring:
       password: user&user
 logging:
   level:
-    ROOT: debug
+    ROOT: info
     controller: debug
     org:
       springframework:
