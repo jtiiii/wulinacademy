@@ -1,13 +1,21 @@
 server:
   port: 9000
 logging:
+  path: ./log
   level:
     ROOT: info
+    controller: debug
+    org:
+      springframework:
+        security: debug
+        web: error
+        jdbc: debug
+    com.alibaba.druid: debug
 spring:
   application:
     name: wulinacademy
   profiles:
-    active: dev
+    active: uat
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/xxxxxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
