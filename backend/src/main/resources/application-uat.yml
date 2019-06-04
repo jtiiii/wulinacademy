@@ -9,12 +9,13 @@ logging:
   level:
     ROOT: info
     controller: debug
+    token: debug
     org:
       springframework:
-        security: debug
-        web: error
+        security: info
+        web: info
         jdbc: debug
-    com.alibaba.druid: debug
+    com.alibaba.druid: info
 
 ---
 cors:

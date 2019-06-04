@@ -12,4 +12,5 @@ import org.slf4j.LoggerFactory;
 public class CommonLogger {
     public static final Logger CONTROLLER_LOGGER = LoggerFactory.getLogger("controller");
     public static final Logger SERVICE_LOGGER = LoggerFactory.getLogger("service");
+    public static final Logger TOKEN_LOGGER = LoggerFactory.getLogger("token");
 }
