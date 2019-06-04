@@ -35,13 +35,17 @@
             </div>
         </v-panel>
         <!-- 上传控件 -->
-        <image-upload @submit="uploadImage" :width="'670px'" :height="'500px'" :show="uploadModal.show" @close="uploadModal.show = false"></image-upload>
+        <image-upload class="image-upload-modal" @submit="uploadImage" :width="'670px'" :height="'500px'" :show="uploadModal.show" @close="uploadModal.show = false"></image-upload>
     </div>
 </template>
 <style scoped>
     /*.folder-tool{*/
     /*    width: 100%;*/
     /*}*/
+    .image-upload-modal{
+        width: 100%;
+        height: 500px;
+    }
     .folder-panel{
         float: left;
         width: 30%;
