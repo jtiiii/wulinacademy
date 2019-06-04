@@ -189,8 +189,9 @@
             },
             openAddModal(){
                 this.select(undefined);
+                this.mode = 'editing';
                 this.showNewsModal().then( () => {
-                    this.mode = 'editing';
+                    // this.mode = 'editing';
                 });
             },
             openDeleteModal( newsItem ){
@@ -288,10 +289,11 @@
 
         },
         created(){
-            SecurityService.login('login','login')
-                .then( ()=> {
-                    this.getNewsPage();
-                });
+            this.getNewsPage();
+            // SecurityService.login('login','login')
+            //     .then( ()=> {
+            //         this.getNewsPage();
+            //     });
 
         }
     }
@@ -380,10 +382,10 @@
         z-index: 9;
     }
     .news-modal{
-        width: 100%;
-        min-height: 700px;
-        height: 100%;
-        position: absolute;
+        /*width: 100%;*/
+        /*min-height: 700px;*/
+        /*height: 100%;*/
+        /*position: absolute;*/
     }
     .news-item{
         display: inline-block;

@@ -1,6 +1,5 @@
 import FComponents,{Model} from 'f-vue-components'
 import FolderService from '../../api/FolderService';
-import SecurityService from '../../api/SecurityService';
 import ApiModel from '../../api/Model';
 import ImageService from '../../api/ImageService';
 
@@ -186,11 +185,12 @@ const ImageControl = {
         }
     },
     created(){
-        SecurityService
-            .login('login','login')
-            .then( () => {
-                this.loadRootFolders();
-            });
+        this.$emit('init',this.loadRootFolders.bind(this));
+        // SecurityService
+        //     .login('login','login')
+        //     .then( () => {
+        //         this.loadRootFolders();
+        //     });
     }
 
 };

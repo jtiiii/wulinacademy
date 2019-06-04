@@ -41,19 +41,28 @@ export default {
             editor: null,
             // content: null,
             imageControl:{
-                show: false
+                show: false,
+                load: null,
+                loaded: false
             }
         };
     },
     methods:{
         imageHandler(){
             this.imageControl.show= true;
+            if(!this.imageControl.loaded){
+                this.imageControl.load();
+                this.imageControl.loaded = true;
+            }
         },
         insertImage( src ){
             this.editor.focus();
             let index = this.editor.getSelection().index;
             this.editor.insertEmbed(index,'image',src);
 
+        },
+        load( loadRootFolder ){
+            this.imageControl.load = loadRootFolder;
         },
         imageControlClose(){
             this.imageControl.show = false;

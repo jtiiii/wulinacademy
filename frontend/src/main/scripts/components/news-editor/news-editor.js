@@ -42,7 +42,7 @@ export default {
             };
             this.editor.setContents(null);
         },
-        initEditor(editor){
+        initEditor( editor ){
             this.editor = editor;
             if(this.news.content){
                 this.editor.setContents(this.news.content);

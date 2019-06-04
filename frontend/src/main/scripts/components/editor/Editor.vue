@@ -2,7 +2,7 @@
     <div class="editor">
         <v-editor-quill :height="height" @init="initEditor" :handlers="handlers" @change="change"></v-editor-quill>
         <modal :show="imageControl.show" :width="width" :height="'auto'" @close="imageControlClose">
-            <image-control @image-click="imageClick"></image-control>
+            <image-control @init="load" @image-click="imageClick"></image-control>
         </modal>
     </div>
 </template>

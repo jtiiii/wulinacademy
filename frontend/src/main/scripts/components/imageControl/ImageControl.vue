@@ -17,8 +17,8 @@
         <v-panel class="folder-panel" :width="'210px'" :height="'600px'">
             <div class="folder-tool">
                 <v-button @click="openFolderModal('add')" :width="'50px'" :type="'info'">新增</v-button>
-                <v-button @click="openFolderModal('update')" :width="'50px'" :type="'warning'">修改</v-button>
-                <v-button @click="openFolderModal('delete')" :width="'50px'" :type="'danger'">删除</v-button>
+<!--                <v-button @click="openFolderModal('update')" :width="'50px'" :type="'warning'">修改</v-button>-->
+<!--                <v-button @click="openFolderModal('delete')" :width="'50px'" :type="'danger'">删除</v-button>-->
             </div>
             <hr/>
             <v-tree v-for="node in folders" @expand="expand" @node-click="selectFolder" :key="node.id" :node="node"></v-tree>

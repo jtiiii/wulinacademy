@@ -38,10 +38,10 @@
     import noPic from '../images/photo2.jpeg';
 
     const sampleData = Model.News.of({
-        title: "人生自古谁无死",
+        title: "欢迎来到武林书画院",
         preview: "test content",
         thumbnail:noPic,
-        eventDate: '2019-02-12'
+        // eventDate: '2019-02-12'
     });
 
 

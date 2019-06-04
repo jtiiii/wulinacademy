@@ -1,6 +1,6 @@
 <template>
     <div class="manager">
-        <image-control class="image-manager"></image-control>
+        <image-control @init="imageControlLoad" class="image-manager"></image-control>
     </div>
 </template>
 <script type="text/javascript">
@@ -9,9 +9,21 @@
         components:{
             'image-control': ImageControl
         },
+        methods:{
+            imageControlLoad: function( load ){
+                this.init.imageControl = load;
+            }
+        },
         data(){
-            return {};
-        }
+            return {
+                init: {
+                    imageControl: null
+                }
+            };
+        },
+        mounted(){
+            this.init.imageControl();
+        },
     };
 </script>
 <style scoped>

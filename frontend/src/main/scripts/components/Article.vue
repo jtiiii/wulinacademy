@@ -1,15 +1,17 @@
 <template>
-    <div class="news-simple" :class="ddClass" @click="click"  @mouseover="amplify" @mouseout="reduce">
-        <!-- 缩略图 -->
-        <figure class="thumbnail">
-            <img :src="news.thumbnail? news.thumbnail: defaultThumbnail" />
-        </figure>
-        <!-- 标题、时间、预览信息 -->
-        <article>
-            <p class="news-title">{{ news.title }}</p>
-            <p class="news-time">{{ time }}</p>
-            <div class="news-preview">{{ fixPreviewLength( news.preview ) }}</div>
-        </article>
+    <div class="news-item">
+        <div class="news-simple" :class="ddClass" @click="click"  @mouseover="amplify" @mouseout="reduce">
+            <!-- 缩略图 -->
+            <figure class="thumbnail">
+                <img :src="news.thumbnail? news.thumbnail: defaultThumbnail" />
+            </figure>
+            <!-- 标题、时间、预览信息 -->
+            <article>
+                <p class="news-title">{{ news.title }}</p>
+                <p class="news-time">{{ time }}</p>
+                <div class="news-preview">{{ fixPreviewLength( news.preview ) }}</div>
+            </article>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
@@ -35,7 +37,7 @@
         },
         data(){
             return {
-                ddClass : { expand: false , shrink: false, select: false},
+                ddClass : { expand: false , shrink: true, select: false},
                 defaultThumbnail: noPic
             };
         },
@@ -87,6 +89,9 @@
         overflow: hidden;
         margin: 10px
     }
+    .article{
+        width: 300px;
+    }
     @keyframes expand-animate {
         0%{
             padding: 0;
@@ -111,11 +116,16 @@
             top: 0;
         }
     }
-    .news-simple{
+    .news-item{
+        position:relative;
         width: 700px;
         height: 200px;
-        margin: 15px;
-        position: relative;
+        margin: 10px 0;
+    }
+    .news-simple{
+        width: 100%;
+        height: 100%;
+        position: absolute;
         border-radius: 5px;
         text-align: center;
         display: inline-block;

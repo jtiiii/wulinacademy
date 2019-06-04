@@ -70,6 +70,8 @@
         text-align: center;
         z-index: 999;
         position: fixed;
+        left: 0;
+        top: 0;
         overflow: scroll;
     }
     .hidden{
@@ -84,10 +86,13 @@
     dialog{
         display: inline-block;
         height: auto;
+        /*max-height: 100%;*/
         border: none;
         border-radius: 5px;
         margin: 30px auto;
         position: relative;
+        overflow: hidden;
+        overflow-y: scroll;
         z-index: 999;
         background: #fff;
     }
