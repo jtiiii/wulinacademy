@@ -1,7 +1,7 @@
 <template>
     <div class="page-news">
         <!-- 添加、编辑新闻内容框 -->
-        <v-news-modal class="news-modal" :show="modal.editor" :width="700" >
+        <v-news-modal :show="modal.editor" :width="700" >
             <label class="closeBtn">
                 <button class="tool"><img class="btnImg" :src="icon.close" @click="modal.editor = false"></button>
             </label>
@@ -313,7 +313,7 @@
     .toolbar-news{
         width: 30px;
         position: absolute;
-        left: -25px;
+        left: -35px;
         top: 10px;
         border: none;
     }
@@ -377,15 +377,9 @@
     .deleteBtn{
         display: inline-block;
         position: absolute;
-        right: 5px;
-        top: 5px;
+        right: -8px;
+        top: 0;
         z-index: 9;
-    }
-    .news-modal{
-        /*width: 100%;*/
-        /*min-height: 700px;*/
-        /*height: 100%;*/
-        /*position: absolute;*/
     }
     .news-item{
         display: inline-block;
