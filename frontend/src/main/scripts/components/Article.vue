@@ -1,6 +1,6 @@
 <template>
     <div class="news-item">
-        <div class="news-simple" :class="ddClass" @click="click"  @mouseover="amplify" @mouseout="reduce">
+        <div class="news-simple" :class="ddClass" @click="click" @mouseenter="amplify" @mouseleave="reduce" >
             <!-- 缩略图 -->
             <figure class="thumbnail">
                 <img :src="news.thumbnail? news.thumbnail: defaultThumbnail" />
@@ -48,12 +48,6 @@
         },
         methods:{
             fixPreviewLength: fixPreviewLength,
-            expandAnimate: function(isExpand){
-                if(isExpand){
-                    return this.amplify();
-                }
-                return this.reduce();
-            },
             amplify: function( ){
                 this.ddClass.expand = true;
                 this.ddClass.shrink = false;
