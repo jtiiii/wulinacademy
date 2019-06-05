@@ -26,7 +26,6 @@
     import nav from '../navigation';
     import sets,{SetUtils} from '../setting';
     import Utils from '../utils';
-    import SecurityService from '../api/SecurityService';
 
 
 
@@ -56,6 +55,11 @@
                 type: Function,
                 default: function(){},
                 required: false
+            },
+            scroll:{
+                type: Number,
+                required: false,
+                default: 0
             }
         },
         data: function () {
@@ -108,6 +112,11 @@
                 return '';
             }
         },
+        watch: {
+            scroll(){
+                this.handScroll();
+            }
+        },
         methods: {
             defaultForNavClick: function(){
                 this.navClick( this.nav.default );
@@ -145,18 +154,17 @@
             },
             handScroll: function(){
                 let flag = this.topBar.fixed;
-                let scroll = window.scrollY;
-                if(!flag && scroll > 0){
-                    if( scroll <= 15){
-                        this.toFixedOrRelative( window.scrollY );
+                if(!flag && this.scroll > 0){
+                    if( this.scroll <= 15){
+                        this.toFixedOrRelative( this.scroll );
                     }else{
                         this.toFixedOrRelative();
                     }
                 }else if(flag){
-                    if(window.scrollY <= 0){
+                    if(this.scroll <= 0){
                         this.toFixedOrRelative();
                     }else if( scroll <= 15 ){
-                        this.toFixedOrRelative( window.scrollY );
+                        this.toFixedOrRelative( this.scroll );
                     }
                 }
             },

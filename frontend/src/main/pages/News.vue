@@ -52,7 +52,6 @@
 
     import noPic from '../images/news/no-pic.png';
 
-    import NewsDetail from './news/NewsDetail.vue';
     import BaseModal from '../scripts/components/BaseModal.vue';
     import NewsEditor from '../scripts/components/news-editor/NewsEditor.vue';
     import ConfirmModal from '../scripts/components/ConfirmModal.vue';
@@ -96,7 +95,6 @@
     export default {
         components:{
             "v-article": Article,
-            "v-news-detail": NewsDetail,
             "v-news-modal": BaseModal,
             'v-news-editor': NewsEditor,
             "v-confirm-modal": ConfirmModal,

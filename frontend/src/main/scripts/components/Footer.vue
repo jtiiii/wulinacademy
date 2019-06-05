@@ -30,7 +30,7 @@
         font-size: 16px;
         text-align: center;
         border-top: 2px solid #ccc;
-        position: relative;
+        position: fixed;
         background: #fff;
         color: rgb(113,113,113);
     }

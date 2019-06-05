@@ -1,6 +1,6 @@
 <template>
-    <div :style="fontStyle">
-        <v-top-bar class="top" ref="topBar" :nav-click-resolve="changePage" :to-fixed-or-relative-resolve="fixTopBar" ></v-top-bar>
+    <div class="body" :style="fontStyle">
+        <v-top-bar class="top" :scroll="scroll" ref="topBar" :nav-click-resolve="changePage" :to-fixed-or-relative-resolve="fixTopBar" ></v-top-bar>
         <v-content class="content" ref="content"></v-content>
         <v-footer class="footer" ref="footer"></v-footer>
     </div>
@@ -29,7 +29,8 @@
             return {
                 fontStyle: {
                     'font-family': fontFamily.es
-                }
+                },
+                scroll: 0
             };
         },
         computed: {
@@ -75,7 +76,9 @@
                 });
             };
             let preProcessEventListeners = ()=>{
-                document.addEventListener("scroll",this.$refs.topBar.handScroll );
+                this.$el.addEventListener("scroll",() => {
+                    this.scroll = this.$el.scrollTop;
+                } );
             };
             //预处理序列
             new Promise( resolve => resolve() )
@@ -90,12 +93,25 @@
     @import "../styles/index.css";
 </style>
 <style scoped>
+    .body{
+        height: 100%;
+        overflow: hidden;
+        overflow-y: scroll;
+        position: relative;
+    }
+    .top{
+        /*position: fixed;*/
+    }
     .content{
         position: relative;
+        /*height: 100%;*/
         top: 100px;
+        /*overflow: hidden;*/
+        /*overflow-y: scroll;*/
     }
     .footer{
-        position: relative;
         top: 100px;
+        position: relative;
+        /*bottom: -185px;*/
     }
 </style>

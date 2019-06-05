@@ -1,9 +1,9 @@
 <template>
-    <div class="about" style="display:inline-block;">
+    <div class="about" :style="aboutStyle">
         <nav>
             <a @click="goto('history')">{{ $t('about.nav.history') }}</a>
             <a @click="goto('contact')">{{ $t('about.nav.contact') }}</a>
-            <a>{{ $t('about.nav.map') }}</a>
+            <a @click="goto('map')">{{ $t('about.nav.map') }}</a>
         </nav>
 <!--        <article class="content" :style="contentHeight">-->
         <article class="content">
@@ -38,7 +38,7 @@
                 <p><b>{{ $t('about.contact.email') }}</b> {{ email }}</p>
                 <p><b>{{ $t('about.contact.address') }}</b> {{ $t('about.contact.physicalAddress') }}</p>
             </div>
-            <div class="dituAmap">
+            <div class="dituAmap" ref="map">
                 <div id="mapContainer">
 
                 </div>
@@ -61,6 +61,9 @@
         methods: {
             goto: function( part ){
                 this.$refs[part].scrollIntoView();
+            },
+            resize: function(){
+                this.aboutStyle.height = window.innerHeight - 306 + 'px';
             }
         },
         data: ()=> {
@@ -75,14 +78,22 @@
                 },
                 // Amap: null,
                 amap: null,
+                aboutStyle: {
+                    'height': '0px'
+                }
             };
         },
         computed: {
-            contentHeight: function(){
-                return {
-                    'height': window.innerHeight + 'px'
-                };
-            }
+            // contentHeight: function(){
+            //     return {
+            //         'height': window.innerHeight + 'px'
+            //     };
+            // },
+            // aboutStyle: function(){
+            //     return {
+            //         'height': window.innerHeight - 306 + 'px'
+            //     };
+            // }
         },
         mounted: function(){
             Map.loadScript().then( amap => {
@@ -112,6 +123,13 @@
                 });
             });
         },
+        created(){
+            let _vue = this;
+            this.resize();
+            window.onresize = function (){
+                _vue.resize();
+            }
+        }
     };
 </script>
 <style scoped>
@@ -121,6 +139,8 @@
     .about{
         text-align : center;
         height: 100%;
+        position: relative;
+        display: inline-block;
     }
     .briefHistory{
         list-style-type: none;
@@ -151,21 +171,28 @@
     }
     .about > nav{
         text-align: left;
-        float: left;
+        /*float: left;*/
         padding: 10px;
         margin-right: 20px;
+        width: 120px;
+        position: absolute;
+        left: -100px;
     }
     .about > nav > a{
         font-size: 17px;
         color: #444;
         margin: 10px 0;
         display: block;
+        cursor: pointer;
     }
-    .about > nav{
-        width: 120px;
+    .about > nav > a:hover{
+        opacity: .7;
     }
     .about > article{
         float: left;
+        height: 100%;
+        overflow: hidden;
+        overflow-y: scroll;
     }
 
     .dituAmap{
