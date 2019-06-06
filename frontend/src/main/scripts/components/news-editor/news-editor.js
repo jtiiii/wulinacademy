@@ -103,9 +103,10 @@ export default {
         }
     },
     created(){
-        let load = function({content,title,eventDate}){
+        let load = function({content,title,eventDate,thumbnail}){
             this.news.content = content;
             this.news.title = title;
+            this.news.thumbnail = thumbnail;
             this.news.eventDate = eventDate;
             this.editor.setContents(content);
             this.refreshHtml();
