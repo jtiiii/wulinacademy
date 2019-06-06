@@ -186,11 +186,6 @@ const ImageControl = {
     },
     created(){
         this.$emit('init',this.loadRootFolders.bind(this));
-        // SecurityService
-        //     .login('login','login')
-        //     .then( () => {
-        //         this.loadRootFolders();
-        //     });
     }
 
 };

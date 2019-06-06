@@ -14,9 +14,9 @@
             </div>
         </div>
         <div class="guide-line">{{ $t('index.nav.about') }}</div>
-        <div class="about-col">{{ $t('about.nav.history') }}</div>
-        <div class="about-col">{{ $t('about.nav.contact') }}</div>
-        <div class="about-col">{{ $t('about.nav.map') }}</div>
+        <a class="about-col">{{ $t('about.nav.history') }}</a>
+        <a class="about-col">{{ $t('about.nav.contact') }}</a>
+        <a class="about-col">{{ $t('about.nav.map') }}</a>
         <div class="guide-line">{{ $t('index.nav.channel') }}</div>
         <v-logo :width="'70px'" :height="'70px'" :logo="channel.facebook"></v-logo>
         <v-logo :width="'70px'" :height="'70px'" :logo="channel.instagram"></v-logo>
