@@ -25,6 +25,7 @@
             "v-content": ContentPage,
             "v-footer": Footer
         },
+        router,
         data(){
             return {
                 fontStyle: {
@@ -62,14 +63,6 @@
             },
         },
         mounted: function(){
-            let preProcessRouter = ()=>{
-                router.afterEach( to => {
-                    this.$refs.topBar.refreshTapForPath(to.path);
-                    if(to.path === '/'){
-                        this.$refs.topBar.defaultForNavClick();
-                    }
-                });
-            };
             let preProcessFontFamily = ()=>{
                 I18nLocale.addResolve( (old, value) => {
                     this.changeFontFamily(value);
@@ -82,7 +75,7 @@
             };
             //预处理序列
             new Promise( resolve => resolve() )
-                .then( preProcessRouter )
+                // .then( preProcessRouter )
                 .then( preProcessFontFamily )
                 .then( preProcessEventListeners );
         }

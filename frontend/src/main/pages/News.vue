@@ -61,6 +61,8 @@
 
     import Article from '../scripts/components/Article.vue';
 
+    import {mapState} from 'vuex';
+
 
     function NewsItem({id,title,eventDate,status,preview,thumbnail, content}){
         this.id = id;
@@ -138,10 +140,8 @@
                 }
             }
         },
-        computed: {
-            manage: function(){
-                return this.isLogin.value;
-            },
+        computed: mapState({
+            manage: state => state.isLogin,
             getSelected(){
                 if(this.news.selected){
                     return this.news.map[this.news.selected];
@@ -149,12 +149,30 @@
                 return {};
             },
             isUpdate(){
-              return Boolean(this.getSelected.id);
+                return Boolean(this.getSelected.id);
             },
             isPreview(){
                 return this.mode === 'preview';
             }
-        },
+        }),
+        // computed: {
+        //
+        //     manage: function(){
+        //         return this.isLogin.value;
+        //     },
+        //     getSelected(){
+        //         if(this.news.selected){
+        //             return this.news.map[this.news.selected];
+        //         }
+        //         return {};
+        //     },
+        //     isUpdate(){
+        //       return Boolean(this.getSelected.id);
+        //     },
+        //     isPreview(){
+        //         return this.mode === 'preview';
+        //     }
+        // },
         watch:{
             'news.search'( text, old ){
                 if(text === old){

@@ -1,11 +1,11 @@
 <template>
     <div class="root filling">
 
-        <div v-if="isLogin.value" >
+        <div v-if="isLogin" >
             登陆成功！
             <button type="button" class="loginBtn btn" @click="logout"> 登出 </button>
         </div>
-        <div v-else="isLogin.value">
+        <div v-else="isLogin">
             <label>{{ $t('login.username') }}</label>
             <input class="loginInput" type="text" v-model="username">
             <br/>
@@ -20,6 +20,7 @@
 </template>
 <script type="text/javascript">
     import i18n from '../i18n';
+    import {mapState} from 'vuex';
     import SecurityService from '../api/SecurityService';
 
     export default {
@@ -32,9 +33,12 @@
                 onLogin: false,
                 username: "",
                 password: "",
-                isLogin: SecurityService.isLogin
+                // isLogin: SecurityService.isLogin
             };
         },
+        computed: mapState({
+            isLogin: state => state.isLogin
+        }),
         methods:{
             login(){
                 let _vue = this;

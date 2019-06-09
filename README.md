@@ -12,3 +12,7 @@
 + [`backend`](./backend) 后端
 + [`frontend`](./frontend) 前端
 
+
+
+此次项目均由个人独立完成。
+

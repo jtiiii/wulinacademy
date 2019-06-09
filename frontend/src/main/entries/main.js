@@ -1,28 +1,20 @@
 // import VueBaseComponents from "../scripts/VueBaseComponents";
-import Vue from "vue";
-import Vuex from "vuex";
-import VueI18n from "vue-i18n";
+import Vue from "$vue";
 import I18n,{ I18nLocale } from '../scripts/i18n';
-import VueRouter from 'vue-router';
 import Index from '../pages/Index.vue';
 import Common from '../scripts/Common';
 import CheckService from '../scripts/api/CheckService';
+import store from '../scripts/store';
 
 window.systemCheck = CheckService;
 
-(() =>{
-    //使用Vuex
-    Vue.use(Vuex);
-    //使用vue-i18n
-    Vue.use(VueI18n);
-    //使用vue-router
-    Vue.use(VueRouter);
-
-    //将Base组件注册为全局组件
-    // for(let name in VueBaseComponents){
-    //     Vue.component(name,VueBaseComponents[name]);
-    // }
-})();
+// (() =>{
+//
+//     //将Base组件注册为全局组件
+//     // for(let name in VueBaseComponents){
+//     //     Vue.component(name,VueBaseComponents[name]);
+//     // }
+// })();
 
 window.Vue = Vue;
 window.Common = Common;
@@ -33,6 +25,7 @@ window.title = new Vue({
 
 window.main = new Vue({
     i18n : I18n,
+    store,
     render( h ){
         return h(Index)
     },

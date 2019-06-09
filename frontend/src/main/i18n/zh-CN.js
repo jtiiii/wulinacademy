@@ -9,7 +9,7 @@ export default {
         nav: {
             about : '关于本院',
             home : '主页',
-            news: '新闻',
+            news: '本院简讯',
             channel : '频道',
             apply: '申请',
             error: '错误页面',

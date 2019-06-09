@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from '$vue';
 import VueI18n from 'vue-i18n';
 import zh_CN from '../i18n/zh-CN';
 import en_US from '../i18n/en-US';

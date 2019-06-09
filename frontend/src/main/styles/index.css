@@ -1,11 +1,15 @@
 @import "../fonts/fonts.css";
 
-body{
+body {
     color: #0007;
     padding: 0;
     margin: 0;
     position: relative;
-    min-width: 600px;
+}
+@media screen and (min-width: 900px){
+    body {
+        min-width: 600px;
+    }
 }
 
 

@@ -1,28 +1,15 @@
 <template>
     <div style="width:100%;height:800px;">
-        <v-news-editor :mode="mode" @load="loadEditor" @submit="submit"></v-news-editor>
+        <setting></setting>
     </div>
 </template>
 <script>
-    import NewsEditor from '../scripts/components/news-editor/NewsEditor.vue'
+    import Setting from '../scripts/components/setting/setting.vue';
 
     export default {
         components:{
-            "v-news-editor": NewsEditor
+            'setting': Setting
         },
-        data(){
-            return {
-                mode: 'preview'
-            }
-        },
-        methods:{
-            loadEditor( load ){
-                load({content:JSON.parse('{"ops":[{"insert":"sdf\\nsdf\\n\\n"}]}'),title:'test-title'});
-            },
-            submit( news){
-                console.info(news);
-            }
-        }
     }
 </script>
 <style scoped>

@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="home">
         <v-modal ref="modal" :show="modal.show" @click.native="hideModal">
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
         <div class="broadcast">
-            <div class="broadcast-img">
-                <img :src="news.thumbnail">
-            </div>
+<!--            <div class="broadcast-img">-->
+                <img class="broadcast-img" :src="news.thumbnail">
+<!--            </div>-->
             <div class="broadcast-info">
                 <span class="title">{{ news.title }}</span>
                 <br/>
@@ -14,16 +14,20 @@
             </div>
         </div>
         <div class="guide-line">{{ $t('index.nav.about') }}</div>
-        <a class="about-col">{{ $t('about.nav.history') }}</a>
-        <a class="about-col">{{ $t('about.nav.contact') }}</a>
-        <a class="about-col">{{ $t('about.nav.map') }}</a>
+        <div class="about">
+            <a class="about-col">{{ $t('about.nav.history') }}</a>
+            <a class="about-col">{{ $t('about.nav.contact') }}</a>
+            <a class="about-col">{{ $t('about.nav.map') }}</a>
+        </div>
         <div class="guide-line">{{ $t('index.nav.channel') }}</div>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.facebook"></v-logo>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.instagram"></v-logo>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.wechat" @click="showQR"></v-logo>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.twitter"></v-logo>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.youtube"></v-logo>
-        <v-logo :width="'70px'" :height="'70px'" :logo="channel.weibo"></v-logo>
+        <div class="channels">
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.facebook"></v-logo>
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.instagram"></v-logo>
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.wechat" @click="showQR"></v-logo>
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.twitter"></v-logo>
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.youtube"></v-logo>
+            <v-logo :width="'70px'" :height="'70px'" :logo="channel.weibo"></v-logo>
+        </div>
 <!--        <hr/>-->
     </div>
 </template>
@@ -89,6 +93,11 @@
     };
 </script>
 <style scoped>
+    .home{
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
     .wechatQRCode{
         width: 200px;
         position: relative;
@@ -99,7 +108,24 @@
         letter-spacing: 5px;
         font-size: 18px;
     }
+    .about{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    @media screen and (max-width:480px){
+        .about{
+            flex-direction: column;
+        }
+    }
+    @media screen and (min-width:480px){
+        .about{
+            flex-direction: row;
+        }
+    }
+
     .guide-line{
+        width: 100%;
+        flex: 1;
         margin: 10px 0;
         color: #fff;
         background: #cdcdcd;
@@ -110,16 +136,26 @@
         letter-spacing: 6px;
     }
     .broadcast{
+        display: flex;
+        flex-flow: column nowrap;
+        flex: 1;
         margin-bottom: 50px;
     }
     .broadcast-img{
-        height: 600px;
+        max-width: 100%;
+        max-height: 37.5rem; /* 600px */
         /*margin: 30px 0 20px 0;*/
     }
-    .broadcast-img > img{
-        max-width: 100%;
-        max-height: 100%;
+    /*.broadcast-img > img{*/
+    /*    !*width: 100%;*!*/
+    /*    height: 100%;*/
+    /*}*/
+
+    .channels{
+        display: flex;
+        flex-flow: row wrap;
     }
+
     .broadcast-img:hover{
         opacity: .7;
     }

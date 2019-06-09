@@ -9,7 +9,7 @@ export default {
             nav: {
             about : '關於本院',
                 home : '主頁',
-                news: '新聞',
+                news: '本院簡訊',
                 channel : '頻道',
                 apply: '申請',
                 error: '錯誤頁面',
@@ -30,8 +30,8 @@ export default {
     about :{
         nav:{
             history: '簡史',
-                contact: '聯系本院',
-                map: '地圖'
+            contact: '聯系本院',
+            map: '地圖'
         },
         history: {
             h1: '八十年代初，一眾來自中國美術學院，浙江大學，南開大學以及西泠印社的藝術家與學者希望在杭州西子湖畔組建一所獨立機構，通過對中國文化研究與藝術實踐，接續八百年前西子湖畔南宋畫院之脈絡，重拾中國文化之薪火，以延承中國藝術精神。',

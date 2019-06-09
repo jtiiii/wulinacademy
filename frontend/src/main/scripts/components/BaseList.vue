@@ -71,9 +71,9 @@
     button:hover{
         background: #eee;
     }
-    button:active{
-        background: #ddd;
-    }
+    /*button:active{*/
+    /*    background: #ddd;*/
+    /*}*/
     button{
         white-space: nowrap;
         padding: 0 10px;
