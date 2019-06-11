@@ -15,9 +15,9 @@
         </div>
         <div class="guide-line">{{ $t('index.nav.about') }}</div>
         <div class="about">
-            <a class="about-col">{{ $t('about.nav.history') }}</a>
-            <a class="about-col">{{ $t('about.nav.contact') }}</a>
-            <a class="about-col">{{ $t('about.nav.map') }}</a>
+            <a @click="goAbout" class="about-col">{{ $t('about.nav.history') }}</a>
+            <a @click="goAbout" class="about-col">{{ $t('about.nav.contact') }}</a>
+            <a @click="goAbout" class="about-col">{{ $t('about.nav.map') }}</a>
         </div>
         <div class="guide-line">{{ $t('index.nav.channel') }}</div>
         <div class="channels">
@@ -82,6 +82,9 @@
             },
             showQR: function(){
                 this.modal.show = true;
+            },
+            goAbout: function(){
+                this.$router.push('about');
             }
         },
         mounted: function(){
@@ -107,6 +110,7 @@
         margin: 9px 50px;
         letter-spacing: 5px;
         font-size: 18px;
+        cursor: pointer;
     }
     .about{
         display: flex;
@@ -154,6 +158,8 @@
     .channels{
         display: flex;
         flex-flow: row wrap;
+        align-items: center;
+        justify-content: center;
     }
 
     .broadcast-img:hover{
