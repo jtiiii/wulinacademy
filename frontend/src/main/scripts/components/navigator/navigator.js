@@ -20,7 +20,10 @@ const Option = {
     computed:{
         tabs(){
             return this.menu.tabs.map( tab => {
-                tab.text = this.$t(tab.i18key)
+                if(tab.default){
+                    this.defaultPage = tab;
+                }
+                tab.text = this.$t(tab.i18key);
                 return tab;
             });
         }
@@ -34,12 +37,12 @@ const Option = {
             router.push({ name: page.name,params: page.defaultValue });
         }
     },
-    mounted(){
-        if(!this.$route || this.$route.path === '/'){
-            this.go(this.defaultPage);
-        }
-    },
     created(){
+        this.$router.afterEach( to => {
+            if(to.path === '/'){
+                this.go(this.defaultPage);
+            }
+        });
         this.menu.tabs = Pages.filter( page => {
             if(page.default){
                 this.defaultPage = page;

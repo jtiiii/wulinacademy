@@ -1,15 +1,24 @@
 <template>
     <div style="width:100%;height:800px;">
-        <setting></setting>
+        <v-article :news="news"></v-article>
     </div>
 </template>
 <script>
-    import Setting from '../scripts/components/setting/setting.vue';
+    import Article from '../scripts/components/Article.vue';
 
     export default {
         components:{
-            'setting': Setting
+            'v-article': Article
         },
+        data(){
+            return {
+                news:{
+                    title: 'test',
+                    preview: "Did you know? I wasn't understand you. But now, I want to help you to want you forgive me. I'm sorry. please show me your faith.",
+                    eventDate: '2019-06-11T21:00:40'
+                }
+            };
+        }
     }
 </script>
 <style scoped>

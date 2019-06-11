@@ -26,7 +26,7 @@
             </div>
             <div v-show="!news.list.length"> There is no news....</div>
             <!-- 新闻列表 -->
-            <div v-for="newsItem in news.list" class="news-item" >
+            <div v-for="newsItem in news.list" class="news-items" >
                 <div v-show="manage" class="toolbar-news">
                     <label class="toolBtn">
                         <button class="tool"><img class="btnImg" :src="icon.edit" @click="openUpdateModal(newsItem)"></button>
@@ -155,24 +155,6 @@
                 return this.mode === 'preview';
             }
         }),
-        // computed: {
-        //
-        //     manage: function(){
-        //         return this.isLogin.value;
-        //     },
-        //     getSelected(){
-        //         if(this.news.selected){
-        //             return this.news.map[this.news.selected];
-        //         }
-        //         return {};
-        //     },
-        //     isUpdate(){
-        //       return Boolean(this.getSelected.id);
-        //     },
-        //     isPreview(){
-        //         return this.mode === 'preview';
-        //     }
-        // },
         watch:{
             'news.search'( text, old ){
                 if(text === old){
@@ -306,11 +288,6 @@
         },
         created(){
             this.getNewsPage();
-            // SecurityService.login('login','login')
-            //     .then( ()=> {
-            //         this.getNewsPage();
-            //     });
-
         }
     }
 </script>
@@ -320,11 +297,6 @@
 <style scoped>
     .page-news{
         min-height: 400px;
-    }
-    .news{
-        width: 700px;
-        position: relative;
-        display:inline-block;
     }
     .toolbar-news{
         width: 30px;
@@ -361,10 +333,34 @@
         border: none;
         padding: 0;
     }
-    .toolbar{
-        width: 700px;
-        clear: both;
-        display: inline-block;
+    .news{
+        position: relative;
+        display:flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+
+    @media screen and (min-width:700px) {
+        .news{
+            min-width: 700px;
+        }
+        .toolbar{
+            width: 700px;
+            clear: both;
+            display: inline-block;
+        }
+        .searchBox{
+            width: 250px;
+        }
+    }
+
+    @media screen and (max-width:700px) {
+        .toolbar{
+            flex:1;
+        }
+        .searchBox{
+            width: 100%;
+        }
     }
 
     .searchBox{
@@ -374,7 +370,6 @@
         border-top: 0;
         height: 30px;
         outline: none;
-        width: 250px;
         font-size: 20px;
     }
     .searchBox::placeholder{
@@ -397,9 +392,9 @@
         top: 0;
         z-index: 9;
     }
-    .news-item{
-        display: inline-block;
-        position:relative;
-    }
+    /*.news-items{*/
+    /*    display: inline-block;*/
+    /*    position:relative;*/
+    /*}*/
 
 </style>

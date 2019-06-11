@@ -63,92 +63,142 @@
     }
 </script>
 <style scoped>
-    .expand{
-        padding: 8px 4px;
-        animation: expand-animate 0.2s;
-        left: -4px;
-        top: -8px;
-    }
-    .shrink{
-        animation: shrink-animate 0.2s;
-        padding: 0;
-        left: 0;
-        top: 0;
-    }
-    article{
-        text-align: left;
-        float: left;
-        width: 380px;
-        height: calc(100% - 20px);
-        overflow: hidden;
-        margin: 10px
-    }
     .article{
-        width: 300px;
+        max-width: 300px;
     }
-    @keyframes expand-animate {
-        0%{
+
+    @media screen and (min-width:700px){
+
+        article{
+            text-align: left;
+            float: left;
+            max-width: 380px;
+            height: calc(100% - 20px);
+            overflow: hidden;
+            margin: 10px
+        }
+        .news-item{
+            position:relative;
+            min-width: 43.75rem; /* 700px */
+            height: 200px;
+            margin: 0.625rem /* 10px */ 0;
+        }
+        .news-simple{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            background: #efefef;
+            cursor: pointer;
+        }
+
+        @keyframes expand-animate {
+            0%{
+                padding: 0;
+                left: 0;
+                top: 0;
+            }
+            100%{
+                padding: 8px 4px;
+                left: -4px;
+                top: -8px;
+            }
+        }
+        @keyframes shrink-animate {
+            0%{
+                padding: 8px 4px;
+                left: -4px;
+                top: -8px;
+            }
+            100%{
+                padding: 0;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        .expand{
+            padding: 8px 4px;
+            animation: expand-animate 0.2s;
+            left: -4px;
+            top: -8px;
+        }
+        .shrink{
+            animation: shrink-animate 0.2s;
             padding: 0;
             left: 0;
             top: 0;
         }
-        100%{
-            padding: 8px 4px;
-            left: -4px;
-            top: -8px;
+        .news-title{
+            font-weight: 900;
+            color: #0009;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .thumbnail{
+            overflow: hidden;
+            max-width: 280px;
+            height: 180px;
+            float: left;
+            position: relative;
+            margin:10px;
+        }
+
+        .news-preview{
+            font-size: 15px;
+            height: 105px;
+            overflow: hidden;
         }
     }
-    @keyframes shrink-animate {
-        0%{
-            padding: 8px 4px;
-            left: -4px;
-            top: -8px;
+    @media screen and (max-width:700px){
+        .news-item{
+            position:relative;
+            max-width: 30rem; /* 480px */
+            height: 350px;
+            margin: 0.625rem /* 10px */ 0.625rem;
         }
-        100%{
-            padding: 0;
-            left: 0;
-            top: 0;
+
+        .news-simple{
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            display: flex;
+            background: #efefef;
+            flex-flow: column wrap;
+            align-items: center;
         }
-    }
-    .news-item{
-        position:relative;
-        width: 700px;
-        height: 200px;
-        margin: 10px 0;
-    }
-    .news-simple{
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        border-radius: 5px;
-        text-align: center;
-        display: inline-block;
-        background: #efefef;
-        cursor: pointer;
-    }
-    .news-preview{
-        font-size: 15px;
-        height: 105px;
-        overflow: hidden;
+
+        article{
+            flex: 1;
+            overflow: hidden;
+            margin: 10px
+        }
+        .news-title{
+            font-weight: 900;
+            color: #0009;
+            margin: 0.625rem/* 10px */ 0;
+            font-size: 1.5rem; /* 24px */
+        }
+
+        .thumbnail{
+            margin: 0.625rem; /* 10px */
+            overflow: hidden;
+            max-width: 100%;
+            height: 11.25rem;
+        }
+
+
+        .news-preview{
+            font-size: 1rem; /* 16px */
+        }
     }
     .news-time{
         position: relative;
         font-size:12px;
         margin:5px 0;
-    }
-    .news-title{
-        font-weight: 900;
-        color: #0009;
-        margin: 10px 0;
-        font-size: 18px;
-    }
-    .thumbnail{
-        overflow: hidden;
-        width: 280px;
-        height: 180px;
-        float: left;
-        position: relative;
-        margin:10px;
     }
     .thumbnail > img{
         width: 100%;

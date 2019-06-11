@@ -75,7 +75,6 @@
             };
             //预处理序列
             new Promise( resolve => resolve() )
-                // .then( preProcessRouter )
                 .then( preProcessFontFamily )
                 .then( preProcessEventListeners );
         }
@@ -92,19 +91,12 @@
         overflow-y: scroll;
         position: relative;
     }
-    .top{
-        /*position: fixed;*/
-    }
     .content{
         position: relative;
-        /*height: 100%;*/
         top: 100px;
-        /*overflow: hidden;*/
-        /*overflow-y: scroll;*/
     }
     .footer{
         top: 100px;
         position: relative;
-        /*bottom: -185px;*/
     }
 </style>
