@@ -1,13 +1,5 @@
 <template>
     <div class="page-news">
-        <!-- 添加、编辑新闻内容框 -->
-        <v-news-modal :show="modal.editor" :width="700" >
-            <label class="closeBtn">
-                <button class="tool"><img class="btnImg" :src="icon.close" @click="modal.editor = false"></button>
-            </label>
-            <!-- 新闻编辑器 -->
-            <v-news-editor :mode="mode" @load="getLoader" @submit="submit"/>
-        </v-news-modal>
         <!-- 删除确认框 -->
         <v-confirm-modal :show="modal.confirm" @confirm="confirmDelete">
             确认删除 {{ getSelected.title }} 此条新闻？
@@ -39,6 +31,14 @@
             </div>
             <button v-if="!news.last" @click="nextPage" type="button" class="btn">see more...</button>
         </div>
+        <!-- 添加、编辑新闻内容框 -->
+        <v-news-modal class="news-modal" :canClose="true" :show="modal.editor" >
+            <label class="closeBtn">
+                <button class="tool"><img class="btnImg" :src="icon.close" @click="modal.editor = false"></button>
+            </label>
+            <!-- 新闻编辑器 -->
+            <v-news-editor :mode="mode" @load="getLoader" @submit="submit"/>
+        </v-news-modal>
     </div>
 </template>
 <script type="text/javascript">
@@ -53,6 +53,7 @@
     import noPic from '../images/news/no-pic.png';
 
     import BaseModal from '../scripts/components/BaseModal.vue';
+    import FComponents from 'f-vue-components';
     import NewsEditor from '../scripts/components/news-editor/NewsEditor.vue';
     import ConfirmModal from '../scripts/components/ConfirmModal.vue';
 
@@ -305,10 +306,6 @@
         top: 10px;
         border: none;
     }
-    .toolbar > label{
-        float: left;
-        margin: 10px 10px;
-    }
     .toolBtn{
         margin: 5px;
     }
@@ -339,8 +336,10 @@
         flex-flow: column wrap;
         align-items: center;
     }
-
     @media screen and (min-width:700px) {
+        .news-modal >>> dialog{
+            width: 700px;
+        }
         .news{
             min-width: 700px;
         }
@@ -352,14 +351,29 @@
         .searchBox{
             width: 250px;
         }
+        .toolbar > label{
+            float: left;
+            margin: 10px 10px;
+        }
     }
 
     @media screen and (max-width:700px) {
+        .news-modal >>> dialog{
+            width: 100%;
+        }
         .toolbar{
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
             flex:1;
+            width: 100%;
         }
         .searchBox{
             width: 100%;
+        }
+        .toolbar > label{
+            width: 100%;
+            margin: 10px;
         }
     }
 
@@ -371,6 +385,7 @@
         height: 30px;
         outline: none;
         font-size: 20px;
+        box-sizing: border-box;
     }
     .searchBox::placeholder{
         color: #efefef;

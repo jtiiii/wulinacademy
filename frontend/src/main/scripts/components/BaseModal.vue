@@ -73,6 +73,10 @@
         left: 0;
         top: 0;
         overflow: scroll;
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        justify-content: center;
     }
     .hidden{
         display: none;
@@ -85,8 +89,8 @@
     }
     dialog{
         display: inline-block;
-        height: auto;
-        /*max-height: 100%;*/
+        /*height: auto;*/
+        max-height: 100%;
         border: none;
         border-radius: 5px;
         margin: 30px auto;
@@ -95,6 +99,7 @@
         overflow-y: scroll;
         z-index: 999;
         background: #fff;
+        padding: 0;
     }
     .shadow{
         position: fixed;

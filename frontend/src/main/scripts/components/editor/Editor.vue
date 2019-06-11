@@ -7,7 +7,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import editor from './editor2';
+    import editor from './editor';
     export default editor;
 </script>
 <style scoped>

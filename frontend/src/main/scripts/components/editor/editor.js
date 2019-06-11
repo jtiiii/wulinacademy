@@ -1,106 +1,82 @@
 import FComponents from 'f-vue-components';
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
-function editorProcessor( vm ){
-    vm.editor = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: vm.toolbarOptions
-        }
-    });
+import ImageControl from '../imageControl/ImageControl.vue';
+import i18n from '../../i18n';
 
-    vm.editor.setContents(vm.content);
-    vm.editor.enable(vm.enable);
-    vm.editor.on('text-change', () => {
-        vm.contentWatchStop = true;
-        vm.showHtml = vm.editor.container.innerHTML;
-        vm.$emit('text-change',vm.editor.getContents(),vm.editor.getText());
-    });
-    return vm;
-}
 export default {
-    components:{
-        'v-editor-quill': FComponents.Editor.Quill
+    i18n,
+    model:{
+        prop: 'content',
+        event: 'change',
     },
-    name:"BaseEditor",
+    components:{
+        'v-editor-quill': FComponents.Editor.Quill,
+        'image-control': ImageControl,
+        'modal': FComponents.Modal
+    },
     props:{
-        textHeight: {
-            type: Number,
-            required: false,
-            default: 300
-        },
-        textWidth:{
-            type: Number,
-            required: false,
-            default: 0
-        },
         enable:{
             type: Boolean,
             required: false,
-            default: true
+            default: false,
+        },
+        width:{
+            type: String,
+            required: false,
+            default: '710px'
+        },
+        height:{
+            type: String,
+            required: false,
+            default: '100%'
         },
         content:{
             type: Object,
             required: false,
-            default: {},
+            default: null,
         }
     },
-    data() {
+    data(){
         return {
-            contentWatchStop: false,
-            showHtml: "",
+            handlers: {'image': this.imageHandler },
             editor: null,
-            toolbarOptions: [
-                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                ['blockquote', 'code-block'],
-                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-                [{ 'direction': 'rtl' }],                         // text direction
-                [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                [{ 'font': [] }],
-                [{ 'align': [] }],
-                ['clean']                                         // remove formatting button
-            ]
-        }
-    },
-    watch:{
-        enable( n, o){
-            if(n === o){
-                return;
+            // content: null,
+            imageControl:{
+                show: false,
+                load: null,
+                loaded: false
             }
-            this.editor.enable(n);
-        },
-        content( n, o){
-            if(this.contentWatchStop){
-                this.contentWatchStop = false;
-                return;
-            }
-            this.editor.setContents(n);
-        }
-    },
-    computed:{
-        editorStyle(){
-            return {
-                width: this.textWidth ? this.textWidth + 'px' : '100%',
-                height: this.textHeight + 'px'
-            };
-        },
-
+        };
     },
     methods:{
-        escapeStringHTML(str) {
-            str = str.replace(/&lt;/g,'<');
-            str = str.replace(/&gt;/g,'>');
-            return str;
+        imageHandler(){
+            this.imageControl.show= true;
+            if(!this.imageControl.loaded){
+                this.imageControl.load();
+                this.imageControl.loaded = true;
+            }
+        },
+        insertImage( src ){
+            this.editor.focus();
+            let index = this.editor.getSelection().index;
+            this.editor.insertEmbed(index,'image',src);
+
+        },
+        load( loadRootFolder ){
+            this.imageControl.load = loadRootFolder;
+        },
+        imageControlClose(){
+            this.imageControl.show = false;
+        },
+        imageClick( image ){
+            this.insertImage( image.src);
+            this.imageControlClose();
+        },
+        initEditor( editor){
+            this.editor = editor;
+            this.$emit('init',this.editor);
+        },
+        change( content ){
+            this.$emit('change',content);
         }
-    },
-    mounted(){
-        const vm = this;
-        new Promise( resolve => resolve(vm) )
-            .then( editorProcessor );
     }
 }
