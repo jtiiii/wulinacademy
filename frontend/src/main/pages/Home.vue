@@ -3,16 +3,22 @@
         <v-modal ref="modal" :show="modal.show" @click.native="hideModal">
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
-        <div class="broadcast">
-<!--            <div class="broadcast-img">-->
-                <img class="broadcast-img" :src="news.thumbnail">
+<!--        <div class="broadcast">-->
+<!--&lt;!&ndash;            <div class="broadcast-img">&ndash;&gt;-->
+<!--                <img class="broadcast-img" :src="news.thumbnail">-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            <div class="broadcast-info">-->
+<!--                <span class="title">{{ news.title }}</span>-->
+<!--                <br/>-->
+<!--                <span class="time">{{ news.eventDate }}</span>-->
 <!--            </div>-->
-            <div class="broadcast-info">
-                <span class="title">{{ news.title }}</span>
-                <br/>
-                <span class="time">{{ news.eventDate }}</span>
+<!--        </div>-->
+        <v-cover :src="cover.src" class="broadcast">
+            <div>
+                <h2>{{ cover.title}}</h2>
+                <span> {{ cover.preview }}</span>
             </div>
-        </div>
+        </v-cover>
         <div class="guide-line">{{ $t('index.nav.about') }}</div>
         <div class="about">
             <a @click="goAbout" class="about-col">{{ $t('about.nav.history') }}</a>
@@ -32,36 +38,32 @@
     </div>
 </template>
 <script type="text/javascript">
-    import Article from '../scripts/components/Article.vue';
     import Modal from '../scripts/components/BaseModal.vue'
-    import Model from '../scripts/api/Model';
     import NewsService from '../scripts/api/NewsService';
     import Logo from '../scripts/components/logo.vue';
     import ChannelData from '../scripts/sample/channel-data';
-    import i18n from '../scripts/i18n';
-    import noPic from '../images/photo2.jpeg';
-
-    const sampleData = Model.News.of({
-        title: "欢迎来到武林书画院",
-        preview: "test content",
-        thumbnail:noPic,
-        // eventDate: '2019-02-12'
-    });
-
+    import welcomePic from '../images/photo2.jpeg';
+    import FComponents from 'f-vue-components';
+    import noPic from '../images/news/no-pic.png';
 
     export default {
-        i18n,
         components:{
-            'v-article': Article,
             'v-logo': Logo,
             'v-modal': Modal,
+            'v-cover': FComponents.Cover
         },
         data: ()=>{
             return {
                 msg: 'Home',
-                //TODO It is a sample data
-                news: sampleData,
+                news: [],
                 channel: ChannelData,
+                cover:{
+                    src: welcomePic,
+                    title: '欢迎来到武林书画院',
+                    preview: '',
+                    eventDate: '',
+                    index: 0,
+                },
                 modal: {
                     show: false
                 },
@@ -85,12 +87,30 @@
             },
             goAbout: function(){
                 this.$router.push('about');
+            },
+            startBroadcast(){
+
+                let loopCover = setInterval(()=>{
+
+                    let index = this.news[this.cover.index];
+                    this.cover.src = index.thumbnail || noPic;
+                    this.cover.title = index.title;
+                    this.cover.preview = index.preview;
+                    this.cover.index ++;
+                    if(this.cover.index >= this.news.length){
+                        this.cover.index = 0;
+                    }
+                },5000);
             }
         },
         mounted: function(){
             // this.getLastNews().then( news => this.printArticle( news ));
         },
         created: function(){
+            NewsService.pageSearch({search: '',pageNum:0,pageSize:5}).then( page => { this.news = page.content;} )
+                .then(()=>{
+                    this.startBroadcast();
+                });
 
         }
     };
@@ -125,6 +145,12 @@
         .about{
             flex-direction: row;
         }
+
+        .broadcast{
+            max-width: 56.25rem; /* 900px */
+            max-height: 37.5rem; /* 600px */
+            margin: 0.625rem 2rem; /* 10px */
+        }
     }
 
     .guide-line{
@@ -140,39 +166,13 @@
         letter-spacing: 6px;
     }
     .broadcast{
-        display: flex;
-        flex-flow: column nowrap;
-        flex: 1;
-        margin-bottom: 50px;
+        border-radius: 0;
     }
-    .broadcast-img{
-        max-width: 100%;
-        max-height: 37.5rem; /* 600px */
-        /*margin: 30px 0 20px 0;*/
-    }
-    /*.broadcast-img > img{*/
-    /*    !*width: 100%;*!*/
-    /*    height: 100%;*/
-    /*}*/
 
     .channels{
         display: flex;
         flex-flow: row wrap;
         align-items: center;
         justify-content: center;
-    }
-
-    .broadcast-img:hover{
-        opacity: .7;
-    }
-    .broadcast-info > .title{
-        font-size: 20px;
-        font-weight: bolder;
-        margin: 10px 0;
-        color: #000000a1;
-        display: inline-block;
-    }
-    .broadcast-info > .time{
-        font-family: sans-serif;
     }
 </style>

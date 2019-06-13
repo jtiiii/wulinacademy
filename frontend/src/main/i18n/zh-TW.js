@@ -9,7 +9,7 @@ export default {
             nav: {
             about : '關於本院',
                 home : '主頁',
-                news: '本院簡訊',
+                news: '武林院訊',
                 channel : '頻道',
                 apply: '申請',
                 error: '錯誤頁面',

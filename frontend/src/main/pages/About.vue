@@ -78,6 +78,7 @@
                 },
                 // Amap: null,
                 amap: null,
+                markers:{},
                 aboutStyle: {
                     'height': '0px'
                 }
@@ -99,7 +100,9 @@
             Map.loadScript().then( amap => {
                 // this.Amap = amap;
                 this.amap = new Map('mapContainer');
-                this.amap.marker({longitude: 120.161118, latitude: 30.246205, title: 'home'});
+
+
+                this.markers['home'] = this.amap.marker({longitude: 120.161118, latitude: 30.246205, title: 'home'});
                 // this.amap.addZoomControl();
                 let map = this.amap.map;
                 Map.loadUIScript().then( () => {
@@ -120,6 +123,7 @@
                             position: 'rt'
                         }));
                     });
+                    this.amap.setFitView();
                 });
             });
         },

@@ -16,6 +16,7 @@ Map.prototype = {
             title: title,
         });
         this.map.add(this.markers[title]);
+        return this.markers[title];
     },
     // addZoomControl: function(){
     //     this.map
@@ -24,6 +25,15 @@ Map.prototype = {
     //         position: 'lt'
     //     }));
     // }
+    setFitView(markers){
+        if(!markers){
+            console.info(Object.keys(this.markers).map( key => this.markers[key]));
+            this.map.setFitView(Object.keys(this.markers).map(key => this.markers[key]));
+        }else{
+            this.map.setFitView(markers);
+        }
+
+    },
 };
 Map.loadUIScript = function( ){
     return LoadJS.load(UI_URL);

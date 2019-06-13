@@ -6,8 +6,8 @@ import zh_TW from '../i18n/zh-TW';
 
 Vue.use(VueI18n);
 const Language = {
-    'zh-CN': {message: zh_CN, text: "简体中文"},
     'zh-TW': {message: zh_TW, text: "正體中文"},
+    'zh-CN': {message: zh_CN, text: "简体中文"},
     'en-US': {message: en_US, text: "English"}
 };
 let messages = {};
