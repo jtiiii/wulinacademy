@@ -40,6 +40,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.debug}")
     private Boolean debug;
 
+    @Value("${location.assets}")
+    private String assetsLocation;
+
 
     @PostConstruct
     private void init(){
@@ -64,7 +67,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         } else{
             http
                     .authorizeRequests()
-                    .antMatchers("/check/available","/images/**").permitAll()
+                    .antMatchers("/check/available",assetsLocation+"**").permitAll()
                     .antMatchers(HttpMethod.GET,"/**").permitAll()
                     .anyRequest()
                     .authenticated();
@@ -77,9 +80,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter(serviceConfig.getLogin().getUsernameOfParamName())
                     .passwordParameter(serviceConfig.getLogin().getPasswordOfParamName())
                     .and()
-//                .sessionManagement()
-//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                    .and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessHandler(new LogoutSuccHandler())
@@ -92,7 +92,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .accessDeniedHandler(new NotRedirectAccessDeniedHandler())
                     .and()
                 .csrf()
-                    .ignoringAntMatchers("/login","/logout","/images/**")
+                    .ignoringAntMatchers("/login","/logout",assetsLocation+"**")
                     .csrfTokenRepository(new HeaderCsrfTokenRepository(serviceConfig));
     }
 

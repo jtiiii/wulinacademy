@@ -2,14 +2,14 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/wulin_dev?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
-      username: root
-      password: 123456
+      url: jdbc:mysql://wulinacademy:39002/wulin_dev?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+      username: wulin-dev
+      password: 'Xj%zG@mkf0@VsYEt'
     security:
       debug: false
 logging:
   level:
-    ROOT: debug
+    ROOT: info
     controller: debug
     org:
       springframework:

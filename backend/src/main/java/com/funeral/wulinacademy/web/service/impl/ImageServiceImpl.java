@@ -48,7 +48,7 @@ public class ImageServiceImpl implements ImageService {
     private void init(){
         File imageFolder = new File(imageLocation);
         if(!imageFolder.exists() || imageFolder.isFile()){
-            imageFolder.mkdir();
+            imageFolder.mkdirs();
         }
     }
 

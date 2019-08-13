@@ -18,13 +18,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan("com.funeral.wulinacademy.web.controller")
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${location.images}")
-    private String imageLocation;
+    @Value("${location.assets}")
+    private String assetsLocation;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:./images/");
+        registry.addResourceHandler(assetsLocation+"**")
+                .addResourceLocations("file:"+assetsLocation);
     }
 
 }
