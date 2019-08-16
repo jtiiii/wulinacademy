@@ -3,48 +3,45 @@
         <v-modal ref="modal" :show="modal.show" @click.native="hideModal">
             <img class="wechatQRCode" :src="wechatQRCode">
         </v-modal>
-<!--        <div class="broadcast">-->
-<!--&lt;!&ndash;            <div class="broadcast-img">&ndash;&gt;-->
-<!--                <img class="broadcast-img" :src="news.thumbnail">-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--            <div class="broadcast-info">-->
-<!--                <span class="title">{{ news.title }}</span>-->
-<!--                <br/>-->
-<!--                <span class="time">{{ news.eventDate }}</span>-->
-<!--            </div>-->
-<!--        </div>-->
-        <v-cover :src="cover.src" class="broadcast">
-            <div>
-                <h2>{{ cover.title}}</h2>
-                <span> {{ cover.preview }}</span>
-            </div>
-        </v-cover>
+
+        <div class="broadcast-list">
+            <v-cover v-for="cover in covers" v-show="cover.show" :src="cover.src" class="broadcast">
+                <div>
+                    <h2>{{ cover.title}}</h2>
+                    <span> {{ cover.preview }}</span>
+                </div>
+            </v-cover>
+        </div>
+
         <div class="guide-line">{{ $t('index.nav.about') }}</div>
+
         <div class="about">
             <a @click="goAbout" class="about-col">{{ $t('about.nav.history') }}</a>
             <a @click="goAbout" class="about-col">{{ $t('about.nav.contact') }}</a>
             <a @click="goAbout" class="about-col">{{ $t('about.nav.map') }}</a>
         </div>
+
         <div class="guide-line">{{ $t('index.nav.channel') }}</div>
+
         <div class="channels">
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.facebook"></v-logo>
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.instagram"></v-logo>
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.wechat" @click="showQR"></v-logo>
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.twitter"></v-logo>
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.youtube"></v-logo>
-            <v-logo :width="'70px'" :height="'70px'" :logo="channel.weibo"></v-logo>
+            <v-logo :logo="channel.facebook"></v-logo>
+            <v-logo :logo="channel.instagram"></v-logo>
+            <v-logo :logo="channel.wechat" @click="showQR"></v-logo>
+            <v-logo :logo="channel.twitter"></v-logo>
+            <v-logo :logo="channel.youtube"></v-logo>
+            <v-logo :logo="channel.weibo"></v-logo>
         </div>
 <!--        <hr/>-->
     </div>
 </template>
 <script type="text/javascript">
-    import Modal from '../scripts/components/BaseModal.vue'
+    import Modal from '../components/Modal.vue'
     import NewsService from '../scripts/api/NewsService';
-    import Logo from '../scripts/components/logo.vue';
-    import ChannelData from '../scripts/sample/channel-data';
-    import welcomePic from '../images/photo2.jpeg';
+    import Logo from '../components/logo.vue';
+    import ChannelData from '../scripts/ChannelData';
+    import welcomePic from '../assets/images/welcome-default.jpeg';
     import FComponents from 'f-vue-components';
-    import noPic from '../images/news/no-pic.png';
+    // import noPic from '../images/news/no-pic.png';
 
     export default {
         components:{
@@ -57,13 +54,15 @@
                 msg: 'Home',
                 news: [],
                 channel: ChannelData,
-                cover:{
+                covers:[{
                     src: welcomePic,
                     title: '欢迎来到武林书画院',
                     preview: '',
+                    show: true,
                     eventDate: '',
                     index: 0,
-                },
+                }],
+                showCoverIndex: 0,
                 modal: {
                     show: false
                 },
@@ -71,14 +70,14 @@
             };
         },
         methods: {
-            getLastNews(){
-                return NewsService.pageSearch({pageSize: 1,pageNum: 0}).then( pageData => {
-                    return pageData.content[0];
-                });
-            },
-            printArticle( news ){
-                this.news = Model.News.of( news );
-            },
+            // getLastNews(){
+            //     return NewsService.pageSearch({pageSize: 1,pageNum: 0}).then( pageData => {
+            //         return pageData.content[0];
+            //     });
+            // },
+            // printArticle( news ){
+            //     // this.news = Model.News.of( news );
+            // },
             hideModal: function(){
                 this.modal.show = false;
             },
@@ -88,29 +87,33 @@
             goAbout: function(){
                 this.$router.push('about');
             },
-            startBroadcast(){
-
-                let loopCover = setInterval(()=>{
-
-                    let index = this.news[this.cover.index];
-                    this.cover.src = index.thumbnail || noPic;
-                    this.cover.title = index.title;
-                    this.cover.preview = index.preview;
-                    this.cover.index ++;
-                    if(this.cover.index >= this.news.length){
-                        this.cover.index = 0;
-                    }
-                },5000);
+            changeCover(){
+                this.covers[this.showCoverIndex].show =false;
+                this.showCoverIndex++;
+                this.covers[this.showCoverIndex].show =true;
             }
+            // startBroadcast(){
+            //     let loopCover = setInterval(()=>{
+            //
+            //         let index = this.news[this.cover.index];
+            //         this.cover.src = index.thumbnail || noPic;
+            //         this.cover.title = index.title;
+            //         this.cover.preview = index.preview;
+            //         this.cover.index ++;
+            //         if(this.cover.index >= this.news.length){
+            //             this.cover.index = 0;
+            //         }
+            //     },5000);
+            // }
         },
         mounted: function(){
             // this.getLastNews().then( news => this.printArticle( news ));
         },
-        created: function(){
-            NewsService.pageSearch({search: '',pageNum:0,pageSize:5}).then( page => { this.news = page.content;} )
-                .then(()=>{
-                    this.startBroadcast();
-                });
+        created(){
+            // NewsService.pageSearch({search: '',pageNum:0,pageSize:5}).then( page => { this.news = page.content;} )
+            //     .then(()=>{
+            //         this.startBroadcast();
+            //     });
 
         }
     };

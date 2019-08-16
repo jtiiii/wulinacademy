@@ -11,11 +11,9 @@
     </div>
 </template>
 <script type="text/javascript">
-    import footerLogo from '../../images/footer-logo.jpg';
-    import I18n from '../i18n';
+    import footerLogo from '../assets/images/logo-01.jpg';
 
     export default {
-        i18n: I18n,
         data: function(){
             return {
                 footerLogo: footerLogo

@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
+// import Vue from 'vue';
+// import VueI18n from 'vue-i18n';
 import zh_CN from '../i18n/zh-CN';
 import en_US from '../i18n/en-US';
 import zh_TW from '../i18n/zh-TW';
 
-Vue.use(VueI18n);
+// Vue.use(VueI18n);
 const Language = {
     'zh-TW': {message: zh_TW, text: "正體中文"},
     'zh-CN': {message: zh_CN, text: "简体中文"},
@@ -18,10 +18,10 @@ for(let code in Language){
     //在每个语言文件里面添加一份 i18n 翻译
     messages[code].i18n = I18nLanguage;
 }
-const I18n = new VueI18n({
+const I18n = {
     locale: 'en-US',
-    messages : messages,
-});
+    messages: messages,
+};
 
 const Locale ={};
 Locale._resolves_ = [];

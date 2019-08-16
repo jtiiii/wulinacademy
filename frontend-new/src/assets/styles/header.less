@@ -1,0 +1,85 @@
+.header{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.125rem solid #ccc;
+  height: 5rem;
+  .btn{
+    cursor: pointer;
+  }
+  .menu, .setting, .logo{
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .menu, .setting{
+    flex: 1;
+    .selector, .dropdown{
+      position: absolute;
+      .iconfont{
+        width: 1.5rem; height: 1.5rem;
+        font-size: 1.5rem;
+      }
+      .modal-container, .panel{
+        width: 7rem;
+        .nav-box a.item{
+          text-align: center;
+          font-weight: bolder;
+          color: #555;
+          &[active]{
+            background-color: #A9A19A;
+            span{
+              color:#fff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .menu{
+    .selector{
+      margin-left: 0.625rem;
+      left: 0;
+    }
+  }
+  .setting{
+    .dropdown{
+      .modal-container .panel{
+        .nav-box a{
+          font-size: 0.8rem;
+          padding: 0.3125rem;
+        }
+      }
+      margin-right: 0.625rem;
+      .btn{
+        float: right;
+      }
+      right: 0;
+      .group{
+        .title{
+          text-align: center;
+          hr{
+            position: relative;
+            top: 0.8rem;
+          }
+          span{
+            font-size: 0.75rem;
+            position: relative;
+            background: #fff;
+            padding: 0.3125rem;
+          }
+        }
+      }
+    }
+  }
+
+  .logo{
+    flex: 4;
+    text-align: center;
+    justify-content: center;
+    img{
+      height: 100%;
+    }
+  }
+}
