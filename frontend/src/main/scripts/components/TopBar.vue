@@ -10,14 +10,13 @@
             <setting :class="navClass" class="nav-dropdown setting" />
         </div>
 
-        <div v-show="loginModal.show" class="login box" :style="loginStyle" v-outsideclick="loginOutSideClick">
+        <div v-show="showLoginBox" class="login box" :style="loginStyle" v-outsideclick="loginOutSideClick">
             <v-login @loginSuccessful="loginSuccHandle" ></v-login>
         </div>
     </div>
 </template>
 <script type="text/javascript">
     import DropDown from './BaseDropDown.vue';
-    import FComponents from 'f-vue-components';
     import Login from './Login.vue';
 
     import logo from "../../images/logo-new.png";
@@ -109,6 +108,14 @@
             },
             currentTitleClass(){
                 return {'currentFixed': this.position.fixed};
+            },
+            showLoginBox:{
+                set( show ){
+                    this.$store.commit('setShowLoginBox', show);
+                },
+                get(){
+                    return this.$store.state.showLoginBox;
+                }
             }
         },
         watch: {
@@ -150,7 +157,7 @@
                 this.loginModal.show = true;
             },
             hideLogin: function(){
-                this.loginModal.show = false;
+                this.showLoginBox = false;
             },
             showLoginClick: function(){
                 this.showLogin();
