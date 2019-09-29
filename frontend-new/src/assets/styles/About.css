@@ -1,0 +1,74 @@
+.about {
+  text-align: center;
+  /*height: 100%;*/
+  position: relative;
+}
+.about .content {
+  margin: 0 auto;
+  max-width: 43.5rem;
+  display: flex;
+  flex-flow: column nowrap;
+}
+.about .content .history p {
+  margin: 1rem 0;
+  text-align: left;
+  text-indent: 2rem;
+}
+.about .content .history .img {
+  margin: 1rem 0;
+}
+.about .content .history .img img {
+  width: 100%;
+}
+.about .content .history .img span {
+  color: #717171;
+}
+.about .content .contact {
+  padding: 1rem 2rem;
+  text-align: left;
+  width: 100%;
+  border-left: 5px solid #ccc;
+  box-sizing: border-box;
+  background: #f3f3f3;
+  color: #a0a0a0;
+}
+.about .content .contact h2 {
+  margin: 0 0 1rem 0;
+}
+.about .content .contact p {
+  margin: 0.4rem 0;
+}
+.about .content .contact p b {
+  display: inline-block;
+  width: 5.25rem;
+}
+.about > nav {
+  text-align: left;
+  position: fixed;
+  left: 2.5rem /* 40px */;
+  width: 7rem;
+  /* 112px */
+}
+.about > nav > a {
+  font-size: 17px;
+  color: #444;
+  margin: 10px 0;
+  display: block;
+  cursor: pointer;
+}
+.about > nav > a:hover {
+  opacity: 0.7;
+}
+/*.about > article{*/
+/*    float: left;*/
+/*    height: 100%;*/
+/*    overflow: hidden;*/
+/*    overflow-y: scroll;*/
+/*}*/
+.dituAmap {
+  margin: 20px auto;
+}
+#mapContainer {
+  height: 500px;
+}
+/*# sourceMappingURL=About.css.map */

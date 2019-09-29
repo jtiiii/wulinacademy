@@ -1,0 +1,115 @@
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.125rem solid #ccc;
+  height: 5rem;
+}
+.header .btn {
+  cursor: pointer;
+}
+.header .menu,
+.header .setting,
+.header .logo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.header .menu,
+.header .setting {
+  flex: 1;
+}
+.header .menu .selector,
+.header .setting .selector,
+.header .menu .dropdown,
+.header .setting .dropdown {
+  position: absolute;
+}
+.header .menu .selector .iconfont,
+.header .setting .selector .iconfont,
+.header .menu .dropdown .iconfont,
+.header .setting .dropdown .iconfont {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.5rem;
+}
+.header .menu .selector .modal-container,
+.header .setting .selector .modal-container,
+.header .menu .dropdown .modal-container,
+.header .setting .dropdown .modal-container,
+.header .menu .selector .panel,
+.header .setting .selector .panel,
+.header .menu .dropdown .panel,
+.header .setting .dropdown .panel {
+  width: 7rem;
+}
+.header .menu .selector .modal-container .nav-box a.item,
+.header .setting .selector .modal-container .nav-box a.item,
+.header .menu .dropdown .modal-container .nav-box a.item,
+.header .setting .dropdown .modal-container .nav-box a.item,
+.header .menu .selector .panel .nav-box a.item,
+.header .setting .selector .panel .nav-box a.item,
+.header .menu .dropdown .panel .nav-box a.item,
+.header .setting .dropdown .panel .nav-box a.item {
+  text-align: center;
+  font-weight: bolder;
+  color: #555;
+}
+.header .menu .selector .modal-container .nav-box a.item[active],
+.header .setting .selector .modal-container .nav-box a.item[active],
+.header .menu .dropdown .modal-container .nav-box a.item[active],
+.header .setting .dropdown .modal-container .nav-box a.item[active],
+.header .menu .selector .panel .nav-box a.item[active],
+.header .setting .selector .panel .nav-box a.item[active],
+.header .menu .dropdown .panel .nav-box a.item[active],
+.header .setting .dropdown .panel .nav-box a.item[active] {
+  background-color: #A9A19A;
+}
+.header .menu .selector .modal-container .nav-box a.item[active] span,
+.header .setting .selector .modal-container .nav-box a.item[active] span,
+.header .menu .dropdown .modal-container .nav-box a.item[active] span,
+.header .setting .dropdown .modal-container .nav-box a.item[active] span,
+.header .menu .selector .panel .nav-box a.item[active] span,
+.header .setting .selector .panel .nav-box a.item[active] span,
+.header .menu .dropdown .panel .nav-box a.item[active] span,
+.header .setting .dropdown .panel .nav-box a.item[active] span {
+  color: #fff;
+}
+.header .menu .selector {
+  margin-left: 0.625rem;
+  left: 0;
+}
+.header .setting .dropdown {
+  margin-right: 0.625rem;
+  right: 0;
+}
+.header .setting .dropdown .modal-container .panel .nav-box a {
+  font-size: 0.8rem;
+  padding: 0.3125rem;
+}
+.header .setting .dropdown .btn {
+  float: right;
+}
+.header .setting .dropdown .group .title {
+  text-align: center;
+}
+.header .setting .dropdown .group .title hr {
+  position: relative;
+  top: 0.8rem;
+}
+.header .setting .dropdown .group .title span {
+  font-size: 0.75rem;
+  position: relative;
+  background: #fff;
+  padding: 0.3125rem;
+}
+.header .logo {
+  flex: 4;
+  text-align: center;
+  justify-content: center;
+}
+.header .logo img {
+  height: 100%;
+}
+/*# sourceMappingURL=header.css.map */
