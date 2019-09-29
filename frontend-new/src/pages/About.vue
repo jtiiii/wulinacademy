@@ -85,5 +85,5 @@
     };
 </script>
 <style>
-    @import url("../assets/styles/About.css");
+    @import url("../assets/styles/pages/About.css");
 </style>

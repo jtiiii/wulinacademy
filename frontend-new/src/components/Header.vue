@@ -25,15 +25,21 @@
                         <div class="title">
                             <hr/><span>{{ $t(group.i18Key) }}</span>
                         </div>
-                        <v-navigator :length="group.items.length" :direction="'column'" :selects="group.selects">
+                        <v-navigator :length="group.items.length" :direction="'column'" :selects="group.selects" @click="index => settingClick(group,index)">
                             <template #item="{index}">
-                                <span @click="settingClick(group,index)">{{ group.items[index].i18Key? $t(group.items[index].i18Key): group.items[index].text }}</span>
+                                <span >{{ group.items[index].i18Key? $t(group.items[index].i18Key): group.items[index].text }}</span>
                             </template>
                         </v-navigator>
                     </div>
                 </template>
             </v-dropdown>
         </div>
+        <v-modal class="login-modal" :canClose="true" style="position: absolute" :size="'medium'" :show="login.show" :position="'outside-bottom'" @close="login.show = false">
+            <template #title>
+                {{$t('login.login')}}
+            </template>
+            <v-login @loginSuccessful="login.show = false"></v-login>
+        </v-modal>
     </div>
 </template>
 
@@ -41,16 +47,17 @@
     import FComponents from 'f-vue-components';
     import logoSrc from '../assets/images/logo-03.png';
     import {Pages} from "../pages/pages";
+    import Login from '../components/Login.vue';
     import VueUtils from 'f-vue-components/src/scripts/util/VueUtils';
-
     const pages  = Pages.filter( p => !p.hidden);
-    console.info(pages);
     export default {
         name: "Header",
         components:{
             'v-selector': FComponents.Selector,
             'v-dropdown': FComponents.Dropdown,
-            'v-navigator': FComponents.Navigator
+            'v-navigator': FComponents.Navigator,
+            'v-modal': FComponents.Modal,
+            'v-login': Login
         },
         data(){
             return {
@@ -77,6 +84,9 @@
                     selects: [],
                     listShow: false
                 },
+                login:{
+                    show: false
+                },
                 pages: pages,
                 length: 3,
             };
@@ -100,11 +110,18 @@
                 this.menu.listShow = false;
             },
             settingClick( group,index ){
+                console.log('click', group);
                 switch (group.id) {
                     case 'language': this.changeLocale(group, group.items[index], index);break;
-                    case 'manager': break;
+                    case 'manager':
+                        this.managerClick(group.items[index].id);
+                        break;
                     default: break;
                 }
+            },
+            settingClickItem( group){
+                console.info('item-click', group);
+                return this.settingClick.bind(this,[group]);
             },
             changeLocale(group, item ,index){
                 if(!group.selects.includes(index)){
@@ -113,10 +130,19 @@
                     this.$i18n.locale = item.id;
                 }
                 this.setting.listShow = false;
-            }
+            },
+            managerClick( id ){
+                switch (id) {
+                    case 'login':
+                        this.login.show = true;
+                        break;
+                    default: break;
+                }
+            },
+
         }
     }
 </script>
 <style lang="less">
-    @import url('../assets/styles/header.less');
+    @import url('../assets/styles/components/header.less');
 </style>

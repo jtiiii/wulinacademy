@@ -112,4 +112,7 @@
 .header .logo img {
   height: 100%;
 }
+.header .login-modal {
+  width: 18.75rem;
+}
 /*# sourceMappingURL=header.css.map */

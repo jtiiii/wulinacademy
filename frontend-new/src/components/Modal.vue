@@ -45,5 +45,5 @@
     }
 </script>
 <style lang="less" scoped>
-    @import url('../assets/styles/modal.less');
+    @import url('../assets/styles/components/modal.less');
 </style>

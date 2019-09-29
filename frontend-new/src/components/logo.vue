@@ -1,10 +1,6 @@
 <template>
     <a class="logo" :title="$t(logo.i18key)" :href="logo.url" @click="click">
         <i class="iconfont" :class="iconLogo"></i>
-<!--        <svg class="icon" aria-hidden="true">-->
-<!--            <i class="iconfont" :class="iconLogo"></i>-->
-<!--            <use :xlink:href="logo.icon"></use>-->
-<!--        </svg>-->
     </a>
 </template>
 <script type="text/javascript">

@@ -62,5 +62,5 @@
     }
 </script>
 <style lang="less">
-    @import url('../assets/styles/Article.less');
+    @import url('../assets/styles/pages/Article.less');
 </style>
