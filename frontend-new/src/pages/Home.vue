@@ -1,9 +1,5 @@
 <template>
     <div class="home">
-        <v-modal ref="modal" :show="modal.show" @click.native="hideModal">
-            <img class="wechatQRCode" :src="wechatQRCode">
-        </v-modal>
-
         <div class="broadcast-list">
             <v-cover v-for="cover in covers" v-show="cover.show" :src="cover.src" class="broadcast">
                 <div>
@@ -31,7 +27,9 @@
             <v-logo :logo="channel.youtube"></v-logo>
             <v-logo :logo="channel.weibo"></v-logo>
         </div>
-<!--        <hr/>-->
+        <f-v-modal :show="modal.show" @mask-click="hideModal" :size="'unlimited'">
+                <img class="wechatQRCode" :src="wechatQRCode">
+        </f-v-modal>
     </div>
 </template>
 <script type="text/javascript">
@@ -39,7 +37,7 @@
     import NewsService from '../scripts/api/NewsService';
     import Logo from '../components/logo.vue';
     import ChannelData from '../scripts/ChannelData';
-    import welcomePic from '../assets/images/welcome-default.jpeg';
+    import welcomePic from '../assets/images/welcome/welcome-default.jpg';
     import FComponents from 'f-vue-components';
     // import noPic from '../images/news/no-pic.png';
 
@@ -47,6 +45,7 @@
         components:{
             'v-logo': Logo,
             'v-modal': Modal,
+            'f-v-modal': FComponents.Modal,
             'v-cover': FComponents.Cover
         },
         data: ()=>{

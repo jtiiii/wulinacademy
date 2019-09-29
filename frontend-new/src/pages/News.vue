@@ -1,9 +1,9 @@
 <template>
     <div class="page-news">
         <!-- 删除确认框 -->
-        <v-confirm-modal :show="modal.confirm" @confirm="confirmDelete">
-            确认删除 {{ getSelected.title }} 此条新闻？
-        </v-confirm-modal>
+<!--        <v-confirm-modal :show="modal.confirm" @confirm="confirmDelete">-->
+<!--            确认删除 {{ getSelected.title }} 此条新闻？-->
+<!--        </v-confirm-modal>-->
         <div class="news">
             <!-- 工具栏 -->
             <div class="toolbar">
@@ -13,55 +13,55 @@
                 </label>
                 <!-- 添加新闻按钮 -->
                 <label v-if="manage" class="toolBtn">
-                    <button class="tool"><img class="btnImg" :src="icon.add" @click="openAddModal"></button>
+                    <button class="tool" type="button" @click="openAddModal">
+                        <i class="iconfont wulin-news"></i>
+                    </button>
                 </label>
             </div>
             <div v-show="!news.list.length"> There is no news....</div>
             <!-- 新闻列表 -->
-            <div v-for="newsItem in news.list" class="news-items" >
-                <div v-show="manage" class="toolbar-news">
-                    <label class="toolBtn">
-                        <button class="tool"><img class="btnImg" :src="icon.edit" @click="openUpdateModal(newsItem)"></button>
-                    </label>
-                </div>
-                <label v-show="manage" class="deleteBtn">
-                    <button class="tool-sm"><img class="btnImg" :src="icon.delete" @click="openDeleteModal(newsItem)" /></button>
-                </label>
+            <div v-for="newsItem in news.list" class="news-item" >
+<!--                <div v-show="manage" class="toolbar-news">-->
+<!--                    <label class="toolBtn">-->
+<!--                        <button class="tool">-->
+<!--                            <i class="iconfont wulin-edit" @click="openUpdateModal(newsItem)"></i>-->
+<!--                        </button>-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <label v-show="manage" class="deleteBtn">-->
+<!--                    <button class="tool-sm">-->
+<!--                        <i class="iconfont wulin-delete" @click="openDeleteModal(newsItem)"></i>-->
+<!--                    </button>-->
+<!--                </label>-->
                 <v-article :news="newsItem" @click="openShowNews" />
             </div>
             <button v-if="!news.last" @click="nextPage" type="button" class="btn">see more...</button>
         </div>
         <!-- 添加、编辑新闻内容框 -->
-        <v-news-modal class="news-modal" :canClose="true" :show="modal.editor" >
+        <v-news-modal class="news-modal" :show="modal.editor" :size="'larger'" >
+            <div class="news-panel">
             <label class="closeBtn">
-                <button class="tool"><img class="btnImg" :src="icon.close" @click="modal.editor = false"></button>
+                <button class="tool tool-close">
+                    <i class="iconfont wulin-close" @click="closeNewsModal"></i>
+                </button>
             </label>
             <!-- 新闻编辑器 -->
-            <v-news-editor :mode="mode" @load="getLoader" @submit="submit"/>
+            <v-news-editor
+                    :newsId="news.selected"
+                    :title="'test'"
+            />
+            </div>
         </v-news-modal>
     </div>
 </template>
 <script type="text/javascript">
-    import editIcon from '../icons/edit.png';
-    import addIcon from '../icons/add.png';
-    import pickUpIcon from '../icons/caret-up.png';
-    import pickDownIcon from '../icons/caret-down.png';
-    import deleteIcon from '../icons/delete.png';
-    import closeIcon from '../icons/close.png';
     import StringUtils from '../scripts/utils/StringUtils';
-
-    import noPic from '../images/news/no-pic.png';
-
-    import BaseModal from '../scripts/components/BaseModal.vue';
-    import NewsEditor from '../scripts/components/news-editor/NewsEditor.vue';
-    import ConfirmModal from '../scripts/components/ConfirmModal.vue';
-
     import SecurityService from '../scripts/api/SecurityService';
     import NewsService from '../scripts/api/NewsService';
-
-    import Article from '../scripts/components/Article.vue';
-
-    import {mapState} from 'vuex';
+    import FComponents from 'f-vue-components';
+    import noPic from '../assets/images/no-pic.png';
+    import Article from '../components/Article.vue';
+    import NewsContent from '../components/NewsContent.vue';
 
 
     function NewsItem({id,title,eventDate,status,preview,thumbnail, content}){
@@ -95,11 +95,12 @@
 
     let currentTimeout = null;
     export default {
+        name:'news',
         components:{
             "v-article": Article,
-            "v-news-modal": BaseModal,
-            'v-news-editor': NewsEditor,
-            "v-confirm-modal": ConfirmModal,
+            "v-news-modal": FComponents.Modal,
+            'v-news-editor': NewsContent,
+            "v-confirm-modal": FComponents.Modal,
         },
         props:{
             newsId: {
@@ -116,16 +117,7 @@
                 },
                 mode:'editing',
                 defaultThumbnail: noPic,
-                icon:{
-                    edit: editIcon,
-                    add: addIcon,
-                    delete: deleteIcon,
-                    pickUp: pickUpIcon,
-                    pickDown: pickDownIcon,
-                    close: closeIcon
-                },
                 news:{
-                    loader: null,
                     search: '',
                     list:[],
                     contents: {},
@@ -140,8 +132,8 @@
                 }
             }
         },
-        computed: mapState({
-            manage: state => state.isLogin,
+        computed:{
+            manage: () => true,
             getSelected(){
                 if(this.news.selected){
                     return this.news.map[this.news.selected];
@@ -154,7 +146,7 @@
             isPreview(){
                 return this.mode === 'preview';
             }
-        }),
+        },
         watch:{
             'news.search'( text, old ){
                 if(text === old){
@@ -167,7 +159,8 @@
         },
         methods:{
             loadModal(){
-                this.news.loader(this.getSelected);
+                // this.news.loader(this.getSelected);
+                // this.modal.show = true;
             },
             select( id ){
                 this.news.selected = id;
@@ -291,10 +284,16 @@
         }
     }
 </script>
-<style>
-    @import url('../styles/button.css');
-</style>
 <style scoped>
+    .news-panel{
+        padding: 1.25rem;
+    }
+    .tool.tool-close > i{
+        font-size: 1.25rem;
+    }
+    .tool.tool-close{
+        background-color: transparent;
+    }
     .page-news{
         min-height: 400px;
     }
@@ -317,8 +316,8 @@
     }
     .tool{
         display: inline-block;
-        width: 30px;
-        height: 30px;
+        width: 1.25rem;
+        height: 1.25rem;
         border: none;
         padding: 0;
     }

@@ -13,8 +13,8 @@ News.of = obj => obj instanceof News? obj: new News(obj);
 
 /* ---------------------------------------------------- */
 
-function NewsContent({id,header,content,simple}){
-    this.id = id;
+function NewsContent({newsId,header,content,simple}){
+    this.newsId = newsId;
     this.content = content;
     this.header = header;
     this.simple = simple;

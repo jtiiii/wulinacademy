@@ -1,7 +1,7 @@
 const Home = resolve => require(['./Home.vue'], resolve);
-// const About = resolve => require(['./About.vue'], resolve);
+const About = resolve => require(['./About.vue'], resolve);
 // const PageError = resolve => require(['./Error.vue'], resolve);
-// const News = resolve => require(['./News.vue'],resolve);
+const News = resolve => require(['./News.vue'],resolve);
 // const Channel = resolve => require(['./Channel.vue'],resolve);
 // const Test = resolve => require(['./Test.vue'],resolve);
 // const Manager = resolve => require(['./Manager.vue'],resolve);
@@ -11,13 +11,13 @@ const pages = [
         component: Home,
     },
     { name: 'news', path: '/news', props: true, i18key: 'index.nav.news',
-        // component: News,
+        component: News,
     },
     { name: 'news-id', path: '/news/:newsId', props: true, i18key: 'index.nav.news', default: false,  hidden: true,
-        // component: News
+        component: News
     },
     { name: 'about', path: '/about', i18key: 'index.nav.about',
-        // component: About
+        component: About
     },
     { name: 'channel', path: '/channel', i18key: 'index.nav.channel',
         // component: Channel
