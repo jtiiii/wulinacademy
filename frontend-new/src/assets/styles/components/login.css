@@ -1,0 +1,11 @@
+.root {
+  padding: 10px;
+}
+.root .form {
+  display: flex;
+  flex-flow: column nowrap;
+}
+.root .form > * {
+  margin: 0.5rem 0;
+}
+/*# sourceMappingURL=login.css.map */
