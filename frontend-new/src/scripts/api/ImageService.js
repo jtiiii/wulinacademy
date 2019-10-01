@@ -1,5 +1,6 @@
 import Api from './FetchApi';
 
+const IMAGE_SITE_PREFIX = Api.__context__ + '/';
 const ImageService = {
     __context__: '/image',
     saveImage(file,name,folderId){
@@ -19,3 +20,4 @@ const ImageService = {
     }
 };
 export default ImageService;
+export {IMAGE_SITE_PREFIX};

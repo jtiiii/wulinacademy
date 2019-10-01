@@ -8,6 +8,7 @@
   max-width: 43.5rem;
   display: flex;
   flex-flow: column nowrap;
+  padding: 0 1rem;
 }
 .about .content .history p {
   margin: 1rem 0;
@@ -22,6 +23,19 @@
 }
 .about .content .history .img span {
   color: #717171;
+}
+@media screen and (max-width: 480px) {
+  .about .content .contact p {
+    margin: 0 0 2rem 0;
+    display: inline-block;
+  }
+  .about .content .contact p b {
+    float: none;
+  }
+  .about .content .contact p span {
+    display: inline-block;
+    width: 100%;
+  }
 }
 .about .content .contact {
   padding: 1rem 2rem;

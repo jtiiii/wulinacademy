@@ -1,6 +1,5 @@
 <template>
     <div class="about">
-
         <article class="content">
             <div class="history">
                 <p>{{ $t('about.history.h1') }}</p>
@@ -25,9 +24,9 @@
             </div>
             <div class="contact">
                 <h2>{{ $t('index.title') }}</h2>
-                <p><b>{{ $t('about.contact.phoneNumber') }}</b> {{ phoneNumber }}</p>
+                <p><b>{{ $t('about.contact.phoneNumber') }}</b><span>{{ phoneNumber }}</span></p>
                 <p><b>{{ $t('about.contact.email') }}</b><a :href="'mailto:' + email">{{ email }}</a></p>
-                <p><b>{{ $t('about.contact.address') }}</b> {{ $t('about.contact.physicalAddress') }}</p>
+                <p><b>{{ $t('about.contact.address') }}</b><span>{{ $t('about.contact.physicalAddress') }}</span></p>
             </div>
             <div v-show="currentTab === 'map'" class="dituAmap">
                 <div id="mapContainer">
@@ -49,9 +48,6 @@
         methods: {
             show: function( tab ){
                 this.currentTab = tab.get().id;
-            },
-            resize(){
-                this.mobile = window.innerWidth < 900;
             },
         },
         data: ()=> {

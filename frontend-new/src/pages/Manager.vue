@@ -4,7 +4,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import ImageControl from '../scripts/components/imageControl/ImageControl.vue';
+    import ImageControl from '../components/ImageControl.vue';
 
     export default {
         components:{

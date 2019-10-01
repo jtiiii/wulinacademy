@@ -7,6 +7,7 @@
     max-width: 43.5rem;
     display: flex;
     flex-flow: column nowrap;
+    padding: 0 1rem;
     .history{
       p{
         margin: 1rem 0;
@@ -20,6 +21,21 @@
         }
         span{
           color: #717171;
+        }
+      }
+    }
+    @media screen and (max-width: 480px){
+      .contact{
+        p{
+          margin: 0 0 2rem 0;
+          display: inline-block;
+          b{
+            float: none;
+          }
+          span{
+            display: inline-block;
+            width: 100%;
+          }
         }
       }
     }
