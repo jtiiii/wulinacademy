@@ -25,6 +25,6 @@ public class LoginSuccHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String token = response.getHeader(tokenHeaderName);
-        response.getWriter().println(token);
+        response.getWriter().print(token);
     }
 }
