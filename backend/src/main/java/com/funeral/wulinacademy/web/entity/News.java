@@ -1,11 +1,16 @@
 package com.funeral.wulinacademy.web.entity;
 
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
+import com.funeral.wulinacademy.web.converter.StandardStatusConverter;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -16,40 +21,41 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-@Table("v_news")
-public class News implements ParseId<Integer> {
+@Table(name = "t_news")
+@Entity
+@DynamicInsert
+@DynamicUpdate
+public class News {
     /**
      * 主键ID
      */
     @Id
-    @Column("news_id")
     private Integer newsId;
     /**
      * 标题
      */
-    @Column("title")
     private String title;
     /**
      * 事件日期
      */
-    @Column("event_date")
     private Date eventDate;
     /**
      * 状态 ，VISIBLE - 可见 | INVISIBLE - 不可见 | DELETED - 删除
      */
-    @Column("status")
-    private Integer status;
+    @Convert(converter = StandardStatusConverter.class)
+    private StandardStatus status;
     /**
      * 缩略图路径
      */
-    @Column("thumbnail")
     private String thumbnail;
     /**
      * 预览信息
      */
-    @Column("preview")
     private String preview;
-
+    /**
+     * 文件uuid
+     */
+    private String uuid;
     /**
      * 创建时间
      */
@@ -58,9 +64,4 @@ public class News implements ParseId<Integer> {
      * 更新时间
      */
     private Date updateTime;
-
-    @Override
-    public Integer parse(String id) {
-        return Integer.valueOf(id);
-    }
 }

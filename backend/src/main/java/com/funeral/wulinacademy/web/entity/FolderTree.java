@@ -1,9 +1,14 @@
 package com.funeral.wulinacademy.web.entity;
 
+import com.funeral.wulinacademy.web.converter.FolderPathConverter;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.List;
 
 /**
  * @author FuneralObjects
@@ -11,8 +16,9 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Data
 @Accessors(chain = true)
-@Table("t_folder_tree")
-public class FolderTree implements ParseId<Integer>{
+@Table(name = "t_folder_tree")
+@Entity
+public class FolderTree{
     /**
      * 文件夹ID
      */
@@ -21,10 +27,8 @@ public class FolderTree implements ParseId<Integer>{
     /**
      * 文件夹路径
      */
-    private String path;
 
-    @Override
-    public Integer parse(String id) {
-        return Integer.parseInt(id);
-    }
+    @Convert(converter = FolderPathConverter.class)
+    private List<Integer> path;
+
 }

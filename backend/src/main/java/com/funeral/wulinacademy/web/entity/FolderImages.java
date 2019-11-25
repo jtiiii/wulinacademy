@@ -1,9 +1,13 @@
 package com.funeral.wulinacademy.web.entity;
 
+import com.funeral.wulinacademy.web.entity.pk.FolderImagePk;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author FuneralObjects
@@ -11,24 +15,20 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Data
 @Accessors(chain = true)
-@Table("t_folder_images")
-public class FolderImages implements ParseId<Integer> {
-    /**
-     * 文件夹ID
-     */
-    @Id
-    private Integer folderId;
+@Table(name = "t_folder_images")
+@Entity
+public class FolderImages{
+
+    @EmbeddedId
+    private FolderImagePk pk;
+
     /**
      * 图片ID
      */
-    private Integer imageId;
+    @Column(name = "sha1_md5")
+    private String sha1Md5;
     /**
-     * 图片名称
+     * 后缀名
      */
-    private String imageName;
-
-    @Override
-    public Integer parse(String id) {
-        return Integer.parseInt(id);
-    }
+    private String suffix;
 }

@@ -11,4 +11,8 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
     public static boolean isVoid(Class clzz){
         return Void.TYPE.equals(clzz);
     }
+
+    public static boolean isBasic(Class clzz){
+        return clzz.isPrimitive();
+    }
 }

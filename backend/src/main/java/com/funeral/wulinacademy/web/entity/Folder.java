@@ -2,9 +2,10 @@ package com.funeral.wulinacademy.web.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -13,12 +14,16 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-@Table("v_folder")
-public class Folder implements ParseId<Integer>{
+@Table(name = "t_folder")
+@Entity
+@DynamicInsert
+@DynamicUpdate
+public class Folder{
     /**
      * 文件夹ID
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer folderId;
     /**
      * 文件夹名称
@@ -29,10 +34,6 @@ public class Folder implements ParseId<Integer>{
      */
     private Integer parentId;
     /**
-     * 所属用户ID
-     */
-    private String userId;
-    /**
      * 创建日期
      */
     private Date createTime;
@@ -40,13 +41,4 @@ public class Folder implements ParseId<Integer>{
      * 更新日期
      */
     private Date updateTime;
-    /**
-     * @see com.funeral.wulinacademy.web.common.standard.StatusStandard
-     */
-    private Integer status;
-
-    @Override
-    public Integer parse(String id) {
-        return Integer.parseInt(id);
-    }
 }

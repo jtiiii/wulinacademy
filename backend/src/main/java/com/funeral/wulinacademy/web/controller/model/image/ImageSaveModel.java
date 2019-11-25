@@ -1,5 +1,6 @@
 package com.funeral.wulinacademy.web.controller.model.image;
 
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -20,7 +21,7 @@ public class ImageSaveModel {
     private String md5;
     /**
      * 状态
-     * @see com.funeral.wulinacademy.web.common.standard.StatusStandard
+     * @see StandardStatus
      */
     private Integer status;
     /**

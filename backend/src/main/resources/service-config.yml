@@ -7,15 +7,6 @@ security:
   login:
     usernameOfParamName: username
     passwordOfParamName: password
----
-login-users:
-  users:
-    - username: login
-      password: login
-      status: 1
-    - username: test
-      password: test
-      status: 0
----
-folder:
-  root-id: 0
+  user:
+    username: login
+    password: login

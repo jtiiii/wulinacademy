@@ -1,6 +1,9 @@
 package com.funeral.wulinacademy.web.repository;
 
 import com.funeral.wulinacademy.web.entity.Folder;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -8,14 +11,25 @@ import java.util.List;
  * @author FuneralObjects
  * @date 2019-05-14 13:44
  */
-public interface FolderRepository extends BaseRepository<Folder,Integer> {
+public interface FolderRepository extends JpaRepository<Folder,Integer> {
+
+//    List<Folder> findAllByParentIdAndStatus(Integer parentId, Integer status);
+
+    boolean existsAllByParentId(Integer parentId);
 
     List<Folder> findAllByParentId(Integer parentId);
 
-    boolean existsFolderByParentId(Integer parentId);
+    boolean existsAllByAndFolderName(String folderName);
 
-    boolean existsByFolderIdAndUserId(Integer folderId, String userId);
+    boolean existsAllByFolderIdNotAndFolderName(Integer folderId, String folderName);
 
-    List<Folder> findFoldersByParentIdAndUserId(Integer parentId,String userId);
+    @Modifying
+    @Query("UPDATE Folder SET folderName = :folderName WHERE folderId = :folderId")
+    void updateFolderNameByFolderId(String folderName,Integer folderId);
+
+//
+//    boolean existsByFolderIdAndUserId(Integer folderId, String userId);
+//
+//    List<Folder> findFoldersByParentIdAndUserId(Integer parentId,String userId);
 
 }

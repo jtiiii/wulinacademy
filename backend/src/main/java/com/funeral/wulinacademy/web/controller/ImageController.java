@@ -1,22 +1,18 @@
 package com.funeral.wulinacademy.web.controller;
 
 import com.funeral.wulinacademy.web.controller.exception.BadRequestException;
-import com.funeral.wulinacademy.web.controller.model.image.ImageModel;
-import com.funeral.wulinacademy.web.entity.ImageRelate;
 
+import com.funeral.wulinacademy.web.model.FolderImagesModify;
+import com.funeral.wulinacademy.web.model.ImageFile;
 import com.funeral.wulinacademy.web.service.ImageService;
-import com.funeral.wulinacademy.web.service.exception.ValidateException;
-import com.funeral.wulinacademy.web.util.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.funeral.wulinacademy.web.util.MultipartFileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.File;
 
 
 /**
@@ -30,50 +26,43 @@ public class ImageController {
     @Resource
     private ImageService imageService;
 
-    @Autowired
-    private FolderController folderController;
-
     @Value("${upload.image.max-size}")
     private long maxSize;
+
+    @Value("${location.images}")
+    private String imageDir;
+
+    @PostConstruct
+    private void inti(){
+        File dir = new File(imageDir);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+    }
 
     @PostMapping
     public void upload(@RequestParam("name") String name,
                          @RequestParam("file") MultipartFile file,
-                         @RequestParam("folder") Integer folder) throws ValidateException {
+                         @RequestParam("folder") Integer folder) {
         limitSize(file.getSize());
-        imageService.save(file,folder,name);
+        ImageFile imageFile = MultipartFileUtils.toImageFile(file);
+        MultipartFileUtils.saveIfNotExistsFileInSystem(getFileName(imageFile.getSha1Md5() + "." + imageFile.getSuffix()),imageFile.getContent());
+        imageService.addImage(new FolderImagesModify()
+                .setFolderId(folder)
+                .setImageName(name)
+                .setSha1Md5(imageFile.getSha1Md5())
+                .setSuffix(imageFile.getSuffix())
+        );
     }
 
-    @GetMapping(params = "folder")
-    public List<ImageModel> getFoldersImage(@RequestParam("folder") Integer folderId) throws ValidateException {
-        folderController.validateFolderAuthorityByCurrentUser(folderId);
-        return relateToModel(imageService.findFolderImages(folderId));
-    }
 
     private void limitSize(long size){
         if(size > maxSize ){
             throw new BadRequestException("This image uploaded is exceed the limit["+maxSize+" b].");
         }
     }
-
-    private ImageModel relateToModel(ImageRelate relate){
-        ImageModel mode =  new ImageModel()
-                .setId(relate.getImageId())
-                .setSuffix(relate.getSuffix())
-                .setCreateTime(relate.getCreateTime());
-        mode
-                .setMd5(relate.getMd5())
-                .setName(relate.getImageName())
-                .setSite(relate.getSite())
-                .setStatus(relate.getStatus());
-        return mode;
-    }
-
-    private List<ImageModel> relateToModel(Collection<ImageRelate> relates){
-        if(CollectionUtils.isEmptyAfterRemoveNull(relates)){
-            return new ArrayList<>(0);
-        }
-        return relates.parallelStream().map(this::relateToModel).collect(Collectors.toList());
+    private String getFileName(String name){
+        return imageDir + name;
     }
 
 }

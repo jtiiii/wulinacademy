@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.funeral.wulinacademy.web.controller")
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${location.assets}")

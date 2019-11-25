@@ -1,6 +1,6 @@
 package com.funeral.wulinacademy.web.service.exception;
 
-import com.funeral.wulinacademy.web.common.standard.StatusStandard;
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 
 /**
  * 业务校验异常
@@ -17,13 +17,13 @@ public class ValidateException extends BusinessException {
     }
 
     public static void validStatus(Integer status) throws ValidateException {
-        if(StatusStandard.getStatusByNum(status) == null){
+        if(StandardStatus.of(status) == null){
             throw new ValidateException("Illegal arg of status!");
         }
     }
 
     public static void validStatusIsNotDelete(Integer status) throws ValidateException {
-        if(StatusStandard.getStatusByNum(status) == StatusStandard.DELETED){
+        if(StandardStatus.of(status) == StandardStatus.DELETED){
             throw new ValidateException("Operate failed, illegal arg of status!");
         }
     }

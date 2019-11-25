@@ -2,6 +2,7 @@ package com.funeral.wulinacademy.web.controller.model.news;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.funeral.wulinacademy.web.common.standard.DateStandard;
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import com.funeral.wulinacademy.web.entity.News;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -30,7 +31,7 @@ public class NewsSaveModel {
     private Date eventDate;
     /**
      * 状态
-     * @see com.funeral.wulinacademy.web.common.standard.StatusStandard
+     * @see StandardStatus
      */
     @NotNull
     private Integer status;
@@ -46,7 +47,7 @@ public class NewsSaveModel {
     public News toEntity(){
         return new News()
                 .setTitle(title)
-                .setStatus(status)
+//                .setStatus(status)
                 .setEventDate(eventDate)
                 .setPreview(preview)
                 .setThumbnail(thumbnail);

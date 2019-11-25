@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class ServiceSecurityConfig {
     private Csrf csrf = new Csrf();
     private Login login = new Login();
+    private User user = new User();
 
     @Data
     public class Csrf{
@@ -36,6 +37,12 @@ public class ServiceSecurityConfig {
     public class Login{
         private String usernameOfParamName;
         private String passwordOfParamName;
+    }
+
+    @Data
+    public class User{
+        private String username;
+        private String password;
     }
 
 }

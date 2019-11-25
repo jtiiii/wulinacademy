@@ -4,7 +4,7 @@ package com.funeral.wulinacademy.web.common.standard;
  * @author FuneralObjects
  * @date 2019-04-14 02:43
  */
-public enum StatusStandard {
+public enum StandardStatus {
     /**
      * 可见
      */
@@ -20,7 +20,7 @@ public enum StatusStandard {
 
     private int num;
 
-    StatusStandard(int num) {
+    StandardStatus(int num) {
         this.num = num;
     }
 
@@ -28,7 +28,7 @@ public enum StatusStandard {
         return num;
     }
 
-    public static StatusStandard getStatusByNum(Integer num){
+    public static StandardStatus of(Integer num){
         if( num == null){
             return null;
         }
@@ -41,6 +41,6 @@ public enum StatusStandard {
     }
 
     public static boolean isVISIBLE(Integer num){
-        return VISIBLE == getStatusByNum(num);
+        return VISIBLE == of(num);
     }
 }

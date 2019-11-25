@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @Accessors(chain = true)
-public class FolderSaveModel {
+public class FolderModifyVo {
     /**
      * 文件夹名称
      */
@@ -24,13 +24,5 @@ public class FolderSaveModel {
      */
     @NotNull
     private Integer parent;
-    /**
-     * 所属用户ID
-     */
-    private String user;
-    /**
-     * @see com.funeral.wulinacademy.web.common.standard.StatusStandard
-     */
-    private Integer status;
 
 }

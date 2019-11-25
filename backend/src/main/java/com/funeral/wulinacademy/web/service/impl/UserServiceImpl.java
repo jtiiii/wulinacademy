@@ -1,15 +1,16 @@
 package com.funeral.wulinacademy.web.service.impl;
 
-import com.funeral.wulinacademy.web.common.standard.StatusStandard;
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
+import com.funeral.wulinacademy.web.config.ServiceSecurityConfig;
 import com.funeral.wulinacademy.web.entity.LoginUser;
-import com.funeral.wulinacademy.web.repository.LoginUserRepository;
 import com.funeral.wulinacademy.web.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import javax.annotation.PostConstruct;
 
 /**
  * @author FuneralObjects
@@ -18,18 +19,19 @@ import javax.annotation.Resource;
 @Service
 public class UserServiceImpl extends BaseService implements UserService {
 
-    @Resource
-    private LoginUserRepository loginUserRepository;
+    @Autowired
+    private ServiceSecurityConfig serviceSecurityConfig;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginUser loginUser = loginUserRepository.findLoginUserByUsername(username);
-        if(loginUser == null){
-            throw new UsernameNotFoundException(username);
+
+        if(!serviceSecurityConfig.getUser().getUsername().equals(username)){
+            throw new UsernameNotFoundException("The username["+username+"] doesn't exists!");
         }
         return User.withUsername(username)
-                .password(loginUser.getPassword())
-                .accountLocked(!StatusStandard.isVISIBLE(loginUser.getStatus()))
+                .password(serviceSecurityConfig.getUser().getPassword())
+                .accountLocked(false)
                 .authorities(new String[]{})
                 .build();
     }

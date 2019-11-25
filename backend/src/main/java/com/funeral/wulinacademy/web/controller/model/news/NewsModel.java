@@ -26,7 +26,7 @@ public class NewsModel extends NewsSaveModel {
         this.id = news.getNewsId();
         setTitle(news.getTitle());
         setEventDate(news.getEventDate());
-        setStatus(news.getStatus());
+//        setStatus(news.getStatus());
         setPreview(news.getPreview());
         setThumbnail(news.getThumbnail());
     }
