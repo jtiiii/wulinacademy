@@ -2,14 +2,23 @@ package com.funeral.wulinacademy.web.service.impl;
 
 import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import com.funeral.wulinacademy.web.entity.News;
+import com.funeral.wulinacademy.web.entity.QNews;
 import com.funeral.wulinacademy.web.model.NewsModify;
 import com.funeral.wulinacademy.web.repository.NewsRepository;
 import com.funeral.wulinacademy.web.service.NewsService;
+import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.JPQLQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * Implement Of NewsService
@@ -22,6 +31,9 @@ import javax.annotation.Resource;
 public class NewsServiceImpl extends BaseService implements NewsService {
     @Resource
     private NewsRepository newsRepository;
+
+    @Resource
+    private JPQLQueryFactory jpqlQueryFactory;
 
     @Override
     public String getName() {
@@ -53,5 +65,34 @@ public class NewsServiceImpl extends BaseService implements NewsService {
                 .setTitle(modify.getTitle())
                 .setThumbnail(modify.getThumbnail());
         newsRepository.save(news);
+    }
+
+    @Override
+    public String getUuidById(Integer newsId) {
+        Assert.notNull(newsId, "The newsId cannot be null");
+        return newsRepository.findUuidByNewsId(newsId);
+    }
+
+    @Override
+    public Page<News> findPageByEventDateAndKeywords(Pageable pageable, String keywords, Date start, Date end, StandardStatus status) {
+        JPQLQuery<News> query = jpqlQueryFactory.select(QNews.news)
+                .from(QNews.news);
+        if(!StringUtils.isEmpty(keywords)){
+            query.where(QNews.news.title.like(keywords));
+        }
+        if(start != null){
+            query.where(QNews.news.eventDate.after(start));
+        }
+        if(end != null){
+            query.where(QNews.news.eventDate.before(end));
+        }
+        if(status != null){
+            query.where(QNews.news.status.eq(status));
+        }
+        QueryResults<News> queryResults = query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetchResults();
+        if(queryResults.getTotal() == 0){
+            return Page.empty(pageable);
+        }
+        return new PageImpl<>(queryResults.getResults(),pageable,queryResults.getTotal());
     }
 }

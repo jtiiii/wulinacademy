@@ -1,18 +1,13 @@
 package com.funeral.wulinacademy.web.util;
 
 import com.funeral.wulinacademy.web.model.ImageFile;
-import com.funeral.wulinacademy.web.model.NewsFile;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author FuneralObjects

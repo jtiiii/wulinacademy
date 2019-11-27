@@ -2,10 +2,7 @@ package com.funeral.wulinacademy.web.repository;
 
 import com.funeral.wulinacademy.web.entity.News;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author FuneralObjects
@@ -13,4 +10,6 @@ import java.util.Set;
  */
 public interface NewsRepository extends JpaRepository<News,Integer> {
 
+    @Query("SELECT uuid FROM News WHERE newsId = :newsId")
+    String findUuidByNewsId(Integer newsId);
 }

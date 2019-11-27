@@ -1,13 +1,11 @@
 package com.funeral.wulinacademy.web.service.impl;
 
-import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import com.funeral.wulinacademy.web.entity.Folder;
 import com.funeral.wulinacademy.web.entity.FolderTree;
 import com.funeral.wulinacademy.web.model.FolderModify;
 import com.funeral.wulinacademy.web.repository.FolderRepository;
 import com.funeral.wulinacademy.web.repository.FolderTreeRepository;
 import com.funeral.wulinacademy.web.service.FolderService;
-import com.funeral.wulinacademy.web.service.exception.ValidateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;

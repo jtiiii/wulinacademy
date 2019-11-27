@@ -1,7 +1,7 @@
 package com.funeral.wulinacademy.web.controller;
 
-import com.funeral.wulinacademy.web.controller.model.folder.FolderVo;
 import com.funeral.wulinacademy.web.controller.model.folder.FolderModifyVo;
+import com.funeral.wulinacademy.web.controller.model.folder.FolderVo;
 import com.funeral.wulinacademy.web.entity.Folder;
 import com.funeral.wulinacademy.web.model.FolderModify;
 import com.funeral.wulinacademy.web.service.FolderService;

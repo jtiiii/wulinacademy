@@ -1,7 +1,7 @@
 package com.funeral.wulinacademy.web.controller;
 
 import com.funeral.wulinacademy.web.controller.exception.BadRequestException;
-
+import com.funeral.wulinacademy.web.controller.model.image.ImageVo;
 import com.funeral.wulinacademy.web.model.FolderImagesModify;
 import com.funeral.wulinacademy.web.model.ImageFile;
 import com.funeral.wulinacademy.web.service.ImageService;
@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -42,8 +44,8 @@ public class ImageController {
 
     @PostMapping
     public void upload(@RequestParam("name") String name,
-                         @RequestParam("file") MultipartFile file,
-                         @RequestParam("folder") Integer folder) {
+                       @RequestParam("file") MultipartFile file,
+                       @RequestParam("folder") Integer folder) {
         limitSize(file.getSize());
         ImageFile imageFile = MultipartFileUtils.toImageFile(file);
         MultipartFileUtils.saveIfNotExistsFileInSystem(getFileName(imageFile.getSha1Md5() + "." + imageFile.getSuffix()),imageFile.getContent());
@@ -53,6 +55,17 @@ public class ImageController {
                 .setSha1Md5(imageFile.getSha1Md5())
                 .setSuffix(imageFile.getSuffix())
         );
+    }
+
+    @GetMapping("/folder/{folderId}")
+    public List<ImageVo> findImageVoByFolderId(@PathVariable Integer folderId){
+        return imageService.findAllByFolderId(folderId)
+                .parallelStream()
+                .map( fi -> new ImageVo()
+                        .setName(fi.getPk().getImageName())
+                        .setSha1Md5(fi.getSha1Md5())
+                        .setSuffix(fi.getSuffix()))
+                .collect(Collectors.toList());
     }
 
 

@@ -1,12 +1,25 @@
 package com.funeral.wulinacademy.web.controller;
 
+import com.funeral.wulinacademy.web.common.standard.StandardStatus;
+import com.funeral.wulinacademy.web.controller.model.news.NewsModifyVo;
+import com.funeral.wulinacademy.web.controller.model.news.NewsVo;
+import com.funeral.wulinacademy.web.model.NewsModify;
+import com.funeral.wulinacademy.web.service.NewsService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.text.ParseException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 /**
  * 新闻内容controller
@@ -18,67 +31,99 @@ import java.util.stream.Collectors;
 @RequestMapping("/news")
 public class NewsController {
 
-//    @Resource
-//    private NewsService newsService;
-//
-//    @GetMapping("/page-{number}-{size}")
-//    public Page<NewsModel> findByPage(@PathVariable("number") Integer number,
-//                                      @PathVariable("size") Integer size,
-//                                      @RequestParam(value = "eventTime",required = false) String eventTime,
-//                                      @RequestParam(value = "search",required = false) String search) throws BadRequestException, InternalServerErrorException {
-//        Date start = null;
-//        try {
-//            if(!StringUtils.isEmpty(eventTime)){
-//                start = DateStandard.parseByTimestamp(eventTime);
-//            }
-//        } catch (ParseException e) {
-//            throw new BadRequestException("Date parse error: [eventTime] ",e);
-//        }
-//        Page<News> pNews = newsService.findByTitleAndVisibleForPage(search,PageRequest.of(number,size),start);
-//        return new PageImpl<>(
-//                pNews.get().map(NewsModel::new).collect(Collectors.toList()),
-//                pNews.getPageable(),
-//                pNews.getTotalElements());
-//    }
-//
-//    @AutoValid
-//    @PostMapping
-//    public Integer saveNews(@RequestBody @Valid NewsSaveModel model, BindingResult br) throws ValidateException {
-//        News news = model.toEntity();
-//        newsService.saveOrUpdate(news);
-//        return news.getNewsId();
-//    }
-//
-//    @AutoValid
-//    @PutMapping("/{id}")
-//    public void updateNews(@PathVariable Integer id, @RequestBody @Valid NewsSaveModel model, BindingResult br) throws ValidateException {
-//        NewsModel nm = new NewsModel(id,model);
-//        newsService.saveOrUpdate(nm.toEntity());
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteNews(@PathVariable Integer id){
-//        newsService.delete(id);
-//    }
-//
-//    @GetMapping("/{id}/content")
-//    public NewsContentModel findContentById(@PathVariable("id") Integer newsId){
-//        return new NewsContentModel(newsService.getContentById(newsId));
-//    }
-//
-//    @AutoValid
-//    @PostMapping("/{id}/content")
-//    public void saveContent(@PathVariable("id") Integer newsId, @RequestBody @Valid NewsContentSaveModel model, BindingResult br) throws ValidateException {
-//        newsService.saveOrUpdateContent(new NewsContentModel(newsId,model).toEntity());
-//    }
+    @Resource
+    private NewsService newsService;
 
-//    private List<NewsModel> transformToModel(List<News> news){
-//        if(CollectionUtils.isEmptyAfterRemoveNull(news)){
-//            return new ArrayList<>();
-//        }
-//        List<NewsModel> result = new ArrayList<>(news.size());
-//        news.forEach( value -> result.add(new NewsModel(value)));
-//        return result;
-//    }
+    @Value("${location.news}")
+    private String dir;
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @PostConstruct
+    private void init(){
+        File newsDir = new File(dir);
+        if(!newsDir.exists()){
+            newsDir.mkdirs();
+        }
+    }
+
+    @GetMapping("/page/{num}-{size}")
+    public Page<NewsVo> findPage(@PathVariable Integer num,
+                                 @PathVariable Integer size,
+                                 @RequestParam(value = "start",required = false) Long startTime,
+                                 @RequestParam(value = "end",required = false) Long endTime,
+                                 @RequestParam(value = "keywords",required = false) String keywords,
+                                 @RequestParam(value = "status",required = false) Integer status){
+        Pageable pageable = PageRequest.of(num,size);
+        return newsService.findPageByEventDateAndKeywords(
+                pageable,
+                keywords,
+                startTime == null? null: new Date(startTime),
+                endTime == null? null: new Date(endTime),
+                StandardStatus.of(status))
+                .map( entity -> new NewsVo().setId(entity.getNewsId())
+                .setEventDate(entity.getEventDate())
+                .setPreview(entity.getPreview())
+                .setThumbnail(entity.getThumbnail())
+                .setTitle(entity.getTitle())
+                .setEnable(StandardStatus.VISIBLE.equals(entity.getStatus())));
+    }
+
+    @PostMapping
+    public Integer saveNews(@RequestBody @Valid NewsModifyVo model) {
+        NewsModify modify = new NewsModify()
+                .setEventDate(model.getEventDate())
+                .setPreview(model.getPreview())
+                .setThumbnail(model.getThumbnail())
+                .setTitle(model.getTitle());
+        String uuid = generateUuid();
+        createContentFile(uuid);
+        return newsService.addNews(modify,uuid);
+    }
+
+    @PutMapping("/{id}")
+    public void updateNewsInfo(@PathVariable Integer id,
+                               @RequestBody @Valid NewsModifyVo model){
+        NewsModify modify = new NewsModify()
+                .setEventDate(model.getEventDate())
+                .setPreview(model.getPreview())
+                .setThumbnail(model.getThumbnail())
+                .setTitle(model.getTitle());
+        newsService.updateNewsInfo(id,modify);
+    }
+
+    @PutMapping("/{id}/content")
+    public void updateContent(@PathVariable Integer id,
+                              @RequestBody String content){
+        String uuid = newsService.getUuidById(id);
+        if(content == null){
+            content = "";
+        }
+        try {
+            FileCopyUtils.copy(content.getBytes(StandardCharsets.UTF_8),getContentFile(uuid));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String generateUuid(){
+        return UUID.randomUUID().toString();
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createContentFile(String uuid){
+        File newsContent = getContentFile(uuid);
+        if(!newsContent.exists()){
+            try {
+                newsContent.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private File getContentFile(String uuid){
+        return new File(dir + uuid);
+    }
 
 }

@@ -1,27 +1,23 @@
 package com.funeral.wulinacademy.web.controller.model.image;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
 
 /**
  * @author FuneralObjects
  * @date 2019-05-15 15:29
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class ImageModel extends ImageSaveModel{
+public class ImageVo {
+    /**
+     * 图片名称
+     */
+    private String name;
     /**
      * 图片ID
      */
-    private Integer id;
-    /**
-     * 创建事件
-     */
-    private Date createTime;
+    private String sha1Md5;
     /**
      * 后缀名
      */

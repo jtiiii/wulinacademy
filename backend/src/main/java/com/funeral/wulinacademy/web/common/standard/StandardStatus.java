@@ -1,5 +1,9 @@
 package com.funeral.wulinacademy.web.common.standard;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+
 /**
  * @author FuneralObjects
  * @date 2019-04-14 02:43
@@ -18,16 +22,15 @@ public enum StandardStatus {
      */
     DELETED(-1);
 
+    @JsonValue
+    @Getter
     private int num;
 
     StandardStatus(int num) {
         this.num = num;
     }
 
-    public int getNum() {
-        return num;
-    }
-
+    @JsonCreator
     public static StandardStatus of(Integer num){
         if( num == null){
             return null;
@@ -40,7 +43,7 @@ public enum StandardStatus {
         }
     }
 
-    public static boolean isVISIBLE(Integer num){
+    public static boolean isVisible(Integer num){
         return VISIBLE == of(num);
     }
 }

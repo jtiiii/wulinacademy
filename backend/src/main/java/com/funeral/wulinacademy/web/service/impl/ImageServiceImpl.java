@@ -5,12 +5,12 @@ import com.funeral.wulinacademy.web.entity.pk.FolderImagePk;
 import com.funeral.wulinacademy.web.model.FolderImagesModify;
 import com.funeral.wulinacademy.web.repository.FolderImagesRepository;
 import com.funeral.wulinacademy.web.service.ImageService;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -40,5 +40,11 @@ public class ImageServiceImpl implements ImageService {
         Assert.notNull(folderId, "The folderId cannot be null!");
         Assert.notNull(name, "The name cannot be null!");
         folderImagesRepository.deleteById(new FolderImagePk().setFolderId(folderId).setImageName(name));
+    }
+
+    @Override
+    public List<FolderImages> findAllByFolderId(Integer folderId) {
+        Assert.notNull(folderId, "The folderId cannot be null!");
+        return folderImagesRepository.findAllByPk_FolderId(folderId);
     }
 }

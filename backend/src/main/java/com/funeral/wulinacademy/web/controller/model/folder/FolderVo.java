@@ -1,11 +1,8 @@
 package com.funeral.wulinacademy.web.controller.model.folder;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -35,8 +32,4 @@ public class FolderVo {
      * 更新时间
      */
     private Date updateTime;
-//    /**
-//     * 文件路径
-//     */
-//    private String path;
 }

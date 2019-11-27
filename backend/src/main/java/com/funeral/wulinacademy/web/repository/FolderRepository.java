@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface FolderRepository extends JpaRepository<Folder,Integer> {
 
-//    List<Folder> findAllByParentIdAndStatus(Integer parentId, Integer status);
-
     boolean existsAllByParentId(Integer parentId);
 
     List<Folder> findAllByParentId(Integer parentId);
@@ -27,9 +25,5 @@ public interface FolderRepository extends JpaRepository<Folder,Integer> {
     @Query("UPDATE Folder SET folderName = :folderName WHERE folderId = :folderId")
     void updateFolderNameByFolderId(String folderName,Integer folderId);
 
-//
-//    boolean existsByFolderIdAndUserId(Integer folderId, String userId);
-//
-//    List<Folder> findFoldersByParentIdAndUserId(Integer parentId,String userId);
 
 }

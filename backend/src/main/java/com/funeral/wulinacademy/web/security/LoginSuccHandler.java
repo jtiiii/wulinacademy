@@ -1,6 +1,5 @@
 package com.funeral.wulinacademy.web.security;
 
-import com.funeral.wulinacademy.web.config.ServiceSecurityConfig;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 

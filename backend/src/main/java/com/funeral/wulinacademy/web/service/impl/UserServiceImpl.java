@@ -1,16 +1,12 @@
 package com.funeral.wulinacademy.web.service.impl;
 
-import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import com.funeral.wulinacademy.web.config.ServiceSecurityConfig;
-import com.funeral.wulinacademy.web.entity.LoginUser;
 import com.funeral.wulinacademy.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author FuneralObjects
