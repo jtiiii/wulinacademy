@@ -106,21 +106,12 @@
                 pages: pages,
                 pageMap: pageMap,
                 length: 3,
-                _scroll : 0
             };
         },
         directives:{
             outsideClick: VueUtils.directives.outsideClick
         },
         computed:{
-            scroll:{
-                set( value ){
-                    this._scroll = value;
-                },
-                get(){
-                    return this._scroll;
-                }
-            },
             currentTab(){
                 return this.pageMap[this.$route.path];
             }

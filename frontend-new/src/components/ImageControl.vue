@@ -1,80 +1,83 @@
 <template>
-    <div class="folder-control">
-
+    <div class="image-control">
         <!-- 文件夹控制 -->
-        <v-panel class="folder-panel" :width="'210px'" :height="'600px'">
-            <div class="folder-tool">
-                <v-button @click="openFolderModal('add')" :width="'50px'" :type="'info'">新增</v-button>
-<!--                <v-button @click="openFolderModal('update')" :width="'50px'" :type="'warning'">修改</v-button>-->
-<!--                <v-button @click="openFolderModal('delete')" :width="'50px'" :type="'danger'">删除</v-button>-->
+        <v-panel class="folder" :width="'210px'" :height="'600px'">
+            <div class="tool">
+                <v-button @click="openFolderModal('add')" :size="'small'" :emotion="'success'">新增</v-button>
             </div>
-            <hr/>
-            <v-tree :list="$data._folders" :emotion="'info'" @itemClick="selectFolder" >
-                <template #item="{index,item}">
-                    {{item.text}}
+            <v-tree :list="folders" :emotion="'info'" >
+                <template #switch="{item}">
+                    <a @click="expand(item)" :class="{'expand': item.show }" ><i class="iconfont wulin-caret-down"/></a>
+                </template>
+                <template #item="{item}">
+                    <a :class="{ 'select': item.select}" @click="selectFolder(item)">{{item.text}}</a>
                 </template>
             </v-tree>
         </v-panel>
         <!-- 图片预览 -->
-        <v-panel class="file-panel" :width="'480px'" :height="'600px'">
+        <v-panel class="folder-image" :width="'480px'" :height="'600px'">
             <div>
-                {{ folderPath }}
-                <v-button v-show="this.selected" @click="openUploadModal" :type="'info'">上传图片</v-button>
+                {{ selected? folderPath : '' }}
+                <br/>
+                <v-button v-show="this.selected" @click="openUploadModal" :size="'small'" :emotion="'default'">上传图片</v-button>
             </div>
-            <hr/>
             <div>
-                <thumbnail v-for="t in thumbnails" @image-click="imageClick(t)" :key="t.id" :src="t.src">
+                <thumbnail v-for="t in thumbnails" @image-click="imageClick(t)" :key="'thumbnail-' +t.id" :src="t.src">
                     {{t.name}} {{t.suffix}}
                 </thumbnail>
             </div>
         </v-panel>
         <!-- 上传控件 -->
-        <image-upload class="image-upload-modal" @submit="uploadImage" :width="'670px'" :height="'500px'" :show="uploadModal.show" @close="uploadModal.show = false"></image-upload>
+        <image-upload class="image-upload-modal"
+                      :title="'上传图片'"
+                      :show="uploadModal.show"
+                      :images="uploadModal.images"
+                      @submit="uploadImage"
+                      @close="uploadModal.show = false"
+        />
         <!-- 文件夹编辑 -->
-        <v-modal :show="folderModal.show" :width="folderModal.width" :type="folderModal.type" :height="folderModal.height" @close="folderModal.show = false" >
-            <template #title>{{ folderModal.title }}</template>
-            名称：<input-text :disabled="folderModal.mode === 'delete'" v-model="folderModal.folder.name" ></input-text>
+        <v-modal :show="folderModal.show" :size="'medium'" :emotion="folderModal.config[folderModal.mode].type" @close="folderModal.show = false" >
+            <template #title>{{ folderModal.config[folderModal.mode].title }}</template>
+            名称：<input-text :disabled="folderModal.mode === 'delete'" v-model="folderModal.folder.name" />
             <br/>
-            位置：根目录 / {{ folderModal.folder.name }}
+            位置： {{folderPath}} / {{ folderModal.folder.name }}
             <br/>
-            <v-button class="submit" @click="saveFolder" :width="'100%'" :type="'success'">Submit</v-button>
+            <v-button @click="saveFolder" :size="'small'" :emotion="'success'">新增</v-button>
         </v-modal>
     </div>
 </template>
 <script>
     import FComponents from 'f-vue-components'
     import FolderService from '../scripts/api/FolderService';
-    import ApiModel from '../scripts/api/Model';
+    import ArrayUtils from "../scripts/utils/ArrayUtils";
     import ImageService,{IMAGE_SITE_PREFIX} from '../scripts/api/ImageService';
 
     class TreeNode{
-        constructor({ text, id, show, children}){
+        constructor({ text, id, show = false,select = false, children = [], parent}){
             this.id = id;
             this.text = text;
             this.show = show;
-            if(children && children instanceof Array){
+            this.select = select;
+            this.parent = parent;
+            if(children && children.length ){
                 this.children = children.map( TreeNode.of );
             }else{
                 this.children = [];
             }
         }
 
-        addChildren( ...childs ){
-            if(childs && childs.length){
-                childs.forEach( child => {
-                    this.children.push(TreeNode.of(child))
-                });
-            }
+        static of(obj){
+            return obj instanceof TreeNode? obj: new TreeNode(obj);
         }
-        setChildren( ...childs ){
-            if(childs && childs.length){
-                this.children.splice(0);
-                this.addChildren(childs);
-            }
+        static fromFolder( folder, cache){
+            let result = TreeNode.of({text:folder.name, id:folder.id, parent: cache[folder.parent]});
+            cache[result.id] = result;
+            return result;
+        }
+        static fromFolders( folders , cache){
+            return folders.map( folder => TreeNode.fromFolder(folder, cache));
         }
     }
-    TreeNode.of = obj => obj instanceof TreeNode? obj: new TreeNode(obj);
-    TreeNode.ofs = objs => objs.map(TreeNode.of);
 
     export default {
         components:{
@@ -92,96 +95,88 @@
                     show: false,
                     mode: 'add',
                     modes: ['add','update','delete'],
-                    height: 'auto',
-                    width: 'auto',
                     title: '',
-                    type: 'info',
-                    folder: ApiModel.Folder.of({})
+                    folder: {
+                        id: null,
+                        name: null,
+                        parent: {},
+                    },
+                    config:{
+                        add: {
+                            type: 'info',
+                            title: '新建文件夹',
+                            requiredSelected: false,
+                        },
+                        update:{
+                            type: 'warning',
+                            title: '需改文件夹',
+                            requiredSelected: true,
+                        },
+                        delete:{
+                            type: 'danger',
+                            title: '删除文件夹',
+                            requiredSelected: true,
+                        }
+                    }
                 },
-                _folders: [],
-                map:{},
+                folders: [],
+                cache:{},
                 selected: undefined,
-                _thumbnails: [],
+                thumbnails: [],
                 uploadModal: {
-                    show: false
+                    show: false,
+                    images: [],
+                    selectText: '选择图片',
+                    resetText: '清空',
+                    submitText: '上传',
                 }
             };
         },
         methods:{
             saveFolder(){
-                FolderService.addFolder(this.folderModal.folder.name,this.folderModal.folder.parent).then( () => {
-                    this.refreshFolder();
+                let parent = this.selected ? this.cache[this.selected] : null;
+                FolderService.addFolder(this.folderModal.folder.name, parent? parent.id : 0 ).then( () => {
+                    this.refreshFolder( parent );
+                    this.folderModal.show = false;
                 });
             },
-            refreshFolder(){
-                this.cleanFolder();
-                this.loadRootFolders();
+            refreshFolder( parent ){
+                this.cleanFolder( parent );
+                this.loadFolders( parent );
             },
-            cleanFolder(){
-                this.folders = [];
-                this.map = {};
-                this.selected = undefined;
+            cleanFolder( parent ){
+                if(!parent){
+                    return;
+                }
+                ArrayUtils.clean(parent.children);
             },
             openFolderModal( mode ){
-                this.cleanFolderModal();
-                if(mode !== 'add' && !this.selected){
+                if(this.folderModal.config[mode].requiredSelected && !this.selected ){
                     alert('Please select first');
                     return;
                 }
-                this.switchFolderModalMode(mode);
+                this.folderModal.mode = mode;
                 this.folderModal.show = true;
             },
-            switchFolderModalMode( mode ){
-                this.folderModal.mode = mode;
-                switch (mode) {
-                    case 'add':
-                        this.folderModal.title = '添加文件夹';
-                        this.folderModal.folder.parent = this.selected || 0;
-                        break;
-                    case 'update':
-                        this.folderModal.title = '修改文件夹';
-                        this.folderModal.type = 'warning';
-                        this.folderModal.folder = this.map[this.selected].folder;
-                        break;
-                    default :
-                        this.folderModal.title = '确认删除';
-                        this.folderModal.type = 'danger';
-                        this.folderModal.folder = this.map[this.selected].folder;
+            loadFolders(parent){
+                if(parent){
+                    FolderService.getSonFolders(parent.id).then( data => {
+                        ArrayUtils.copy(TreeNode.fromFolders(data, this.cache),parent.children);
+                    });
+                    return;
                 }
-            },
-            cleanFolderModal(){
-                this.folderModal.mode = '';
-                this.folderModal.width = 'auto';
-                this.folderModal.height = 'auto';
-                this.folderModal.title = '';
-                this.folderModal.type = 'info';
-                this.folderModal.folder = ApiModel.Folder.of({});
-            },
-            loadRootFolders(){
                 FolderService.getRootFolders().then( data => {
-                    this.folders = data.map( n => TreeNode.of({text:n.name, id:n.id, show: false}));
-                    this.folders.forEach( f => {
-                        this.map[f.id] = f;
-                    })
+                    ArrayUtils.copy(TreeNode.fromFolders(data, this.cache),this.folders);
                 });
             },
             loadImagesBySelect( folderId ){
                 ImageService.getImagesByFolder(folderId)
                     .then( data => {
-                        this.thumbnails = data.map( t => {
-                            t.src = IMAGE_SITE_PREFIX + t.site;
+                        ArrayUtils.copy(data.map( t => {
+                            t.src = IMAGE_SITE_PREFIX + t['sha1Md5'] + "." +t.suffix;
                             return t;
-                        });
+                        }),this.thumbnails);
                     });
-            },
-            addFolder( folder ){
-                let node = folderToTreeNode(folder);
-                this.map[node.id] = node;
-                if( FolderService.isRoot( folder.parent )){
-                    this.folders.push(node);
-                }else{
-                    this.map[folder.parent].addChildren(node);
-                }
             },
             selectFolder( node ){
                 this.unselect();
@@ -190,7 +185,7 @@
             },
             unselect(){
                 if(this.selected){
-                    this.map[this.selected].select = false;
+                    this.cache[this.selected].select = false;
                 }
                 this.selected = undefined;
             },
@@ -199,15 +194,12 @@
                 node.select = true;
             },
             expand( node ){
-                if(node.children.length){
-                    return;
+                node.show = !node.show;
+                if(node.show){
+                    this.refreshFolder( node );
                 }
-                FolderService.getSonFolders(node.id).then( data => {
-                    data.forEach( folder => this.addFolder( folder ));
-                });
             },
             uploadImage( images ){
-                console.info(images);
                 let p = new Promise( resolve => resolve());
                 images.forEach( image => {
                     p.then(() => {
@@ -224,37 +216,20 @@
                 this.$emit('image-click',image);
             },
             openUploadModal(){
+                ArrayUtils.clean(this.uploadModal.images);
                 if(this.selected){
                     this.uploadModal.show = true
-                }else{
-                    alert('Please select folder');
+                    return;
                 }
+                alert('Please select folder');
             },
         },
         computed:{
-            folders:{
-                set( nodes ){
-                    this.$data._folders.splice(0);
-                    nodes.forEach( n => this.$data._folders.push(n) );
-                },
-                get(){
-                    return this.$data._folders;
-                }
-            },
-            thumbnails:{
-                set( images ){
-                    this.$data._thumbnails.splice(0);
-                    images.forEach( i => this.$data._thumbnails.push(i));
-                },
-                get(){
-                    return this.$data._thumbnails;
-                }
-            },
-            folderPath: function(){
+            folderPath(){
                 if(!this.selected){
                     return '/'
                 }
-                let node = this.map[this.selected];
+                let node = this.cache[this.selected];
                 let text = node.text;
                 while(node.parent != null){
                     node = node.parent;
@@ -264,35 +239,10 @@
             }
         },
         mounted(){
-            this.$emit('init',this.loadRootFolders.bind(this));
+            this.$emit('init',this.refreshFolder.bind(this));
         }
     };
 </script>
-<style scoped>
-    /*.folder-tool{*/
-    /*    width: 100%;*/
-    /*}*/
-    .image-upload-modal{
-        width: 100%;
-        height: 500px;
-    }
-    .folder-panel{
-        float: left;
-        width: 30%;
-        height: 100%;
-        text-align: left;
-    }
-    .file-panel{
-        float: left;
-        width: 70%;
-        height: 100%;
-    }
-    .folder-control{
-        width: 100%;
-        position: relative;
-        text-align: left;
-    }
-    .submit{
-        margin: 10px 0;
-    }
+<style>
+    @import url('../assets/styles/components/image-control.css');
 </style>

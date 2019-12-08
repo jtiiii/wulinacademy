@@ -4,7 +4,7 @@
             登陆成功！
             <v-button :emotion="'warning'" @click="logout"> 登出 </v-button>
         </div>
-        <div v-else="isLogin" class="form">
+        <div v-else class="form">
             <v-input-text :label="$t('login.username')" v-model="username"/>
             <v-input-text :label="$t('login.password')" :type="'password'" v-model="password"/>
             <v-button :emotion="'info'" @click="login">{{ $t('login.login') }}</v-button>
@@ -34,11 +34,9 @@
         },
         methods:{
             login(){
-                SecurityService.login(this.username,this.password).then( loginResult => {
-                    if(loginResult){
-                        this.loginSucc();
-                        this.$store.commit('login');
-                    }
+                SecurityService.login(this.username,this.password).then( () => {
+                    this.$store.commit('login');
+                    this.$emit('loginSuccessful');
                 });
             },
             logout(){
@@ -46,9 +44,6 @@
                     .then(() => {
                         this.$store.commit('logout');
                     });
-            },
-            loginSucc(){
-                this.$emit('loginSuccessful');
             }
         }
     }
