@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build  --no-clean --mode build && vue-cli-service build --mode test",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "f-vue-components": "^0.1.4",
+    "f-vue-components": "^0.1.7",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "vue-i18n": "^8.14.0",
