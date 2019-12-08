@@ -1,18 +1,18 @@
 // import Api from './Api';
-import Api from './FetchApi';
+import ServiceApi from "./ServiceApi";
 
 const FolderService = {
     __context__: '/folder',
+    __api__: new ServiceApi("文件夹服务"),
     getRootFolders(){
-        return Api.Get(this.__context__+'/'+'root');
+        return this.__api__.Get(this.__context__+'/root',{});
     },
     getSonFolders( folderId ){
-        return Api.Get(this.__context__ + '/'+folderId+'/son');
+        return this.__api__.Get(this.__context__ + '/{folderId}/son', {urlData: { folderId }});
     },
     addFolder(name , parentId){
         parentId = parentId || 0;
-        return Api.Post(this.__context__+'/',
-            {name: name, parent: parentId});
+        return this.__api__.Post(this.__context__+'/', {body:{name: name, parent: parentId}});
     },
     isRoot( folderId ){
         return folderId === 0;

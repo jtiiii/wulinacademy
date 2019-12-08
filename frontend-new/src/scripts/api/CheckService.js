@@ -1,9 +1,10 @@
-import Api from './Api';
+import ServiceApi from './ServiceApi';
 
 const CheckService = {
+    __api__: new ServiceApi("检查服务模块"),
     context:'/check',
     available(){
-        return Api.Get(this.context+ '/available');
+        return this.__api__.Get(this.context+ '/available',{});
     }
 };
 
