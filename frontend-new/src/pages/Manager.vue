@@ -29,12 +29,11 @@
 </script>
 <style scoped>
     .manager{
-        display: inline-block;
+        display: flex;
+        flex-flow: column nowrap;
         text-align: center;
-        width: 700px;
-    }
-    .image-manager{
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        height: 600px;
     }
 </style>
