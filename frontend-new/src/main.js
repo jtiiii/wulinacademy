@@ -8,6 +8,7 @@ import App from './App.vue';
 import routes from './pages/pages';
 import i18nOption from './scripts/i18n/i18n';
 import option from './scripts/Store';
+import ServerConfig from "./scripts/config/ServerConfig";
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(VueRouter);
@@ -25,5 +26,10 @@ new Vue({
   router,
   store,
   i18n,
-  // router,
 }).$mount('#app');
+let author = ServerConfig.author.asciiArt +
+    "\n author :    Funeral Objects" +
+    "\n email  :    " + ServerConfig.author.email +
+    "\n github :    " + ServerConfig.author.github +
+    "\n gitee  :    " + ServerConfig.author.gitee;
+console.log("%c"+author, "color:#99ccff;");
