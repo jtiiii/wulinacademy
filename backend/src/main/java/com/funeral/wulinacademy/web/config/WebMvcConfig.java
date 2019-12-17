@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * web-mvc的配置
  *
  * @author FuneralObjects
- * @date 2018-12-27 12:50
+ * CreateTime 2018-12-27 12:50
  */
 @Configuration
 @EnableWebMvc

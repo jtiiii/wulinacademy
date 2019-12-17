@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * @author FuneralObjects
- * @date 2019-04-12 23:56
+ * CreateTime 2019-04-12 23:56
  */
 public class LoginSuccHandler implements AuthenticationSuccessHandler {
 

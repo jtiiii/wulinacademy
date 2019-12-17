@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.User;
 
 /**
  * @author FuneralObjects
- * @date 2019-05-05 16:19
+ * CreateTime 2019-05-05 16:19
  */
 public class SecurityUtils {
     public static boolean isLogin(){

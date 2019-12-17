@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * 基础业务类
  *
  * @author FuneralObjects
- * @date 2019-04-18 11:58
+ * CreateTime 2019-04-18 11:58
  */
 public abstract class BaseService implements Service {
 

@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * @author FuneralObjects
- * @date 2019-01-11 23:00
+ * CreateTime 2019-01-11 23:00
  */
 public interface NewsService extends Service {
 

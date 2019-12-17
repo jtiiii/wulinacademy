@@ -8,7 +8,7 @@ import java.util.Map;
  * extend for spring-util's CollectionUtils
  *
  * @author FuneralObjects
- * @date 2019-03-29 14:49
+ * CreateTime 2019-03-29 14:49
  */
 public class CollectionUtils extends org.springframework.util.CollectionUtils {
     public static boolean isEmptyAfterRemoveNull(Map<?,?> map){

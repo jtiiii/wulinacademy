@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author FuneralObjects
- * @date 2019-01-06 02:22
+ * CreateTime 2019-01-06 02:22
  */
 public interface NewsRepository extends JpaRepository<News,Integer> {
 

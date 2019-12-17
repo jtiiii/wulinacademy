@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * for business
  *
  * @author FuneralObjects
- * @date 2019-04-12 16:57
+ * CreateTime 2019-04-12 16:57
  */
 @Component
 @PropertySource(factory = YamlPropertiesSourceFactory.class,value = "classpath:service-config.yml")

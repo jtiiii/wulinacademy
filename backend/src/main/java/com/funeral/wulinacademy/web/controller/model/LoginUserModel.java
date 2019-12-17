@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
  * vo of user for login
  *
  * @author FuneralObjects
- * @date 2019-04-11 18:05
+ * CreateTime 2019-04-11 18:05
  */
 @Data
 @Accessors(chain = true)

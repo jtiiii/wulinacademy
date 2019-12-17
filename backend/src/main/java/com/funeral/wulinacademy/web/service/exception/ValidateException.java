@@ -5,7 +5,7 @@ import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 /**
  * 业务校验异常
  * @author FuneralObjects
- * @date 2019-04-18 11:53
+ * CreateTime 2019-04-18 11:53
  */
 public class ValidateException extends BusinessException {
     public ValidateException(String message) {

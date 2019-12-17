@@ -7,17 +7,14 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * 新闻实体类
  *
  * @author FuneralObjects
- * @date 2019-01-06 01:41
+ * CreateTime 2019-01-06 01:41
  */
 @Data
 @Accessors(chain = true)
@@ -30,6 +27,7 @@ public class News {
      * 主键ID
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer newsId;
     /**
      * 标题

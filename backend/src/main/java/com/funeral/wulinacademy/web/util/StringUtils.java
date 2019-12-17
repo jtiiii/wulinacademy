@@ -3,7 +3,7 @@ package com.funeral.wulinacademy.web.util;
 /**
  * extension of {@link org.springframework.util.StringUtils }
  * @author FuneralObjects
- * @date 2019-04-14 13:07
+ * CreateTime 2019-04-14 13:07
  */
 public class StringUtils extends org.springframework.util.StringUtils {
     private static final String UNDERLINE = "_";

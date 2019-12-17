@@ -8,7 +8,7 @@ import java.util.Date;
  * The standard of date class
  *
  * @author FuneralObjects
- * @date 2019-03-29 15:06
+ * CreateTime 2019-03-29 15:06
  */
 public class DateStandard {
 

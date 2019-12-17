@@ -6,7 +6,7 @@ import lombok.Getter;
 
 /**
  * @author FuneralObjects
- * @date 2019-04-14 02:43
+ * CreateTime 2019-04-14 02:43
  */
 public enum StandardStatus {
     /**

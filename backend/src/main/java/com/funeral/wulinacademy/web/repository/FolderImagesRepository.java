@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @author FuneralObjects
- * @date 2019-05-14 14:20
+ * CreateTime 2019-05-14 14:20
  */
 public interface FolderImagesRepository extends JpaRepository<FolderImages, FolderImagePk> {
 

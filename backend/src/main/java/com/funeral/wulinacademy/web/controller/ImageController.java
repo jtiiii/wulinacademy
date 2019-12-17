@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author FuneralObjects
- * @date 2019-05-15 15:24
+ * CreateTime 2019-05-15 15:24
  */
 @RestController
 @RequestMapping("/image")

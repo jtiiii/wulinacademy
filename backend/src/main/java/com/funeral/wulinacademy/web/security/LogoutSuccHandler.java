@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * @author FuneralObjects
- * @date 2019-04-20 15:29
+ * CreateTime 2019-04-20 15:29
  */
 public class LogoutSuccHandler implements LogoutSuccessHandler {
     @Override

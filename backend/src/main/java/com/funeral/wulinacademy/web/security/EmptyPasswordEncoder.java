@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author FuneralObjects
- * @date 2019-04-20 10:31
+ * CreateTime 2019-04-20 10:31
  */
 public class EmptyPasswordEncoder implements PasswordEncoder {
     @Override

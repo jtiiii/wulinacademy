@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @author FuneralObjects
- * @date 2019-01-11 22:49
+ * CreateTime 2019-01-11 22:49
  */
 @Data
 @Accessors(chain = true)
@@ -36,4 +36,8 @@ public class NewsVo {
      * 是否启用
      */
     private Boolean enable;
+    /**
+     * 新闻正文的uuid
+     */
+    private String uuid;
 }

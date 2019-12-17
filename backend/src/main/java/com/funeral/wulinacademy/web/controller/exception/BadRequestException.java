@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
  * 用于参数校验不同过异常
  *
  * @author FuneralObjects
- * @date 2019-04-25 01:47
+ * CreateTime 2019-04-25 01:47
  */
 public class  BadRequestException extends BaseServletException {
     private static final int STATUS = HttpServletResponse.SC_BAD_REQUEST;

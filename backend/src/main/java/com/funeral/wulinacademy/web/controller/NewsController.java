@@ -25,7 +25,7 @@ import java.util.UUID;
  * 新闻内容controller
  *
  * @author FuneralObjects
- * @date 2019-01-11 22:32
+ * CreateTime 2019-01-11 22:32
  */
 @RestController
 @RequestMapping("/news")
@@ -63,6 +63,7 @@ public class NewsController {
                 .map( entity -> new NewsVo().setId(entity.getNewsId())
                 .setEventDate(entity.getEventDate())
                 .setPreview(entity.getPreview())
+                .setUuid(entity.getUuid())
                 .setThumbnail(entity.getThumbnail())
                 .setTitle(entity.getTitle())
                 .setEnable(StandardStatus.VISIBLE.equals(entity.getStatus())));
@@ -123,7 +124,7 @@ public class NewsController {
     }
 
     private File getContentFile(String uuid){
-        return new File(dir + uuid);
+        return new File(dir + uuid + ".html");
     }
 
 }

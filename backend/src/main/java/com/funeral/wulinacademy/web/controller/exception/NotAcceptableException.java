@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author FuneralObjects
- * @date 2019-05-14 23:33
+ * CreateTime 2019-05-14 23:33
  */
 public class NotAcceptableException extends BaseServletException {
 

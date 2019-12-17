@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
  * Web服务启动的主类
  *
  * @author FuneralObjects
- * @date 2018-12-27 00:47
+ * CreateTime 2018-12-27 00:47
  */
 @SpringBootApplication
 @Import({SpringSecurityConfig.class, WebMvcConfig.class, ServiceSecurityConfig.class})

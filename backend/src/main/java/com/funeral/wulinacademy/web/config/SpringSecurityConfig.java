@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * security的config配置
  *
  * @author FuneralObjects
- * @date 2018-12-27 12:52
+ * CreateTime 2018-12-27 12:52
  */
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -48,7 +48,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private void init(){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedMethod("*");
+        configuration.addAllowedMethod("OPTIONS");
+        configuration.addAllowedMethod("GET");
+        configuration.addAllowedMethod("POST");
+        configuration.addAllowedMethod("PUT");
+        configuration.addAllowedMethod("DELETE");
+
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("Content-Type");
@@ -60,25 +65,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers(assetsLocation+"**");
+//        web.ignoring().mvcMatchers(assetsLocation+"**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        if(debug){
             http
                     .authorizeRequests()
-                    .anyRequest()
-                    .permitAll();
-        } else{
-            http
-                    .authorizeRequests()
-                    .antMatchers("/check/available",assetsLocation+"**").permitAll()
+                    .antMatchers("/check/available").permitAll()
                     .antMatchers(HttpMethod.GET,"/**").permitAll()
                     .anyRequest()
-                    .authenticated();
-        }
-        http
+                    .authenticated()
+                    .and()
                 .formLogin()
                     .loginProcessingUrl("/login")
                     .successHandler( new LoginSuccHandler(serviceConfig.getCsrf().getToken().getInHeaderName()))

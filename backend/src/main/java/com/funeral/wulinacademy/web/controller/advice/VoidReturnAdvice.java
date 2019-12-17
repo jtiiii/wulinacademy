@@ -14,7 +14,7 @@ import java.util.Objects;
 
 /**
  * @author FuneralObjects
- * @date 2019-04-27 01:08
+ * CreateTime 2019-04-27 01:08
  */
 @RestControllerAdvice
 public class VoidReturnAdvice implements ResponseBodyAdvice<Object> {

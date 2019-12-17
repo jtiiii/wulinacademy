@@ -13,7 +13,7 @@ import java.util.List;
  * 一些通用的查询条件
  *
  * @author FuneralObjects
- * @date 2019-03-20 10:07
+ * CreateTime 2019-03-20 10:07
  */
 @Data
 @Accessors(chain = true)

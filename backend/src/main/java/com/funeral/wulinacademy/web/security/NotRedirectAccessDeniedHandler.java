@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * @author FuneralObjects
- * @date 2019-05-04 07:37
+ * CreateTime 2019-05-04 07:37
  */
 public class NotRedirectAccessDeniedHandler implements AccessDeniedHandler {
     @Override
