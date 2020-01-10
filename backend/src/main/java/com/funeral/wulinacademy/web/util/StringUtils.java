@@ -68,7 +68,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
      * @return 处理后的关键字
      */
     public static String processFuzzyFullMatch(String keywords) {
-        Assert.notNull(keywords, "Arg[keywords] cannot be blank！");
+        Assert.isTrue(!isEmptyKeywords(keywords), "Arg[keywords] cannot be blank！");
         boolean hasFirst = MATCH_CHAR.equals(keywords.charAt(0));
         boolean hasLast = MATCH_CHAR.equals(keywords.charAt(keywords.length() - 1));
         if (!hasFirst && !hasLast) {

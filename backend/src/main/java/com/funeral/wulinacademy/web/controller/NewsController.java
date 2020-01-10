@@ -57,7 +57,7 @@ public class NewsController {
         Pageable pageable = PageRequest.of(num,size);
         return newsService.findPageByEventDateAndKeywords(
                 pageable,
-                keywords == null? null: StringUtils.processFuzzyFullMatch(keywords),
+                StringUtils.isEmptyKeywords(keywords)? null: StringUtils.processFuzzyFullMatch(keywords),
                 startTime == null? null: new Date(startTime),
                 endTime == null? null: new Date(endTime),
                 StandardStatus.of(status))
