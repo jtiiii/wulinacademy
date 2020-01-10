@@ -5,6 +5,7 @@ import com.funeral.wulinacademy.web.controller.model.news.NewsModifyVo;
 import com.funeral.wulinacademy.web.controller.model.news.NewsVo;
 import com.funeral.wulinacademy.web.model.NewsModify;
 import com.funeral.wulinacademy.web.service.NewsService;
+import com.funeral.wulinacademy.web.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,7 +57,7 @@ public class NewsController {
         Pageable pageable = PageRequest.of(num,size);
         return newsService.findPageByEventDateAndKeywords(
                 pageable,
-                keywords,
+                keywords == null? null: StringUtils.processFuzzyFullMatch(keywords),
                 startTime == null? null: new Date(startTime),
                 endTime == null? null: new Date(endTime),
                 StandardStatus.of(status))
