@@ -14,10 +14,10 @@ class Api{
     Delete( url, {query, urlData, headers}){
         return this._baseFetch(url,"delete",{urlData: urlData, query: query, headers: headers});
     }
-    Get(url,{query,urlData, headers}){
-        return this._baseFetch(url,"get",{urlData: urlData, query: query, headers: headers});
+    Get(url,{query,urlData, headers, cors = true}){
+        return this._baseFetch(url,"get",{urlData: urlData, query: query, headers: headers, cors});
     }
-    _baseFetch(url, method, {urlData, query, body, headers} ){
+    _baseFetch(url, method, {urlData, query, body, headers, cors = true} ){
         url = Api._processUrl(this.host,this.port,url);
         if(urlData){
             url = Api._processUrlTemplate(url,urlData);
@@ -25,10 +25,17 @@ class Api{
         if(query){
             url += "?"+Api._processQuery(query);
         }
+        let option = {
+            method: method,
+            headers: headers,
+        };
         if(body){
-            return Api._restFetch(url,{method: method, body: Api._processBody(body), headers: headers});
+            option.body = Api._processBody(body);
         }
-        return Api._restFetch(url,{method: method, headers: headers});
+        if(cors){
+            option.mode = 'cors';
+        }
+        return Api._restFetch(url,option);
     }
     static _restFetch(url,option){
         Api._preFetch(option);
@@ -43,7 +50,6 @@ class Api{
         return port? host + ":" + port + url : host + url;
     }
     static _preFetch( option ){
-        option.mode = 'cors';
         option.credentials = 'include';
         if(!option.headers || !Object.keys(option.headers).length) {
             option.headers = {};
@@ -79,7 +85,7 @@ class Api{
         if(body instanceof FormData){
             return body;
         }
-        if(body instanceof String){
+        if(typeof body === 'string'){
             return body;
         }
         return JSON.stringify(body);

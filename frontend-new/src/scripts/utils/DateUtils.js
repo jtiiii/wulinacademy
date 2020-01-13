@@ -1,4 +1,5 @@
-import StringUtils from './StringUtils';
+import FUtils from 'fo-utils';
+const StringUtils = FUtils.StringUtils;
 
 const DateUtils = {
 
