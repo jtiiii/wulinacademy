@@ -16,3 +16,4 @@
 
 此次项目均由个人独立完成。
 
+**github 上不再维护，项目已经转移至 [gitee](https://gitee.com/FuneralObjects/wulinacademy.git)**
