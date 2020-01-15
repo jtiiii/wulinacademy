@@ -46,7 +46,7 @@
                 <template #title>
                     {{$t('login.login')}}
                 </template>
-                <v-login @loginSuccessful="login.show = false"></v-login>
+                <v-login @loginSuccessful="login.show = false" />
             </v-modal>
         </div>
     </div>

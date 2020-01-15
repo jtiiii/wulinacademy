@@ -1,106 +1,77 @@
 <template>
-    <div class="page-news">
-        <!-- 删除确认框 -->
-<!--        <v-confirm-modal :show="modal.confirm" @confirm="confirmDelete">-->
-<!--            确认删除 {{ getSelected.title }} 此条新闻？-->
-<!--        </v-confirm-modal>-->
-        <div class="news">
-            <!-- 工具栏 -->
-            <div class="toolbar">
-                <!-- 搜索框 -->
-                <label>
-                    <input class="searchBox" v-model="news.search"  placeholder="搜索..." type="text" />
-                </label>
-                <!-- 添加新闻按钮 -->
-                <label v-if="manage" class="toolBtn">
-                    <button class="tool" type="button" @click="openAddModal">
-                        <i class="iconfont wulin-news"></i>
-                    </button>
-                </label>
-            </div>
-            <div v-show="!news.list.length"> There is no news....</div>
+    <div class="news">
+        <div class="news-page">
+            <!-- 搜索框 -->
+            <label class="tool-bar">
+                <input class="searchBox" v-model="news.search"  placeholder="搜索..." type="text" />
+                <span class="buttons" v-if="manage">
+                    <a class="iconfont wulin-create" @click="createNews"/>
+                </span>
+            </label>
+            <div v-show="!news.list.length">There is no news....</div>
             <!-- 新闻列表 -->
-            <div v-for="newsItem in news.list" class="news-item" >
-<!--                <div v-show="manage" class="toolbar-news">-->
-<!--                    <label class="toolBtn">-->
-<!--                        <button class="tool">-->
-<!--                            <i class="iconfont wulin-edit" @click="openUpdateModal(newsItem)"></i>-->
-<!--                        </button>-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--                <label v-show="manage" class="deleteBtn">-->
-<!--                    <button class="tool-sm">-->
-<!--                        <i class="iconfont wulin-delete" @click="openDeleteModal(newsItem)"></i>-->
-<!--                    </button>-->
-<!--                </label>-->
-                <v-article :news="newsItem" @click="openShowNews" />
+            <div v-for="newsItem in news.list" class="news-item" :key="'news-'+ newsItem.id" @click="selectAndOpenNewsDetail(newsItem)" >
+                <v-card :flow="'row'" :cover="newsItem.thumbnail || defaultThumbnail" :coverText="newsItem.title">
+                    <h3 class="item-title">{{ newsItem.title }}</h3>
+                    <h6 class="item-date">{{ new Date(newsItem.eventDate).toLocaleString() }}</h6>
+                    <p class="item-preview">{{ newsItem.preview }}</p>
+                </v-card>
             </div>
             <button v-if="!news.last" @click="nextPage" type="button" class="btn">see more...</button>
         </div>
         <!-- 添加、编辑新闻内容框 -->
-        <v-news-modal class="news-modal" :show="modal.editor" :size="'larger'" >
-            <div class="news-panel">
-            <label class="closeBtn">
-                <button class="tool tool-close">
-                    <i class="iconfont wulin-close" @click="closeNewsModal"></i>
-                </button>
-            </label>
-            <!-- 新闻编辑器 -->
-            <v-news-editor
-                    :newsId="news.selected"
-                    :title="'test'"
-            />
+        <v-dialog :canClose="true" :show="modal.content" :size="'larger'" @close="modal.content = false" >
+            <div class="news-content">
+                <label class="header-img">
+                    <img alt="头图" :src="news.modify.thumbnail || defaultThumbnail"/>
+                </label>
+                <h2 class="title" v-if="isPreview" >{{ news.modify.title }}</h2>
+                <label class="title" v-else >
+                    <input type="text" v-model="news.modify.title" />
+                </label>
+                <label class="date">
+                    <span  v-if="isPreview" >{{ news.modify.eventDate.dateStr }}</span>
+                    <input v-else type="text" v-model="news.modify.eventDate.dateStr" />
+                    <input hidden type="text" v-model="news.modify.eventDate.gmt" />
+                </label>
+                <hr/>
+                <div v-if="isPreview" v-html="news.modify.content" />
+                <v-editor v-else @init="initEditor" v-model="news.modify.content"/>
             </div>
-        </v-news-modal>
+            <div class="news-content-tool-bar" v-if="manage">
+                <label>
+                    <v-button v-show="isPreview" :size="'small'" :emotion="'warning'" @click="switchEditing"><span>编辑</span><i class="iconfont wulin-edit" /></v-button>
+                </label>
+                <label>
+                    <v-button v-show="!isPreview" :size="'small'" :emotion="'success'" @click="saveOrUpdateNews"><span>保存</span><i class="iconfont wulin-save" /></v-button>
+                </label>
+                <label>
+                    <v-button v-show="isPreview" :size="'small'" :emotion="'danger'"><span>删除</span><i class="iconfont wulin-delete" /></v-button>
+                </label>
+                <label>
+                    <v-button v-show="!isPreview" :size="'small'" @click="modal.content = false"><span>取消</span><i class="iconfont wulin-cancel" /></v-button>
+                </label>
+            </div>
+        </v-dialog>
     </div>
 </template>
 <script type="text/javascript">
-    import StringUtils from '../scripts/utils/StringUtils';
     import SecurityService from '../scripts/api/SecurityService';
     import NewsService from '../scripts/api/NewsService';
+    import _ from 'lodash';
     import FComponents from 'f-vue-components';
     import noPic from '../assets/images/no-pic.png';
-    import Article from '../components/Article.vue';
-    import NewsContent from '../components/NewsContent.vue';
+    import FUtils from 'fo-utils';
+    const ArrayUtils = FUtils.ArrayUtils;
+    const StringUtils = FUtils.StringUtils;
 
-
-    function NewsItem({id,title,eventDate,status,preview,thumbnail, content}){
-        this.id = id;
-        this.title = title;
-        this.eventDate = eventDate;
-        this.status = status;
-        this.preview = preview;
-        this.thumbnail = thumbnail;
-        this.time = eventDate.substr(0,10);
-        this.ddClass = { expand: false , shrink: false, select: false};
-        this.loaded = false;
-        this.content = content? content: null;
-    }
-    NewsItem.prototype = {
-        constructor: NewsItem,
-        loadContent(){
-            if(this.loaded){
-                return new Promise( resolve => {
-                    resolve(this.content);
-                });
-            }
-            return NewsService.getContent(this.id).then( data => {
-                this.content = data.content;
-                this.loaded = true;
-                return this.content;
-            });
-        }
-    };
-    NewsItem.of = obj => obj instanceof NewsItem ? obj : new NewsItem(obj);
-
-    let currentTimeout = null;
     export default {
         name:'news',
         components:{
-            "v-article": Article,
-            "v-news-modal": FComponents.Modal,
-            'v-news-editor': NewsContent,
-            "v-confirm-modal": FComponents.Modal,
+            'v-editor': FComponents.Third.Quill,
+            'v-card': FComponents.Card,
+            "v-dialog": FComponents.Dialog,
+            "v-button": FComponents.Button
         },
         props:{
             newsId: {
@@ -110,33 +81,51 @@
         },
         data: function() {
             return {
+                manage: false,
                 isLogin: SecurityService.isLogin,
                 modal:{
-                    editor: false,
                     confirm: false,
+                    content: false,
                 },
-                mode:'editing',
+                mode:'preview',
+                modes:['add','edit','delete'],
                 defaultThumbnail: noPic,
+                editor: null,
                 news:{
+                    page:{
+                        content: [],
+                        pageNum: 0,
+                        pageSize: 10,
+                        eventDate: null,
+                        totalPages: 0,
+                        last: true,
+                        total: 0,
+                    },
                     search: '',
                     list:[],
-                    contents: {},
-                    pageNum: 0,
-                    pageSize: 10,
-                    eventDate: null,
-                    totalPages: 0,
-                    last: true,
-                    total: 0,
-                    map:{},
-                    selected: undefined
+                    defaultThumbnail: noPic,
+                    cache:{},
+                    title:'',
+                    modify:{
+                        title:'',
+                        content: '',
+                        thumbnail: null,
+                        eventDate: {
+                            dateStr: '',
+                            gmt: '+8',
+                            // date: null,
+                        }
+                    },
+                    selected: undefined,
+                    content:'',
+                    searchDebounce: null,
                 }
             }
         },
         computed:{
-            manage: () => true,
             getSelected(){
                 if(this.news.selected){
-                    return this.news.map[this.news.selected];
+                    return this.news.cache[this.news.selected];
                 }
                 return {};
             },
@@ -152,262 +141,135 @@
                 if(text === old){
                     return;
                 }
-                let _vue_ = this;
-                clearTimeout( currentTimeout );
-                currentTimeout  = setTimeout(_vue_.getNewsPage.bind(_vue_,true),500);
+                this.searchDebounce();
             }
         },
         methods:{
-            loadModal(){
-                // this.news.loader(this.getSelected);
-                // this.modal.show = true;
+            select( newsItem ){
+                this.news.selected = newsItem.id;
             },
-            select( id ){
-                this.news.selected = id;
+            unselect(){
+                this.news.selected = undefined;
             },
-            openShowNews( newsItem ){
-                this.select(newsItem.id);
-                this.showNewsModal().then( () => {
-                    this.mode = 'preview';
-                });
+            selectAndOpenNewsDetail(newsItem ){
+                this.select(newsItem);
+                this.switchPreview();
+                this.openNewsDetail(newsItem);
             },
-            confirmDelete( confirm ){
-                if(confirm){
-                    NewsService.delete( this.news.selected )
-                        .then( () => this.getNewsPage( true ) );
+            cleanModify(){
+                this.news.modify.title = '';
+                this.news.modify.content = '';
+                this.news.modify.eventDate.dateStr = '';
+                this.news.modify.previews = '';
+                this.news.modify.thumbnail = '';
+            },
+            setNewsDialog(title, eventDate , thumbnail , content, uuid ){
+                this.news.modify.title = title;
+                this.news.modify.thumbnail = thumbnail;
+                this.news.modify.eventDate.dateStr = new Date(eventDate).toDateString();
+                if(uuid){
+                    return NewsService.getContent(uuid).then( result => {
+                        this.news.modify.content = result;
+                    });
                 }
-                this.modal.confirm = false;
-            },
-            openAddModal(){
-                this.select(undefined);
-                this.mode = 'editing';
-                this.showNewsModal().then( () => {
-                    // this.mode = 'editing';
-                });
-            },
-            openDeleteModal( newsItem ){
-                this.select(newsItem.id);
-                this.modal.confirm = true;
-            },
-            submit( news, text ){
-                let forSave = this.isUpdate? Object.assign(this.getSelected,news): NewsItem.of(news);
-                forSave.preview = StringUtils.fixLength(text,120,'');
-                if(text.length > 120){
-                    forSave.preview += '...';
-                }
-                let saveOrUpdate = new Promise(resolve => {
-                    if(this.isUpdate){
-                        NewsService.update(forSave).then( () => {
-                            resolve(forSave);
-                        });
-                    }else{
-                        NewsService.save(forSave).then( id => {
-                            forSave.id = id;
-                            resolve(forSave);
-                        });
-                    }
-                });
-                saveOrUpdate.then( forSave => {
-                    return NewsService.saveContent(forSave);
-                }).then( () => {
-                    this.closeNewsModal();
-                    this.getNewsPage(true);
-                });
-            },
-            openUpdateModal( newsItem ){
-                this.select(newsItem.id);
-                this.showNewsModal().then( () => {
-                    this.mode = 'editing';
-                });
-
-            },
-            showNewsModal(){
                 return new Promise( resolve => {
-                    if(this.isUpdate || this.isPreview ){
-                        this.getSelected.loadContent().then( () => {
-                            resolve();
-                        });
-                    }else{
-                        resolve();
-                    }
-                }).then( () => {
-                    this.loadModal();
-                    this.modal.editor = true;
+                    this.new.modify.content = content;
+                    resolve();
                 });
-
             },
-            closeNewsModal(){
-                this.modal.editor = false;
+            openNewsDetail( news ){
+                this.setNewsDialog(news.title, news.eventDate,news.thumbnail,null, news.uuid)
+                .then( () => {
+                    this.modal.content = true;
+                });
+            },
+            switchPreview(){
+                this.mode = 'preview';
+            },
+            switchEditing(){
+                this.mode = 'editing';
+            },
+            cleanNews(){
+                ArrayUtils.clean(this.news.list);
             },
             nextPage(){
                 this.news.pageNum ++;
                 this.getNewsPage();
             },
             getNewsPage(refresh ){
-                let _vue_ = this;
-                let search = this.news.search;
-                let eventDate = this.news.eventDate;
-                let pageNum = refresh? 0: this.news.pageNum;
-                let pageSize = this.news.pageSize;
-                if(refresh){
-                    this.select( undefined);
-                }
-                NewsService.pageSearch({search,pageSize,pageNum,eventDate}).then( data => {
-                    _vue_._setNews(data,!refresh);
+                NewsService.pageSearch({keywords: this.news.search,pageSize:this.news.page.pageSize, pageNum: refresh? 0: this.news.page.pageNum}).then( data => {
+                    if(refresh){
+                        this.cleanNews();
+                    }
+                    ArrayUtils.copy(data.content,this.news.page.content);
+                    if(!data.empty){
+                        data.content.forEach( news => {
+                            this.news.cache[news.id] = news;
+                            this.news.list.push(news);
+                        });
+                    }
                 });
             },
-            _setNews( pageData, append ){
-                if(!append){
-                    this.news.list = [];
-                    this.news.map = {};
+            createNews(){
+                this.unselect();
+                this.cleanModify();
+                this.switchEditing();
+                this.modal.content = true;
+            },
+            saveOrUpdateNews(){
+                let preview = StringUtils.fixLength(this.editor.getText(),200,'');
+                let eventDate = new Date(this.news.modify.eventDate.dateStr).getTime();
+                if(this.isUpdate){
+                    let forUpdate = this.getSelected;
+                    return NewsService.update(forUpdate.id,{
+                        title: this.news.modify.title,
+                        preview: preview,
+                        eventDate: eventDate,
+                        thumbnail: this.news.modify.thumbnail
+                    }).then( () => {
+                        this.updateSelected(this.getSelected.id, this.news.modify.title, preview, eventDate, this.news.modify.thumbnail);
+                    })
+                    .then( () => NewsService.updateContent(forUpdate.id, this.news.modify.content))
+                    .then( () => {
+                        this.switchPreview();
+                    });
                 }
-                let list = this.news.list;
-                this.news.totalPages = pageData.totalPages;
-                this.news.total = pageData.totalElements;
-                this.news.pageNum = pageData.number;
-                this.news.pageSize = pageData.size;
-                this.news.last = pageData.last;
-                pageData.content.forEach( news => {
-                    list.push(news);
-                    this.news.map[news.id] = NewsItem.of(news);
+                return NewsService.save({
+                    title: this.news.modify.title,
+                    preview: preview,
+                    eventDate: eventDate,
+                    thumbnail: this.news.modify.thumbnail
+                }).then( id => NewsService.updateContent(id, this.news.modify.content) ).then( () => {
+                    this.switchPreview();
+                    this.getNewsPage(true);
                 });
             },
-            getLoader( loader ){
-                this.news.loader = loader;
+            updateSelected(id, title, preview, eventDate, thumbnail){
+                let forUpdate = this.getSelected;
+                forUpdate.title = title;
+                forUpdate.eventDate = eventDate;
+                forUpdate.thumbnail = thumbnail;
+                forUpdate.preview = preview;
+            },
+            deleteNews(){
+
+            },
+            initDebounce(){
+                this.searchDebounce = _.debounce( this.getNewsPage.bind(this,[true]),500);
+            },
+            initEditor( editor ){
+                this.editor = editor;
             }
         },
         mounted(){
 
         },
         created(){
-            this.getNewsPage();
+            this.initDebounce();
+            this.getNewsPage(true);
         }
     }
 </script>
-<style scoped>
-    .news-panel{
-        padding: 1.25rem;
-    }
-    .tool.tool-close > i{
-        font-size: 1.25rem;
-    }
-    .tool.tool-close{
-        background-color: transparent;
-    }
-    .page-news{
-        min-height: 400px;
-    }
-    .toolbar-news{
-        width: 30px;
-        position: absolute;
-        left: -35px;
-        top: 10px;
-        border: none;
-    }
-    .toolBtn{
-        margin: 5px;
-    }
-
-    .btnImg{
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-    .tool{
-        display: inline-block;
-        width: 1.25rem;
-        height: 1.25rem;
-        border: none;
-        padding: 0;
-    }
-    .tool-sm{
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: none;
-        padding: 0;
-    }
-    .news{
-        position: relative;
-        display:flex;
-        flex-flow: column wrap;
-        align-items: center;
-    }
-    @media screen and (min-width:700px) {
-        .news-modal >>> dialog{
-            width: 700px;
-        }
-        .news{
-            min-width: 700px;
-        }
-        .toolbar{
-            width: 700px;
-            clear: both;
-            display: inline-block;
-        }
-        .searchBox{
-            width: 250px;
-        }
-        .toolbar > label{
-            float: left;
-            margin: 10px 10px;
-        }
-    }
-
-    @media screen and (max-width:700px) {
-        .news-modal >>> dialog{
-            width: 100%;
-        }
-        .toolbar{
-            display: flex;
-            flex-flow: row wrap;
-            align-items: center;
-            flex:1;
-            width: 100%;
-        }
-        .searchBox{
-            width: 100%;
-        }
-        .toolbar > label{
-            width: 100%;
-            margin: 10px;
-        }
-    }
-
-    .searchBox{
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        border: 2px solid #aaa;
-        border-top: 0;
-        height: 30px;
-        outline: none;
-        font-size: 20px;
-        box-sizing: border-box;
-    }
-    .searchBox::placeholder{
-        color: #efefef;
-    }
-    .select{
-        background: #daecff;
-    }
-    .closeBtn{
-        display: block;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        z-index: 9;
-    }
-    .deleteBtn{
-        display: inline-block;
-        position: absolute;
-        right: -8px;
-        top: 0;
-        z-index: 9;
-    }
-    /*.news-items{*/
-    /*    display: inline-block;*/
-    /*    position:relative;*/
-    /*}*/
-
+<style lang="less">
+    @import url('../assets/styles/components/news.less');
 </style>

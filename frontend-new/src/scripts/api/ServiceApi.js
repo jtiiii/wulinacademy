@@ -1,6 +1,7 @@
 import Api from './FetchApi';
 import ServerConfig ,{env} from "../config/ServerConfig";
-import StringUtils from "../utils/StringUtils";
+import FUtils from 'fo-utils';
+const StringUtils = FUtils.StringUtils;
 const authToken = ServerConfig.localStorage.authToken;
 const AUTH_TOKEN_HEADER_NAME = "auth-token";
 class ServiceApi{
@@ -16,8 +17,7 @@ class ServiceApi{
     Get( url, {query, urlData}){
         let param = {
             query,
-            urlData,
-            headers:this.getAuthTokenHeader()
+            urlData
         };
         return this.__fetchResult(this.api.Get(url,param), 'GET',url, param);
     }
@@ -68,7 +68,6 @@ class ServiceApi{
         return response.text();
     }
     static _responseHandler(response,  {name, host, port, url, query, header, body, urlData, method}){
-        // ServiceApi._authTokenHandler(response);
         return ServiceApi._dataHandler(response).then( resBody => {
             if(env.debug){
                 ServiceApi._debugConsole(name, host, port, url,{query, header, body, urlData, method,resBody:resBody,resText: response.statusText, resStatus: response.status });
@@ -76,10 +75,6 @@ class ServiceApi{
             return resBody
         });
     }
-    // static _authTokenHandler(response){
-    //     console.info(response);
-    //     console.info(response.headers[AUTH_TOKEN_HEADER_NAME]);
-    // }
     static _errorHandler(error){
         console.log("err:", error);
     }

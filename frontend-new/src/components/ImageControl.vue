@@ -49,9 +49,10 @@
 <script>
     import FComponents from 'f-vue-components'
     import FolderService from '../scripts/api/FolderService';
-    import ArrayUtils from "../scripts/utils/ArrayUtils";
+    import FUtils from 'fo-utils';
     import ImageService,{IMAGE_SITE_PREFIX} from '../scripts/api/ImageService';
 
+    const ArrayUtils = FUtils.ArrayUtils;
     class TreeNode{
         constructor({ text, id, show = false,select = false, children = [], parent}){
             this.id = id;
@@ -218,7 +219,7 @@
             openUploadModal(){
                 ArrayUtils.clean(this.uploadModal.images);
                 if(this.selected){
-                    this.uploadModal.show = true
+                    this.uploadModal.show = true;
                     return;
                 }
                 alert('Please select folder');
