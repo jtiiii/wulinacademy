@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author FuneralObjects
@@ -20,5 +21,7 @@ public interface NewsService extends Service {
 
     String getUuidById(Integer newsId);
 
-    Page<News> findPageByEventDateAndKeywords(Pageable pageable, String keywords, Date start, Date end, StandardStatus status);
+    void deleteNews(Integer newsId);
+
+    Page<News> findPageByEventDateAndKeywords(Pageable pageable, String keywords, Date start, Date end, Set<StandardStatus> statuses);
 }

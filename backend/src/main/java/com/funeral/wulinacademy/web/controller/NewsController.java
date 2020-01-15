@@ -19,8 +19,8 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 新闻内容controller
@@ -53,14 +53,23 @@ public class NewsController {
                                  @RequestParam(value = "start",required = false) Long startTime,
                                  @RequestParam(value = "end",required = false) Long endTime,
                                  @RequestParam(value = "keywords",required = false) String keywords,
-                                 @RequestParam(value = "status",required = false) Integer status){
+                                 @RequestParam(value = "statuses",required = false) Integer[] statues){
+        Set<StandardStatus> statusSet = null;
+        if(statues != null && statues.length != 0){
+            statusSet = Arrays.asList(statues)
+                    .parallelStream()
+                    .filter(Objects::nonNull)
+                    .map(StandardStatus::of)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+        }
         Pageable pageable = PageRequest.of(num,size);
         return newsService.findPageByEventDateAndKeywords(
                 pageable,
                 StringUtils.isEmptyKeywords(keywords)? null: StringUtils.processFuzzyFullMatch(keywords),
                 startTime == null? null: new Date(startTime),
                 endTime == null? null: new Date(endTime),
-                StandardStatus.of(status))
+                statusSet)
                 .map( entity -> new NewsVo().setId(entity.getNewsId())
                 .setEventDate(entity.getEventDate())
                 .setPreview(entity.getPreview())
@@ -105,6 +114,11 @@ public class NewsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteNews(@PathVariable Integer id){
+        newsService.deleteNews(id);
     }
 
     private static String generateUuid(){
