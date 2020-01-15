@@ -14,12 +14,14 @@ const ImageService = {
     },
     getImagesByFolder(folderId){
         return this.__api__.Get(this.__context__ + "/folder/{folderId}",{
-            urlData:{folderId},
+            urlData:{folderId}
+        });
+    },
+    deleteImageByFolder( folderId, name ){
+        return this.__api__.Delete(this.__context__ + "/folder/{folderId}/{name}",{
+            urlData:{folderId,name}
         });
     }
-    // getSrc( image ){
-    //     return Api.__context__ + image.site.substring(1);
-    // }
 };
 export const IMAGE_SITE_PREFIX = ImageService.__api__.host + ":"+ImageService.__api__.port + "/assets/images/";
 export default ImageService;

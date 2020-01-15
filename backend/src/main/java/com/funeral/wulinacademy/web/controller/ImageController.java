@@ -68,6 +68,12 @@ public class ImageController {
                 .collect(Collectors.toList());
     }
 
+    @DeleteMapping("/folder/{folderId}/{name}")
+    public void deleteImage(@PathVariable Integer folderId,
+                            @PathVariable String name){
+        imageService.delete(folderId,name);
+    }
+
 
     private void limitSize(long size){
         if(size > maxSize ){

@@ -10,20 +10,21 @@
                     <a @click="expand(item)" :class="{'expand': item.show }" ><i class="iconfont wulin-caret-down"/></a>
                 </template>
                 <template #item="{item}">
-                    <a :class="{ 'select': item.select}" @click="selectFolder(item)">{{item.text}}</a>
+                    <a :class="{ 'select': item.select }" @click="selectFolder(item)">{{item.text}}</a>
                 </template>
             </v-tree>
         </v-panel>
         <!-- 图片预览 -->
-        <v-panel class="folder-image" :width="'480px'" :height="'600px'">
+        <v-panel class="folder-image" :width="'580px'" :height="'600px'">
             <div>
                 {{ selected? folderPath : '' }}
                 <br/>
                 <v-button v-show="this.selected" @click="openUploadModal" :size="'small'" :emotion="'default'">上传图片</v-button>
             </div>
-            <div>
-                <thumbnail v-for="t in thumbnails" @image-click="imageClick(t)" :key="'thumbnail-' +t.id" :src="t.src">
+            <div class="thumbnail-box">
+                <thumbnail class="thumbnail-item" v-for="t in thumbnails" :key="'thumbnail-' +t.sha1Md5"   @image-click="imageClick(t)"  :src="t.src">
                     {{t.name}} {{t.suffix}}
+                    <a class="iconfont wulin-delete thumbnail-delete" @click="deleteImage(t)" />
                 </thumbnail>
             </div>
         </v-panel>
@@ -175,6 +176,7 @@
                     .then( data => {
                         ArrayUtils.copy(data.map( t => {
                             t.src = IMAGE_SITE_PREFIX + t['sha1Md5'] + "." +t.suffix;
+                            t.folderId = folderId;
                             return t;
                         }),this.thumbnails);
                     });
@@ -207,7 +209,22 @@
                         return this.upload(image);
                     });
                 });
-                console.info('images', images);
+                p.then( () => {
+                    this.closeUploadModal();
+                    this.cleanUploadImages();
+                    setTimeout(() => {
+                        this.loadImagesBySelect(this.selected);
+                    },200);
+                });
+            },
+            deleteImage( image ){
+                ImageService.deleteImageByFolder(image.folderId, image.name)
+                .then( () => {
+                    this.loadImagesBySelect( image.folderId );
+                });
+            },
+            cleanUploadImages(){
+                ArrayUtils.clean(this.uploadModal.images);
             },
             upload( image ){
                 return ImageService.saveImage(image.file,image.name,this.selected);
@@ -215,6 +232,9 @@
             imageClick( image ){
                 console.info(image);
                 this.$emit('image-click',image);
+            },
+            closeUploadModal(){
+                this.uploadModal.show = false;
             },
             openUploadModal(){
                 ArrayUtils.clean(this.uploadModal.images);

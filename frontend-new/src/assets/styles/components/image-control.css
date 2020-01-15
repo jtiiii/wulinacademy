@@ -1,5 +1,5 @@
 .image-control {
-  width: 43.75rem;
+  width: 50rem;
   position: relative;
   text-align: left;
 }
@@ -8,6 +8,9 @@
   width: 30%;
   height: 100%;
   text-align: left;
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .image-control .folder .nav-box {
   margin: 5px;
@@ -30,6 +33,14 @@
   float: left;
   width: 70%;
   height: 100%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.image-control .folder-image .thumbnail-box {
+  padding: 1rem 1.5rem;
+}
+.image-control .folder-image .thumbnail-box .thumbnail-delete {
+  cursor: pointer;
 }
 .image-control .image-upload-modal {
   width: 100%;

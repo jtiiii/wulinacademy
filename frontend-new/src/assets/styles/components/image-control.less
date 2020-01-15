@@ -1,13 +1,15 @@
 .image-control {
-  width: 43.75rem;
+  width: 50rem;
   position: relative;
   text-align: left;
-
   .folder {
     float: left;
     width: 30%;
     height: 100%;
     text-align: left;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     .nav {
       &-box{
         margin: 5px;
@@ -39,6 +41,16 @@
     float: left;
     width: 70%;
     height: 100%;
+
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    .thumbnail-box{
+      padding: 1rem 1.5rem;
+      .thumbnail-delete{
+        cursor: pointer;
+      }
+    }
   }
 
   .image-upload-modal {

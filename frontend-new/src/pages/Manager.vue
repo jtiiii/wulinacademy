@@ -1,6 +1,6 @@
 <template>
     <div class="manager">
-        <image-control @init="imageControlLoad" class="image-manager"></image-control>
+        <image-control @init="imageControlLoad" class="image-manager" />
     </div>
 </template>
 <script type="text/javascript">
