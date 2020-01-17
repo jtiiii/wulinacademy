@@ -20,6 +20,14 @@ const router = new VueRouter({
   mode: 'hash',
   routes: routes
 });
+//添加导航首位，自动重定向到/home
+router.beforeEach((to, from, next) => {
+  if(to.path === '/'){
+    next('/home');
+    return;
+  }
+  next();
+});
 const i18n = new VueI18n(i18nOption);
 new Vue({
   render: h => h(App),

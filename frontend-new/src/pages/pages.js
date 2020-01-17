@@ -7,13 +7,13 @@ const Channel = resolve => require(['./Channel.vue'],resolve);
 const Manager = resolve => require(['./Manager.vue'],resolve);
 
 const pages = [
-    { name: 'home', path: '/home', i18key: 'index.nav.home' , hidden: false, default: true,
+    { name: 'home', path: '/home', i18key: 'index.nav.home' , hidden: false,
         component: Home,
     },
     { name: 'news', path: '/news', props: true, i18key: 'index.nav.news',
         component: News,
     },
-    { name: 'news-id', path: '/news/:newsId', props: true, i18key: 'index.nav.news', default: false,  hidden: true,
+    { name: 'news-id', path: '/news/:newsId', props: true, i18key: 'index.nav.news',  hidden: true,
         component: News
     },
     { name: 'about', path: '/about', i18key: 'index.nav.about',
@@ -31,7 +31,7 @@ const pages = [
     { name: 'manager', path: '/manager', i18key: 'index.nav.manager', hidden: true,
         component: Manager,
     },
-    { name: 'error' , path: '/*', i18key: 'index.nav.error', hidden: true,
+    { name: 'error' , path: '/error', i18key: 'index.nav.error', hidden: true,
         // component: PageError,
     }
 ];
@@ -41,9 +41,5 @@ pages.forEach(value => {
     mapPage[value.name] = value;
     routes.push({ name: value.name, path:value.path, props: value.props? value.props: false, component: value.component });
 });
-// const router = new VueRouter({
-//     mode: 'hash',
-//     routes: routes
-// });
 export default routes;
 export {pages as Pages, mapPage};

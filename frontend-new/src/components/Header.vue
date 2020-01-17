@@ -13,20 +13,20 @@
                         @itemClick="select"
                         v-outsideClick="closeMenu"
                 >
-                    <a class="btn" @click="menu.listShow = true"><i class="iconfont wulin-menu"></i></a>
+                    <a class="btn iconfont wulin-menu" @click="menu.listShow = true" />
                     <template #item="{index}">{{ $t(pages[index].i18key) }}</template>
                 </v-selector>
             </div>
             <div class="logo">
                 <div>
-                    <img :src="fixed? smallLogSrc: logoSrc">
+                    <img :alt="$t(currentTab.i18key)" :src="fixed? smallLogSrc: logoSrc">
                 </div>
                 <span v-if="currentTab" v-show="fixed">{{ $t(currentTab.i18key) }}</span>
             </div>
             <div class="setting">
                 <v-dropdown v-model="setting.listShow">
                     <template #button>
-                        <a class="btn" @click="setting.listShow = true"><i class="iconfont wulin-setting"></i></a>
+                        <a class="btn iconfont wulin-setting" @click="setting.listShow = true" />
                     </template>
                     <template>
                         <div class="group" v-for="group in setting.groups" :key="group.id">
@@ -60,6 +60,7 @@
     import Login from '../components/Login.vue';
     import VueUtils from 'f-vue-components/src/scripts/util/VueUtils';
     const pages = Pages.filter( p => !p.hidden);
+    console.info(pages);
     const pageMap = {};
     Pages.forEach( p => {
         pageMap[p.path] = p;
@@ -113,15 +114,21 @@
         },
         computed:{
             currentTab(){
-                return this.pageMap[this.$route.path];
+                if(this.pageMap[this.$route.path]){
+                    return this.pageMap[this.$route.path]
+                }
+                return '';
             }
         },
         methods:{
             openOrClose( isOpen ){
-                this.listShow = isOpen;
+                this.menu.listShow = isOpen;
             },
             select( index ){
-                this.$router.push(this.pages[index].path);
+                if(this.$route.path !== this.pages[index].path){
+                    this.$router.push(this.pages[index].path);
+                }
+                this.closeMenu();
             },
             closeMenu(){
                 this.menu.listShow = false;
