@@ -1,4 +1,3 @@
-// import Api from './Api';
 import ServiceApi from "./ServiceApi";
 
 const FolderService = {
@@ -13,6 +12,22 @@ const FolderService = {
     addFolder(name , parentId){
         parentId = parentId || 0;
         return this.__api__.Post(this.__context__+'/', {body:{name: name, parent: parentId}});
+    },
+    updateFolderName( folderId, name ){
+        return this.__api__.Put(this.__context__+ "/{folderId}/name", {
+            urlData: {folderId},
+            query:{ name }
+        });
+    },
+    hasSon( folderId ){
+        return this.__api__.Get(this.__context__ + "/{folderId}/hasSon", {
+            urlData: {folderId}
+        });
+    },
+    deleteFolder( folderId ){
+        return this.__api__.Delete(this.__context__+ "/{folderId}",{
+            urlData: {folderId}
+        });
     },
     isRoot( folderId ){
         return folderId === 0;

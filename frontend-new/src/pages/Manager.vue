@@ -1,6 +1,6 @@
 <template>
     <div class="manager">
-        <image-control @init="imageControlLoad" class="image-manager" />
+        <image-control class="image-manager" />
     </div>
 </template>
 <script type="text/javascript">
@@ -11,19 +11,19 @@
             'image-control': ImageControl
         },
         methods:{
-            imageControlLoad: function( load ){
-                this.init.imageControl = load;
-            }
+            // imageControlLoad: function( load ){
+            //     this.init.imageControl = load;
+            // }
         },
         data(){
             return {
-                init: {
-                    imageControl: null
-                }
+                // init: {
+                //     imageControl: null
+                // }
             };
         },
         mounted(){
-            this.init.imageControl();
+            // this.init.imageControl();
         },
     };
 </script>

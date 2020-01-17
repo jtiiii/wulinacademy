@@ -40,7 +40,6 @@
       }
     }
 
-
     margin: 1rem;
   }
 
@@ -65,17 +64,25 @@
         }
       }
     }
+
+    .page-next{
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 }
 
 .dialog {
   .panel {
     overflow: hidden;
-    position: relative;
     .panel-body {
+      position: relative;
       .news-content-tool-bar {
         position: absolute;
-        top: 3.25rem;
+        top: 0.5rem;
         left: 0;
         display: flex;
         flex-flow: column nowrap;

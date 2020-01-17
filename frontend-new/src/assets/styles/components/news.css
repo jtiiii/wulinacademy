@@ -1,0 +1,133 @@
+.news {
+  min-height: 400px;
+}
+.news .tool-bar {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 1rem;
+}
+.news .tool-bar .searchBox {
+  border-radius: 1rem;
+  border: 1px solid #bebebe;
+  height: 1.8rem;
+  outline: none;
+  font-size: 1rem;
+  box-shadow: 0 0 0.125rem 0 #eee;
+  box-sizing: border-box;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  max-width: calc(100% - 3rem);
+  width: 18.75rem;
+}
+.news .tool-bar .searchBox::placeholder {
+  font-size: 1rem;
+  color: #bebebe;
+}
+.news .tool-bar .buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 1.8rem;
+  align-items: center;
+}
+.news .tool-bar .buttons a {
+  cursor: pointer;
+  margin-left: 0.3rem;
+  display: inline-block;
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.news-page {
+  min-width: 700px;
+  position: relative;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+.news-page .news-item {
+  margin: 1rem 0;
+}
+.news-page .news-item .item-date {
+  margin: 1rem 1.25rem;
+}
+.news-page .news-item .item-title {
+  margin: 1rem 1.25rem;
+}
+.news-page .news-item .item-preview {
+  margin: 1rem 1.25rem;
+}
+.news-page .page-next {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.dialog .panel {
+  overflow: hidden;
+}
+.dialog .panel .panel-body {
+  position: relative;
+}
+.dialog .panel .panel-body .news-content-tool-bar {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  display: flex;
+  flex-flow: column nowrap;
+}
+.dialog .panel .panel-body .news-content-tool-bar label {
+  display: inline-block;
+  margin: 0.125rem 0;
+}
+.dialog .panel .panel-body .news-content-tool-bar label button {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.dialog .panel .panel-body .news-content-tool-bar label button span {
+  display: none;
+}
+.dialog .panel .panel-body .news-content-tool-bar label button:hover span {
+  display: inline;
+}
+.dialog .panel .panel-body .news-content {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 1rem 2rem;
+  min-height: 40.25rem;
+}
+.dialog .panel .panel-body .news-content .header-img {
+  height: 18rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+.dialog .panel .panel-body .news-content .header-img img {
+  max-height: 100%;
+  max-width: 100%;
+}
+.dialog .panel .panel-body .news-content .date {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+.dialog .panel .panel-body .news-content hr {
+  margin: 1.5rem 0;
+  border: 1px solid #bebebe;
+}
+.dialog .panel .panel-body .news-content .title {
+  text-align: center;
+}
+.dialog .panel .panel-body .news-content .title input {
+  font-size: 1.5rem;
+  outline: none;
+  width: calc(100% - 0.4rem);
+  padding: 0.2rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  border: 1px solid #bebebe;
+}
+/*# sourceMappingURL=news.css.map */

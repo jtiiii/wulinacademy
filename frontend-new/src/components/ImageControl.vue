@@ -4,12 +4,14 @@
         <v-panel class="folder" :width="'210px'" :height="'600px'">
             <div class="tool">
                 <v-button @click="openFolderModal('add')" :size="'small'" :emotion="'success'">新增</v-button>
+                <v-button @click="openFolderModal('update')" :size="'small'" :emotion="'info'">修改</v-button>
+                <v-button @click="openFolderModal('delete')" :size="'small'" :emotion="'danger'">删除</v-button>
             </div>
             <v-tree :list="folders" :emotion="'info'" >
-                <template #switch="{item}">
-                    <a @click="expand(item)" :class="{'expand': item.show }" ><i class="iconfont wulin-caret-down"/></a>
+                <template #switch="{ item }">
+                    <a @click="expand( item )" :class="{'expand': item.show }" ><i class="iconfont wulin-caret-down"/></a>
                 </template>
-                <template #item="{item}">
+                <template #item="{ item }">
                     <a :class="{ 'select': item.select }" @click="selectFolder(item)">{{item.text}}</a>
                 </template>
             </v-tree>
@@ -22,7 +24,7 @@
                 <v-button v-show="this.selected" @click="openUploadModal" :size="'small'" :emotion="'default'">上传图片</v-button>
             </div>
             <div class="thumbnail-box">
-                <thumbnail class="thumbnail-item" v-for="t in thumbnails" :key="'thumbnail-' +t.sha1Md5"   @image-click="imageClick(t)"  :src="t.src">
+                <thumbnail class="thumbnail-item" v-for="t in thumbnails" :key="'thumbnail-' +t.sha1Md5" @image-click="imageClick(t)"  :src="t.src">
                     {{t.name}} {{t.suffix}}
                     <a class="iconfont wulin-delete thumbnail-delete" @click="deleteImage(t)" />
                 </thumbnail>
@@ -39,11 +41,13 @@
         <!-- 文件夹编辑 -->
         <v-modal :show="folderModal.show" :size="'medium'" :emotion="folderModal.config[folderModal.mode].type" @close="folderModal.show = false" >
             <template #title>{{ folderModal.config[folderModal.mode].title }}</template>
-            名称：<input-text :disabled="folderModal.mode === 'delete'" v-model="folderModal.folder.name" />
+            名称：<span v-if="folderModal.mode === 'delete'">{{ folderModal.folder.name }}</span><input-text v-else v-model="folderModal.folder.name" />
             <br/>
             位置： {{folderPath}} / {{ folderModal.folder.name }}
             <br/>
-            <v-button @click="saveFolder" :size="'small'" :emotion="'success'">新增</v-button>
+            <v-button v-show="folderModal.mode === 'add'" @click="saveFolder" :size="'small'" :emotion="'success'">新增</v-button>
+            <v-button v-show="folderModal.mode === 'update'" @click="updateFolder" :size="'small'" :emotion="'success'">保存</v-button>
+            <v-button v-show="folderModal.mode === 'delete'" @click="deleteFolder" :size="'small'" :emotion="'success'">确认删除</v-button>
         </v-modal>
     </div>
 </template>
@@ -99,9 +103,9 @@
                     modes: ['add','update','delete'],
                     title: '',
                     folder: {
-                        id: null,
-                        name: null,
-                        parent: {},
+                        id: undefined,
+                        name: '',
+                        parent: null,
                     },
                     config:{
                         add: {
@@ -111,7 +115,7 @@
                         },
                         update:{
                             type: 'warning',
-                            title: '需改文件夹',
+                            title: '修改文件夹',
                             requiredSelected: true,
                         },
                         delete:{
@@ -142,6 +146,29 @@
                     this.folderModal.show = false;
                 });
             },
+            updateFolder(){
+                FolderService.updateFolderName(this.folderModal.folder.id, this.folderModal.folder.name)
+                .then( () => {
+                    this.folderModal.show = false;
+                    this.refreshFolder(this.folderModal.folder.parent);
+                    this.cleanFolderModelInfo();
+                });
+            },
+            deleteFolder(){
+                FolderService.hasSon(this.folderModal.folder.id)
+                    .then( hasSon => {
+                        if(hasSon){
+                            alert("This son exists for this folder.");
+                        }else{
+                            return FolderService.deleteFolder(this.folderModal.folder.id)
+                                .then( () => {
+                                    this.folderModal.show = false;
+                                    this.refreshFolder(this.folderModal.folder.parent);
+                                    this.cleanFolderModelInfo();
+                                });
+                        }
+                    });
+            },
             refreshFolder( parent ){
                 this.cleanFolder( parent );
                 this.loadFolders( parent );
@@ -153,12 +180,28 @@
                 ArrayUtils.clean(parent.children);
             },
             openFolderModal( mode ){
-                if(this.folderModal.config[mode].requiredSelected && !this.selected ){
+                let requiredSelect = this.folderModal.config[mode].requiredSelected;
+                if(requiredSelect && !this.selected ){
                     alert('Please select first');
                     return;
                 }
+                if(requiredSelect){
+                    this.setFolderModelInfo( this.cache[this.selected] );
+                }else{
+                    this.cleanFolderModelInfo();
+                }
                 this.folderModal.mode = mode;
                 this.folderModal.show = true;
+            },
+            setFolderModelInfo( folder){
+                this.folderModal.folder.name = folder.text;
+                this.folderModal.folder.id = folder.id;
+                this.folderModal.folder.parent = folder.parent;
+            },
+            cleanFolderModelInfo(){
+                this.folderModal.folder.name = '';
+                this.folderModal.folder.id = undefined;
+                this.folderModal.folder.parent = null;
             },
             loadFolders(parent){
                 if(parent){
@@ -230,7 +273,6 @@
                 return ImageService.saveImage(image.file,image.name,this.selected);
             },
             imageClick( image ){
-                console.info(image);
                 this.$emit('image-click',image);
             },
             closeUploadModal(){
@@ -251,16 +293,16 @@
                     return '/'
                 }
                 let node = this.cache[this.selected];
-                let text = node.text;
+                let text = this.folderModal.mode === 'add'? ' / ' + node.text : '';
                 while(node.parent != null){
                     node = node.parent;
-                    text = node.text + ' / ' + text;
+                    text = ' / ' + node.text + text;
                 }
-                return '/ ' + text;
+                return text;
             }
         },
-        mounted(){
-            this.$emit('init',this.refreshFolder.bind(this));
+        created(){
+            this.refreshFolder();
         }
     };
 </script>

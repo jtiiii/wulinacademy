@@ -16,7 +16,7 @@ const NewsService = {
         return this.__api__.Put(this.__context__+ "/{id}/content",{ urlData: {id: id}, body: newsContent });
     },
     getContent(uuid){
-        return this.__api__.Get(NEWS_CONTENT_PREFIX+"/{uuid}.html",{urlData:{uuid: uuid}});
+        return this.__api__.Get(NEWS_CONTENT_PREFIX+"/{uuid}.json",{urlData:{uuid: uuid}});
     },
     pageSearch({keywords, pageNum, pageSize}){
         return this.__api__.Get(this.__context__+ '/page/{num}-{size}',{urlData:{num: pageNum, size: pageSize}, query:{ keywords: keywords}});

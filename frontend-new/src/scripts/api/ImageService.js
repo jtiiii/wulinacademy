@@ -21,6 +21,9 @@ const ImageService = {
         return this.__api__.Delete(this.__context__ + "/folder/{folderId}/{name}",{
             urlData:{folderId,name}
         });
+    },
+    getImageSrc( sha1Md5, suffix){
+        return IMAGE_SITE_PREFIX + sha1Md5 + "." + suffix;
     }
 };
 export const IMAGE_SITE_PREFIX = ImageService.__api__.host + ":"+ImageService.__api__.port + "/assets/images/";

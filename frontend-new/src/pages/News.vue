@@ -17,7 +17,9 @@
                     <p class="item-preview">{{ newsItem.preview }}</p>
                 </v-card>
             </div>
-            <button v-if="!news.last" @click="nextPage" type="button" class="btn">see more...</button>
+            <a v-if="!news.page.last" @click="nextPage" class="page-next">
+                <i class="iconfont wulin-more1" />
+            </a>
         </div>
         <!-- 添加、编辑新闻内容框 -->
         <v-dialog :canClose="true" :show="modal.content" :size="'larger'" @close="modal.content = false" >
@@ -35,8 +37,7 @@
                     <input hidden type="text" v-model="news.modify.eventDate.gmt" />
                 </label>
                 <hr/>
-                <div v-if="isPreview" v-html="news.modify.content" />
-                <v-editor v-else @init="initEditor" v-model="news.modify.content"/>
+                <v-editor @init="setEditor" :editing="!isPreview" :registers="registers" :handlers="getEditorHandlers()" v-model="news.modify.content"/>
             </div>
             <div class="news-content-tool-bar" v-if="manage">
                 <label>
@@ -46,12 +47,16 @@
                     <v-button v-show="!isPreview" :size="'small'" :emotion="'success'" @click="saveOrUpdateNews"><span>保存</span><i class="iconfont wulin-save" /></v-button>
                 </label>
                 <label>
-                    <v-button v-show="isPreview" :size="'small'" :emotion="'danger'"><span>删除</span><i class="iconfont wulin-delete" /></v-button>
+                    <v-button v-show="isPreview" :size="'small'" :emotion="'danger'" @click="deleteNews"><span>删除</span><i class="iconfont wulin-delete" /></v-button>
                 </label>
                 <label>
                     <v-button v-show="!isPreview" :size="'small'" @click="modal.content = false"><span>取消</span><i class="iconfont wulin-cancel" /></v-button>
                 </label>
             </div>
+            <v-modal v-if="manage" :show="modal.imageControl" :width="'815px'" :canClose="true" @close = "modal.imageControl = false">
+                <template #title>图片选择</template>
+                <image-control @image-click="insertImage" />
+            </v-modal>
         </v-dialog>
     </div>
 </template>
@@ -62,6 +67,8 @@
     import FComponents from 'f-vue-components';
     import noPic from '../assets/images/no-pic.png';
     import FUtils from 'fo-utils';
+    import ServerImage from "../scripts/quill/ServerImage";
+    const ImageControl = resolve => require(["../components/ImageControl.vue"],resolve );
     const ArrayUtils = FUtils.ArrayUtils;
     const StringUtils = FUtils.StringUtils;
 
@@ -71,7 +78,9 @@
             'v-editor': FComponents.Third.Quill,
             'v-card': FComponents.Card,
             "v-dialog": FComponents.Dialog,
-            "v-button": FComponents.Button
+            "v-button": FComponents.Button,
+            "v-modal": FComponents.Modal,
+            'image-control': ImageControl,
         },
         props:{
             newsId: {
@@ -81,16 +90,18 @@
         },
         data: function() {
             return {
-                manage: false,
+                manage: true,
                 isLogin: SecurityService.isLogin,
                 modal:{
                     confirm: false,
                     content: false,
+                    imageControl: false,
                 },
                 mode:'preview',
                 modes:['add','edit','delete'],
                 defaultThumbnail: noPic,
                 editor: null,
+                registers:[ServerImage],
                 news:{
                     page:{
                         content: [],
@@ -108,7 +119,10 @@
                     title:'',
                     modify:{
                         title:'',
-                        content: '',
+                        content: {
+                            delta: null,
+                            html: '',
+                        },
                         thumbnail: null,
                         eventDate: {
                             dateStr: '',
@@ -145,6 +159,9 @@
             }
         },
         methods:{
+            imageHandler(){
+                this.modal.imageControl = true;
+            },
             select( newsItem ){
                 this.news.selected = newsItem.id;
             },
@@ -158,7 +175,8 @@
             },
             cleanModify(){
                 this.news.modify.title = '';
-                this.news.modify.content = '';
+                this.news.modify.content.delta = null;
+                this.news.modify.content.html = '';
                 this.news.modify.eventDate.dateStr = '';
                 this.news.modify.previews = '';
                 this.news.modify.thumbnail = '';
@@ -169,11 +187,11 @@
                 this.news.modify.eventDate.dateStr = new Date(eventDate).toDateString();
                 if(uuid){
                     return NewsService.getContent(uuid).then( result => {
-                        this.news.modify.content = result;
+                        this.news.modify.content.delta = result;
                     });
                 }
                 return new Promise( resolve => {
-                    this.new.modify.content = content;
+                    this.new.modify.content.delta = content;
                     resolve();
                 });
             },
@@ -219,30 +237,34 @@
             saveOrUpdateNews(){
                 let preview = StringUtils.fixLength(this.editor.getText(),200,'');
                 let eventDate = new Date(this.news.modify.eventDate.dateStr).getTime();
-                if(this.isUpdate){
+                let updateOrSaveTask = null;
+                let isUpdate = this.isUpdate;
+                if(isUpdate){
                     let forUpdate = this.getSelected;
-                    return NewsService.update(forUpdate.id,{
+                    updateOrSaveTask =  NewsService.update(forUpdate.id,{
                         title: this.news.modify.title,
                         preview: preview,
                         eventDate: eventDate,
                         thumbnail: this.news.modify.thumbnail
                     }).then( () => {
                         this.updateSelected(this.getSelected.id, this.news.modify.title, preview, eventDate, this.news.modify.thumbnail);
-                    })
-                    .then( () => NewsService.updateContent(forUpdate.id, this.news.modify.content))
-                    .then( () => {
-                        this.switchPreview();
+                        return forUpdate.id;
+                    });
+                }else{
+                    updateOrSaveTask = NewsService.save({
+                        title: this.news.modify.title,
+                        preview: preview,
+                        eventDate: eventDate,
+                        thumbnail: this.news.modify.thumbnail
                     });
                 }
-                return NewsService.save({
-                    title: this.news.modify.title,
-                    preview: preview,
-                    eventDate: eventDate,
-                    thumbnail: this.news.modify.thumbnail
-                }).then( id => NewsService.updateContent(id, this.news.modify.content) ).then( () => {
+                return updateOrSaveTask.then( id => this.updateNewsContent(id)).then( () => {
+                    if(!isUpdate){
+                        this.getNewsPage(true);
+                    }
                     this.switchPreview();
-                    this.getNewsPage(true);
                 });
+
             },
             updateSelected(id, title, preview, eventDate, thumbnail){
                 let forUpdate = this.getSelected;
@@ -251,14 +273,35 @@
                 forUpdate.thumbnail = thumbnail;
                 forUpdate.preview = preview;
             },
+            updateNewsContent(id){
+                return NewsService.updateContent(id, this.news.modify.content.delta );
+            },
             deleteNews(){
-
+                let id = this.getSelected.id;
+                let i = 0;
+                for(; i < this.news.list.length; i++){
+                    if(this.news.list[i].id === id){
+                        break;
+                    }
+                }
+                return NewsService.delete(id).then( () => {
+                    this.news.list.splice(i,1);
+                } );
             },
             initDebounce(){
                 this.searchDebounce = _.debounce( this.getNewsPage.bind(this,[true]),500);
             },
-            initEditor( editor ){
+            setEditor( editor ){
                 this.editor = editor;
+            },
+            getEditorHandlers(){
+                return {
+                    image: this.imageHandler.bind(this)
+                };
+            },
+            insertImage( image ){
+                let index = this.editor.getSelection(true).index;
+                this.editor.insertEmbed(index,'server_image',image, 'api');
             }
         },
         mounted(){
