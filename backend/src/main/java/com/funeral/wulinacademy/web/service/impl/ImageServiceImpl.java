@@ -42,6 +42,13 @@ public class ImageServiceImpl implements ImageService {
         folderImagesRepository.deleteById(new FolderImagePk().setFolderId(folderId).setImageName(name));
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteAllByFolderId(Integer folderId) {
+        Assert.notNull(folderId, "The folderId cannot be null!");
+        folderImagesRepository.deleteAllByPk_FolderId(folderId);
+    }
+
     @Override
     public List<FolderImages> findAllByFolderId(Integer folderId) {
         Assert.notNull(folderId, "The folderId cannot be null!");

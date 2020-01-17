@@ -3,6 +3,8 @@ package com.funeral.wulinacademy.web.repository;
 import com.funeral.wulinacademy.web.entity.FolderImages;
 import com.funeral.wulinacademy.web.entity.pk.FolderImagePk;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -13,5 +15,9 @@ import java.util.List;
 public interface FolderImagesRepository extends JpaRepository<FolderImages, FolderImagePk> {
 
     List<FolderImages> findAllByPk_FolderId(Integer folderId);
+
+    @Modifying
+    @Query("DELETE FROM FolderImages WHERE pk.folderId = :folderId ")
+    void deleteAllByPk_FolderId(Integer folderId);
 
 }

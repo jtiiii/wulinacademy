@@ -14,5 +14,7 @@ public interface ImageService {
 
     void delete(Integer folderId, String name);
 
+    void deleteAllByFolderId(Integer folderId);
+
     List<FolderImages> findAllByFolderId(Integer folderId);
 }

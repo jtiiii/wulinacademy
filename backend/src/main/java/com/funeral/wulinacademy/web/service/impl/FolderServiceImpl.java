@@ -6,6 +6,7 @@ import com.funeral.wulinacademy.web.model.FolderModify;
 import com.funeral.wulinacademy.web.repository.FolderRepository;
 import com.funeral.wulinacademy.web.repository.FolderTreeRepository;
 import com.funeral.wulinacademy.web.service.FolderService;
+import com.funeral.wulinacademy.web.service.ImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -29,6 +30,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Resource
     private FolderTreeRepository folderTreeRepository;
+
+    @Resource
+    private ImageService imageService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -68,12 +72,13 @@ public class FolderServiceImpl implements FolderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteFolder(Integer folderId){
+    public void deleteFolder(Integer folderId)  {
         if(hasSon(folderId)){
             throw new IllegalArgumentException("The folder delete failed. It has son.");
         }
-        folderRepository.deleteById(folderId);
+        imageService.deleteAllByFolderId(folderId);
         folderTreeRepository.deleteById(folderId);
+        folderRepository.deleteById(folderId);
     }
 
     @Override

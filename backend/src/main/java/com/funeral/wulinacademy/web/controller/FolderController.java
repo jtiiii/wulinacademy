@@ -28,9 +28,19 @@ public class FolderController {
         return folderService.addFolder(toModify(modify));
     }
 
+    @PutMapping("/{id}/name")
+    public void updateFolder(@PathVariable Integer id, @RequestParam("name") String name ) {
+        folderService.updateFolderName(id,name);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteFolder(@PathVariable("id") Integer id) {
         folderService.deleteFolder(id);
+    }
+
+    @GetMapping("/{id}/hasSon")
+    public boolean hasSon(@PathVariable Integer id){
+        return folderService.hasSon(id);
     }
 
     @GetMapping("/{id}/son")

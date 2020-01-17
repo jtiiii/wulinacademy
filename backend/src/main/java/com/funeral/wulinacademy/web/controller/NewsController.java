@@ -139,7 +139,7 @@ public class NewsController {
     }
 
     private File getContentFile(String uuid){
-        return new File(dir + uuid + ".html");
+        return new File(dir + uuid + ".json");
     }
 
 }

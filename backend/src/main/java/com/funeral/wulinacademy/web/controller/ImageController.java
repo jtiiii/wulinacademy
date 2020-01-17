@@ -38,7 +38,9 @@ public class ImageController {
     private void inti(){
         File dir = new File(imageDir);
         if(!dir.exists()){
-            dir.mkdirs();
+            if(!dir.mkdirs()){
+                throw new RuntimeException("The folder of images["+dir.getAbsolutePath()+"] cannot be create!");
+            }
         }
     }
 
