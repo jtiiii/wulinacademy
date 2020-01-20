@@ -23,6 +23,9 @@ const ServerConfig = {
             set(value){
                 localStorage.setItem(this.__name__,value);
             },
+            remove(){
+                localStorage.removeItem(this.__name__);
+            },
             get(){
                 return localStorage.getItem(this.__name__);
             }

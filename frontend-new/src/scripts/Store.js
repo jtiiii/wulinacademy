@@ -11,7 +11,7 @@ const store ={
         }
     },
     mutations:{
-        login: state =>{
+        login: state => {
             state.isLogin = true;
         },
         logout: state => {

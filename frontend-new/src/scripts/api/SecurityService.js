@@ -12,8 +12,11 @@ const SecurityService = {
     },
     logout() {
         return this.__api__.Post('/logout',{}).then( () => {
-            ServerConfig.localStorage.authToken.set(null);
+            ServerConfig.localStorage.authToken.remove();
         });
+    },
+    hasToken(){
+        return Boolean(ServerConfig.localStorage.authToken.get());
     }
 };
 export default SecurityService;

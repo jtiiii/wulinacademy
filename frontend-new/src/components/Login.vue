@@ -35,16 +35,24 @@
         methods:{
             login(){
                 SecurityService.login(this.username,this.password).then( () => {
-                    this.$store.commit('login');
+                    this.setLoginStatus(true);
                     this.$emit('loginSuccessful');
                 });
             },
             logout(){
                 SecurityService.logout()
                     .then(() => {
-                        this.$store.commit('logout');
+                        this.setLoginStatus( false );
                     });
+            },
+            setLoginStatus( isLogin ){
+                if(this.isLogin !== isLogin){
+                    this.$store.commit(isLogin? 'login' : 'logout');
+                }
             }
+        },
+        mounted() {
+            this.setLoginStatus( SecurityService.hasToken() );
         }
     }
 </script>
