@@ -20,6 +20,12 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
   security:
     debug: false
+  servlet:
+    multipart:
+      enabled: true #是否启用http上传处理
+      max-request-size: 5MB #最大请求文件的大小
+      max-file-size: 5MB #设置单个文件最大长度
+      file-size-threshold: 20MB #当文件达到多少时进行磁盘写入
 ---
 cors:
   allow-origin: '*'

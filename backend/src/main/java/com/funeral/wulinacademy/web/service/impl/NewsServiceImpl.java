@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -73,6 +74,20 @@ public class NewsServiceImpl extends BaseService implements NewsService {
     public String getUuidById(Integer newsId) {
         Assert.notNull(newsId, "The newsId cannot be null");
         return newsRepository.findUuidByNewsId(newsId);
+    }
+
+    @Override
+    public Optional<News> findById(Integer newsId) {
+        Assert.notNull(newsId, "The newsId cannot be null");
+        return newsRepository.findById(newsId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void visibleOrInvisible(Integer newsId, Boolean enable) {
+        Assert.notNull(newsId, "The newsId cannot be null");
+        Assert.notNull(enable, "The enable cannot be null");
+        newsRepository.updateStatusByIdAndWithout(enable? StandardStatus.VISIBLE: StandardStatus.INVISIBLE, newsId, StandardStatus.DELETED);
     }
 
     @Transactional(rollbackFor = Exception.class)

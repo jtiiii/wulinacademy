@@ -18,4 +18,8 @@ public interface NewsRepository extends JpaRepository<News,Integer> {
     @Modifying
     @Query("UPDATE News SET status = :status WHERE newsId = :newsId ")
     void updateStatusById(StandardStatus status, Integer newsId);
+
+    @Modifying
+    @Query("UPDATE News SET status = :status WHERE newsId = :newsId And status <> :withoutStatus ")
+    void updateStatusByIdAndWithout(StandardStatus status, Integer newsId, StandardStatus withoutStatus);
 }

@@ -3,6 +3,7 @@ package com.funeral.wulinacademy.web.controller;
 import com.funeral.wulinacademy.web.common.standard.StandardStatus;
 import com.funeral.wulinacademy.web.controller.model.news.NewsModifyVo;
 import com.funeral.wulinacademy.web.controller.model.news.NewsVo;
+import com.funeral.wulinacademy.web.entity.News;
 import com.funeral.wulinacademy.web.model.NewsModify;
 import com.funeral.wulinacademy.web.service.NewsService;
 import com.funeral.wulinacademy.web.util.StringUtils;
@@ -70,13 +71,14 @@ public class NewsController {
                 startTime == null? null: new Date(startTime),
                 endTime == null? null: new Date(endTime),
                 statusSet)
-                .map( entity -> new NewsVo().setId(entity.getNewsId())
-                .setEventDate(entity.getEventDate())
-                .setPreview(entity.getPreview())
-                .setUuid(entity.getUuid())
-                .setThumbnail(entity.getThumbnail())
-                .setTitle(entity.getTitle())
-                .setEnable(StandardStatus.VISIBLE.equals(entity.getStatus())));
+                .map(NewsController::toVo);
+    }
+
+    @GetMapping("/{id}")
+    public NewsVo getNewsById(@PathVariable Integer id){
+        return newsService.findById(id)
+                .map(NewsController::toVo)
+                .orElse( null );
     }
 
     @PostMapping
@@ -116,6 +118,16 @@ public class NewsController {
         }
     }
 
+    @PutMapping("/{id}/visible")
+    public void visibleNews(@PathVariable Integer id){
+        newsService.visibleOrInvisible(id, true);
+    }
+
+    @PutMapping("/{id}/invisible")
+    public void invisibleNews(@PathVariable Integer id){
+        newsService.visibleOrInvisible(id, false);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteNews(@PathVariable Integer id){
         newsService.deleteNews(id);
@@ -123,6 +135,16 @@ public class NewsController {
 
     private static String generateUuid(){
         return UUID.randomUUID().toString();
+    }
+
+    private static NewsVo toVo(News entity){
+        return entity == null? null: new NewsVo().setId(entity.getNewsId())
+                .setEventDate(entity.getEventDate())
+                .setPreview(entity.getPreview())
+                .setUuid(entity.getUuid())
+                .setThumbnail(entity.getThumbnail())
+                .setTitle(entity.getTitle())
+                .setEnable(StandardStatus.VISIBLE.equals(entity.getStatus()));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

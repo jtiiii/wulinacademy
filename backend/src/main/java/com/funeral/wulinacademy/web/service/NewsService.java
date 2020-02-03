@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -20,6 +21,10 @@ public interface NewsService extends Service {
     void updateNewsInfo(Integer newsId, NewsModify modify);
 
     String getUuidById(Integer newsId);
+
+    Optional<News> findById(Integer newsId);
+
+    void visibleOrInvisible(Integer newsId, Boolean enable);
 
     void deleteNews(Integer newsId);
 
