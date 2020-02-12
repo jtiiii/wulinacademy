@@ -4,14 +4,17 @@
             <!-- 搜索框 -->
             <label class="tool-bar">
                 <input class="searchBox" v-model="news.search"  placeholder="搜索..." type="text" />
-                <span class="buttons" v-if="manage">
+                <span class="buttons" v-if="isLogin">
                     <a class="iconfont wulin-create" @click="createNews"/>
                 </span>
             </label>
             <div v-show="!news.list.length">There is no news....</div>
             <!-- 新闻列表 -->
             <div v-for="newsItem in news.list" class="news-item" :key="'news-'+ newsItem.id" @click="selectAndOpenNewsDetail(newsItem)" >
-                <v-card :flow="'row'" :cover="newsItem.thumbnail || defaultThumbnail" :coverText="newsItem.title">
+                <div class="news-invisible" v-if="isLogin && !newsItem.enable">
+                    <a class="iconfont wulin-invisible" />
+                </div>
+                <v-card :flow="'row'" :cover="getThumbnailSrc(newsItem.thumbnail) || defaultThumbnail" :coverText="newsItem.title">
                     <h3 class="item-title">{{ newsItem.title }}</h3>
                     <h6 class="item-date">{{ new Date(newsItem.eventDate).toLocaleString() }}</h6>
                     <p class="item-preview">{{ newsItem.preview }}</p>
@@ -25,7 +28,8 @@
         <v-dialog :canClose="true" :show="modal.content" :size="'larger'" @close="modal.content = false" >
             <div class="news-content">
                 <label class="header-img">
-                    <img alt="头图" :src="news.modify.thumbnail || defaultThumbnail"/>
+                    <img v-if="isPreview" alt="头图" :src="getThumbnailSrc(news.modify.thumbnail) || defaultThumbnail"/>
+                    <img v-else class="header-img-switch" @click="selectThumbnail" alt="头图" :src="getThumbnailSrc(news.modify.thumbnail) || defaultThumbnail"/>
                 </label>
                 <h2 class="title" v-if="isPreview" >{{ news.modify.title }}</h2>
                 <label class="title" v-else >
@@ -37,37 +41,43 @@
                     <input hidden type="text" v-model="news.modify.eventDate.gmt" />
                 </label>
                 <hr/>
+                <!-- 编辑器 -->
                 <v-editor @init="setEditor" :editing="!isPreview" :registers="registers" :handlers="getEditorHandlers()" v-model="news.modify.content"/>
             </div>
-            <div class="news-content-tool-bar" v-if="manage">
-                <label>
-                    <v-button v-show="isPreview" :size="'small'" :emotion="'warning'" @click="switchEditing"><span>编辑</span><i class="iconfont wulin-edit" /></v-button>
+            <div class="news-content-tool-bar" v-if="isLogin">
+                <label v-show="isPreview">
+                    <v-button :size="'small'" :emotion="'warning'" @click="switchEditing"><span>编辑</span><i class="iconfont wulin-edit" /></v-button>
                 </label>
-                <label>
-                    <v-button v-show="!isPreview" :size="'small'" :emotion="'success'" @click="saveOrUpdateNews"><span>保存</span><i class="iconfont wulin-save" /></v-button>
+                <label v-show="!isPreview">
+                    <v-button :size="'small'" :emotion="'success'" @click="saveOrUpdateNews"><span>保存</span><i class="iconfont wulin-save" /></v-button>
                 </label>
-                <label>
-                    <v-button v-show="isPreview" :size="'small'" :emotion="'danger'" @click="deleteNews"><span>删除</span><i class="iconfont wulin-delete" /></v-button>
+                <label v-show="isPreview">
+                    <v-button :size="'small'" :emotion="'danger'" @click="deleteNews"><span>删除</span><i class="iconfont wulin-delete" /></v-button>
                 </label>
-                <label>
-                    <v-button v-show="!isPreview" :size="'small'" @click="modal.content = false"><span>取消</span><i class="iconfont wulin-cancel" /></v-button>
+                <label v-show="!isPreview">
+                    <v-button :size="'small'" @click="modal.content = false"><span>取消</span><i class="iconfont wulin-cancel" /></v-button>
+                </label>
+                <label v-if="isUpdate" >
+                    <v-button v-if="selected.enable" :size="'small'" :emotion="'warning'" @click="disableNews"><span>撤回</span><i class="iconfont wulin-invisible" /></v-button>
+                    <v-button v-else :size="'small'" :emotion="'success'" @click="enableNews"><span>发布</span><i class="iconfont wulin-visible" /></v-button>
                 </label>
             </div>
-            <v-modal v-if="manage" :show="modal.imageControl" :width="'815px'" :canClose="true" @close = "modal.imageControl = false">
+            <!-- 图片选择 -->
+            <v-modal v-if="isLogin" :show="modal.imageControl" :width="'815px'" :canClose="true" @close = "modal.imageControl = false">
                 <template #title>图片选择</template>
-                <image-control @image-click="insertImage" />
+                <image-control @image-click="selectImage" />
             </v-modal>
         </v-dialog>
     </div>
 </template>
 <script type="text/javascript">
-    import SecurityService from '../scripts/api/SecurityService';
     import NewsService from '../scripts/api/NewsService';
     import _ from 'lodash';
     import FComponents from 'f-vue-components';
     import noPic from '../assets/images/no-pic.png';
     import FUtils from 'fo-utils';
     import ServerImage from "../scripts/quill/ServerImage";
+    import ImageService from "../scripts/api/ImageService";
     const ImageControl = resolve => require(["../components/ImageControl.vue"],resolve );
     const ArrayUtils = FUtils.ArrayUtils;
     const StringUtils = FUtils.StringUtils;
@@ -91,7 +101,6 @@
         data: function() {
             return {
                 manage: true,
-                isLogin: SecurityService.isLogin,
                 modal:{
                     confirm: false,
                     content: false,
@@ -101,6 +110,11 @@
                 modes:['add','edit','delete'],
                 defaultThumbnail: noPic,
                 editor: null,
+                imageControlSelectTarget: 'thumbnail' ,
+                imageControlSelectTargets: {
+                    0:'thumbnail',
+                    1:'content'
+                },
                 registers:[ServerImage],
                 news:{
                     page:{
@@ -137,17 +151,23 @@
             }
         },
         computed:{
-            getSelected(){
+            selected(){
                 if(this.news.selected){
                     return this.news.cache[this.news.selected];
                 }
                 return {};
             },
             isUpdate(){
-                return Boolean(this.getSelected.id);
+                return Boolean(this.selected.id);
             },
             isPreview(){
                 return this.mode === 'preview';
+            },
+            isLogin(){
+                return this.$store.state.isLogin;
+            },
+            isThumbnailImageTarget(){
+                return this.imageControlSelectTarget === this.imageControlSelectTargets[0];
             }
         },
         watch:{
@@ -160,6 +180,7 @@
         },
         methods:{
             imageHandler(){
+                this.imageControlSelectTarget = this.imageControlSelectTargets[1];
                 this.modal.imageControl = true;
             },
             select( newsItem ){
@@ -209,13 +230,32 @@
             },
             cleanNews(){
                 ArrayUtils.clean(this.news.list);
+                this.cleanPage();
+            },
+            cleanPage(){
+                ArrayUtils.clean(this.news.page.content);
+                this.news.page.last = true;
+                this.news.page.total = 0;
+                this.news.page.pageNum = 0;
+                this.news.page.eventDate = null;
+            },
+            getThumbnailSrc( thumbnail){
+                if(thumbnail){
+                    let temp = thumbnail.split(".");
+                    return ImageService.getImageSrc( temp[0], temp[1]);
+                }
+                return null;
             },
             nextPage(){
                 this.news.pageNum ++;
                 this.getNewsPage();
             },
-            getNewsPage(refresh ){
-                NewsService.pageSearch({keywords: this.news.search,pageSize:this.news.page.pageSize, pageNum: refresh? 0: this.news.page.pageNum}).then( data => {
+            selectThumbnail(){
+                this.modal.imageControl = true;
+                this.imageControlSelectTarget = this.imageControlSelectTargets[0];
+            },
+            getNewsPage( refresh ){
+                NewsService.pageSearch({keywords: this.news.search,pageSize:this.news.page.pageSize, pageNum: refresh? 0: this.news.page.pageNum, withInvisible: this.isLogin }).then( data => {
                     if(refresh){
                         this.cleanNews();
                     }
@@ -240,14 +280,14 @@
                 let updateOrSaveTask = null;
                 let isUpdate = this.isUpdate;
                 if(isUpdate){
-                    let forUpdate = this.getSelected;
+                    let forUpdate = this.selected;
                     updateOrSaveTask =  NewsService.update(forUpdate.id,{
                         title: this.news.modify.title,
                         preview: preview,
                         eventDate: eventDate,
                         thumbnail: this.news.modify.thumbnail
                     }).then( () => {
-                        this.updateSelected(this.getSelected.id, this.news.modify.title, preview, eventDate, this.news.modify.thumbnail);
+                        this.updateSelected(this.selected.id, this.news.modify.title, preview, eventDate, this.news.modify.thumbnail);
                         return forUpdate.id;
                     });
                 }else{
@@ -267,7 +307,7 @@
 
             },
             updateSelected(id, title, preview, eventDate, thumbnail){
-                let forUpdate = this.getSelected;
+                let forUpdate = this.selected;
                 forUpdate.title = title;
                 forUpdate.eventDate = eventDate;
                 forUpdate.thumbnail = thumbnail;
@@ -277,7 +317,7 @@
                 return NewsService.updateContent(id, this.news.modify.content.delta );
             },
             deleteNews(){
-                let id = this.getSelected.id;
+                let id = this.selected.id;
                 let i = 0;
                 for(; i < this.news.list.length; i++){
                     if(this.news.list[i].id === id){
@@ -288,8 +328,33 @@
                     this.news.list.splice(i,1);
                 } );
             },
+            enableNews(){
+                return NewsService.visible(this.selected.id, true)
+                .then( () => {
+                    this.selected.enable = true;
+                })
+            },
+            disableNews(){
+                return NewsService.visible(this.selected.id, false).then( () => {
+                    this.selected.enable = false;
+                });
+            },
             initDebounce(){
-                this.searchDebounce = _.debounce( this.getNewsPage.bind(this,[true]),500);
+                this.searchDebounce = _.debounce( () => {
+                    let id = Number(this.news.search);
+                    if(id && !isNaN(id) ){
+                        this.getNews(id);
+                    }else{
+                        this.getNewsPage(true);
+                    }
+
+                },500);
+            },
+            getNews( id ){
+                return NewsService.getNews(id).then( news => {
+                    this.cleanNews();
+
+                });
             },
             setEditor( editor ){
                 this.editor = editor;
@@ -298,6 +363,17 @@
                 return {
                     image: this.imageHandler.bind(this)
                 };
+            },
+            changeThumbnail( image ){
+                this.news.modify.thumbnail = image.sha1Md5 + '.' + image.suffix;
+            },
+            selectImage( image ){
+                if(this.isThumbnailImageTarget){
+                    this.changeThumbnail( image );
+                }else{
+                    this.insertImage( image );
+                }
+                this.modal.imageControl = false;
             },
             insertImage( image ){
                 let index = this.editor.getSelection(true).index;

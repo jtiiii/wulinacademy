@@ -23,7 +23,10 @@ const ImageService = {
         });
     },
     getImageSrc( sha1Md5, suffix){
-        return IMAGE_SITE_PREFIX + sha1Md5 + "." + suffix;
+        if(suffix){
+            return IMAGE_SITE_PREFIX + sha1Md5 + "." + suffix;
+        }
+        return IMAGE_SITE_PREFIX + sha1Md5;
     }
 };
 export const IMAGE_SITE_PREFIX = ImageService.__api__.host + ":"+ImageService.__api__.port + "/assets/images/";

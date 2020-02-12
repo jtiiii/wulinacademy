@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.11",
-    "f-vue-components": "^0.1.25",
+    "f-vue-components": "^0.1.28",
     "fo-utils": "^1.0.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",

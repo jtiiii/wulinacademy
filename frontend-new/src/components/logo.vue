@@ -1,6 +1,6 @@
 <template>
     <a class="logo" :title="$t(logo.i18key)" :href="logo.url" @click="click">
-        <i class="iconfont" :class="iconLogo"></i>
+        <i class="iconfont" :class="iconLogo" />
     </a>
 </template>
 <script type="text/javascript">
@@ -20,7 +20,6 @@
             iconLogo(){
                 let result = {};
                 result[this.logo.icon] = true;
-                console.info(result);
                 return result;
             }
         }
