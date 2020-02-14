@@ -5,6 +5,11 @@ const ServerConfig = {
             host: "http://localhost",
             port: 9000,
             debug: true
+        },
+        production:{
+            host: "http://39.99.142.172",
+            port: 9000,
+            debug: true
         }
     },
     author:{

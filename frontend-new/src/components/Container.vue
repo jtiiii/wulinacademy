@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="center-container">
         <router-view></router-view>
     </div>
 </template>
@@ -9,7 +9,6 @@
         name: "Container"
     }
 </script>
-
-<style scoped>
-
+<style lang="less">
+    @import url("../assets/styles/components/center-container.less");
 </style>

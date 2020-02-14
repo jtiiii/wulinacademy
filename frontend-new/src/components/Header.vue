@@ -2,7 +2,8 @@
     <div class="header">
         <div v-show="fixed" class="placeholder-box">
         </div>
-        <div :class="{fixed:fixed}" class="content-box">
+        <div class="box" :class="{fixed:fixed}">
+        <div  class="content-box">
             <div class="menu">
                 <v-selector
                         :selects="menu.selects"
@@ -48,6 +49,7 @@
                 </template>
                 <v-login @loginSuccessful="login.show = false" />
             </v-modal>
+        </div>
         </div>
     </div>
 </template>

@@ -1,154 +1,165 @@
 .header .placeholder-box {
   height: 5rem;
 }
-.header .content-box {
+.header .box {
+  border-bottom: 0.125rem solid #ccc;
+  height: 5rem;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+.header .box .content-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 120rem;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  border-bottom: 0.125rem solid #ccc;
-  height: 5rem;
 }
-.header .content-box.fixed {
-  position: fixed;
-  height: 3.125rem;
-  width: 100%;
-  top: 0;
-  background: #fff;
-}
-.header .content-box.fixed .logo {
-  display: flex;
-  flex-flow: row nowrap;
-  height: 2rem;
-}
-.header .content-box.fixed .logo div {
-  display: inline-block;
-  flex: 1;
-  height: 100%;
-  text-align: right;
-}
-.header .content-box.fixed .logo div img {
-  margin-right: 0.5rem;
-}
-.header .content-box.fixed .logo span {
-  flex: 1;
-  display: inline-block;
-  padding-left: 0.5rem;
-  text-align: left;
-}
-.header .content-box .logo {
+.header .box .content-box .logo {
   flex: 4;
   text-align: center;
   justify-content: center;
 }
-.header .content-box .logo div {
+.header .box .content-box .logo div {
   display: flex;
   align-items: center;
   height: 100%;
 }
-.header .content-box .logo div img {
+.header .box .content-box .logo div img {
   max-width: 100%;
   max-height: 100%;
 }
-.header .content-box .btn {
+.header .box .content-box .btn {
   cursor: pointer;
 }
-.header .content-box .menu,
-.header .content-box .setting,
-.header .content-box .logo {
+.header .box .content-box .menu,
+.header .box .content-box .setting,
+.header .box .content-box .logo {
   height: 100%;
   display: flex;
   align-items: center;
 }
 @media screen and (max-width: 480px) {
-  .header .content-box .setting .dropdown .modal-container {
+  .header .box .content-box .setting .dropdown .modal-container {
     width: 100%;
   }
 }
 @media screen and (min-width: 480px) {
-  .header .content-box .setting .dropdown .modal-container {
+  .header .box .content-box .setting .dropdown .modal-container {
     width: 7rem;
   }
 }
-.header .content-box .menu .selector {
+.header .box .content-box .menu .selector {
   width: 7rem;
 }
-.header .content-box .menu .selector .modal-container {
+.header .box .content-box .menu .selector .modal-container {
   width: 7rem;
 }
-.header .content-box .menu,
-.header .content-box .setting {
+.header .box .content-box .menu,
+.header .box .content-box .setting {
   flex: 1;
 }
-.header .content-box .menu .selector,
-.header .content-box .setting .selector,
-.header .content-box .menu .dropdown,
-.header .content-box .setting .dropdown {
+.header .box .content-box .menu .selector,
+.header .box .content-box .setting .selector,
+.header .box .content-box .menu .dropdown,
+.header .box .content-box .setting .dropdown {
   position: absolute;
 }
-.header .content-box .menu .selector .iconfont,
-.header .content-box .setting .selector .iconfont,
-.header .content-box .menu .dropdown .iconfont,
-.header .content-box .setting .dropdown .iconfont {
+.header .box .content-box .menu .selector .iconfont,
+.header .box .content-box .setting .selector .iconfont,
+.header .box .content-box .menu .dropdown .iconfont,
+.header .box .content-box .setting .dropdown .iconfont {
   width: 1.5rem;
   height: 1.5rem;
   font-size: 1.5rem;
 }
-.header .content-box .menu .selector .modal-container .panel,
-.header .content-box .setting .selector .modal-container .panel,
-.header .content-box .menu .dropdown .modal-container .panel,
-.header .content-box .setting .dropdown .modal-container .panel {
+.header .box .content-box .menu .selector .modal-container .panel,
+.header .box .content-box .setting .selector .modal-container .panel,
+.header .box .content-box .menu .dropdown .modal-container .panel,
+.header .box .content-box .setting .dropdown .modal-container .panel {
   width: 7rem;
 }
-.header .content-box .menu .selector .modal-container .panel .nav-box a.item,
-.header .content-box .setting .selector .modal-container .panel .nav-box a.item,
-.header .content-box .menu .dropdown .modal-container .panel .nav-box a.item,
-.header .content-box .setting .dropdown .modal-container .panel .nav-box a.item {
+.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item,
+.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item,
+.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item,
+.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item {
   text-align: center;
   font-weight: bolder;
   color: #555;
 }
-.header .content-box .menu .selector .modal-container .panel .nav-box a.item[active],
-.header .content-box .setting .selector .modal-container .panel .nav-box a.item[active],
-.header .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active],
-.header .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] {
+.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item[active],
+.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item[active],
+.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active],
+.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] {
   background-color: #A9A19A;
 }
-.header .content-box .menu .selector .modal-container .panel .nav-box a.item[active] span,
-.header .content-box .setting .selector .modal-container .panel .nav-box a.item[active] span,
-.header .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active] span,
-.header .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] span {
+.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item[active] span,
+.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item[active] span,
+.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active] span,
+.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] span {
   color: #fff;
 }
-.header .content-box .menu .selector {
+.header .box .content-box .menu .selector {
   margin-left: 0.625rem;
   left: 0;
 }
-.header .content-box .setting .dropdown {
+.header .box .content-box .setting .dropdown {
   margin-right: 0.625rem;
   right: 0;
 }
-.header .content-box .setting .dropdown .modal-container .panel .nav-box a {
+.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a {
   font-size: 0.8rem;
   padding: 0.3125rem;
 }
-.header .content-box .setting .dropdown .btn {
+.header .box .content-box .setting .dropdown .btn {
   float: right;
 }
-.header .content-box .setting .dropdown .group .title {
+.header .box .content-box .setting .dropdown .group .title {
   text-align: center;
 }
-.header .content-box .setting .dropdown .group .title hr {
+.header .box .content-box .setting .dropdown .group .title hr {
   position: relative;
   top: 0.8rem;
 }
-.header .content-box .setting .dropdown .group .title span {
+.header .box .content-box .setting .dropdown .group .title span {
   font-size: 0.75rem;
   position: relative;
   background: #fff;
   padding: 0.3125rem;
 }
-.header .content-box .login-modal {
+.header .box .content-box .login-modal {
   width: 18.75rem;
+}
+.header .box.fixed {
+  height: 3.125rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: #fff;
+}
+.header .box.fixed .content-box .logo {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 2rem;
+}
+.header .box.fixed .content-box .logo div {
+  display: inline-block;
+  flex: 1;
+  height: 100%;
+  text-align: right;
+}
+.header .box.fixed .content-box .logo div img {
+  margin-right: 0.5rem;
+}
+.header .box.fixed .content-box .logo span {
+  flex: 1;
+  display: inline-block;
+  padding-left: 0.5rem;
+  text-align: left;
 }
 /*# sourceMappingURL=header.css.map */
