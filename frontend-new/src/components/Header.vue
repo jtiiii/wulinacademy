@@ -9,6 +9,7 @@
                         :selects="menu.selects"
                         :length="pages.length"
                         :size="'small'"
+                        :panel-class="['menu-selector-panel']"
                         :listShow="menu.listShow"
                         @openOrClose="openOrClose"
                         @itemClick="select"
@@ -25,7 +26,9 @@
                 <span v-if="currentTab" v-show="fixed">{{ $t(currentTab.i18key) }}</span>
             </div>
             <div class="setting">
-                <v-dropdown v-model="setting.listShow">
+                <v-dropdown v-model="setting.listShow"
+                            :panel-class="['setting-dropdown-panel']"
+                >
                     <template #button>
                         <a class="btn iconfont wulin-setting" @click="setting.listShow = true" />
                     </template>
@@ -43,12 +46,12 @@
                     </template>
                 </v-dropdown>
             </div>
-            <v-modal class="login-modal" :canClose="true" style="position: absolute" :size="'medium'" :show="login.show" :position="'outside-bottom'" @close="login.show = false">
+            <v-dialog class="login-modal" :canClose="true" :size="'medium'" :show="login.show" :position="'outside-bottom'" @close="login.show = false">
                 <template #title>
                     {{$t('login.login')}}
                 </template>
                 <v-login @loginSuccessful="login.show = false" />
-            </v-modal>
+            </v-dialog>
         </div>
         </div>
     </div>
@@ -67,13 +70,20 @@
     Pages.forEach( p => {
         pageMap[p.path] = p;
     });
+    const languageGroup = { id: 'language', i18Key: 'index.sets.language', selects:[],
+            items:[
+                { id: 'zh-CN', text: '简体中文'},
+                { id: 'zh-TW', text: '正體中文'},
+                { id: 'en-US', text: 'English'}
+            ]
+        };
     export default {
         name: "Header",
         components:{
             'v-selector': FComponents.Selector,
             'v-dropdown': FComponents.Dropdown,
             'v-navigator': FComponents.Navigator,
-            'v-modal': FComponents.Modal,
+            'v-dialog': FComponents.Dialog,
             'v-login': Login
         },
         data(){
@@ -86,13 +96,7 @@
                 },
                 setting:{
                     groups:[
-                        { id: 'language', i18Key: 'index.sets.language', selects:[],
-                            items:[
-                                { id: 'zh-CN', text: '简体中文'},
-                                { id: 'zh-TW', text: '正體中文'},
-                                { id: 'en-US', text: 'English'}
-                            ]
-                        },
+                        languageGroup,
                         { id: 'manager', i18Key: 'manager.managerMode', selects:[],
                             items: [
                                 { id: 'login', i18Key: 'login.login'}
@@ -137,18 +141,19 @@
             },
             settingClick( group,index ){
                 switch (group.id) {
-                    case 'language': this.changeLocale(group, group.items[index], index);break;
+                    case 'language': this.changeLocale(index);break;
                     case 'manager':
                         this.managerClick(group.items[index].id);
                         break;
                     default: break;
                 }
             },
-            changeLocale(group, item ,index){
-                if(!group.selects.includes(index)){
-                    group.selects.pop();
-                    group.selects.push(index);
-                    this.$i18n.locale = item.id;
+            changeLocale(index){
+                let selects = languageGroup.selects;
+                if(!selects.includes(index)){
+                    selects.pop();
+                    selects.push(index);
+                    this.$i18n.locale = languageGroup.items[index].id;
                 }
                 this.setting.listShow = false;
             },
@@ -159,12 +164,30 @@
                         break;
                     default: break;
                 }
+            },
+            getLocaleIndex( locale ){
+                let index = null;
+                languageGroup.items.forEach( (item, i) => {
+                    if(item.id === locale){
+                        index = i;
+                    }
+                });
+                return index;
             }
         },
         mounted(){
             window.addEventListener('scroll', () => {
                 this.fixed = window.scrollY >= 80;
             });
+        },
+        created(){
+            let locale = this.$store.state.locale;
+            let index = this.getLocaleIndex( locale);
+            if(!index && index !== 0) {
+                index = this.getLocaleIndex( 'en-US');
+            }
+            console.log(index);
+            this.changeLocale(index);
         }
     }
 </script>

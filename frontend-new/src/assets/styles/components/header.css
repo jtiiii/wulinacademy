@@ -44,22 +44,6 @@
   display: flex;
   align-items: center;
 }
-@media screen and (max-width: 480px) {
-  .header .box .content-box .setting .dropdown .modal-container {
-    width: 100%;
-  }
-}
-@media screen and (min-width: 480px) {
-  .header .box .content-box .setting .dropdown .modal-container {
-    width: 7rem;
-  }
-}
-.header .box .content-box .menu .selector {
-  width: 7rem;
-}
-.header .box .content-box .menu .selector .modal-container {
-  width: 7rem;
-}
 .header .box .content-box .menu,
 .header .box .content-box .setting {
   flex: 1;
@@ -78,32 +62,6 @@
   height: 1.5rem;
   font-size: 1.5rem;
 }
-.header .box .content-box .menu .selector .modal-container .panel,
-.header .box .content-box .setting .selector .modal-container .panel,
-.header .box .content-box .menu .dropdown .modal-container .panel,
-.header .box .content-box .setting .dropdown .modal-container .panel {
-  width: 7rem;
-}
-.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item,
-.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item,
-.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item,
-.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item {
-  text-align: center;
-  font-weight: bolder;
-  color: #555;
-}
-.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item[active],
-.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item[active],
-.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active],
-.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] {
-  background-color: #A9A19A;
-}
-.header .box .content-box .menu .selector .modal-container .panel .nav-box a.item[active] span,
-.header .box .content-box .setting .selector .modal-container .panel .nav-box a.item[active] span,
-.header .box .content-box .menu .dropdown .modal-container .panel .nav-box a.item[active] span,
-.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a.item[active] span {
-  color: #fff;
-}
 .header .box .content-box .menu .selector {
   margin-left: 0.625rem;
   left: 0;
@@ -112,25 +70,8 @@
   margin-right: 0.625rem;
   right: 0;
 }
-.header .box .content-box .setting .dropdown .modal-container .panel .nav-box a {
-  font-size: 0.8rem;
-  padding: 0.3125rem;
-}
 .header .box .content-box .setting .dropdown .btn {
   float: right;
-}
-.header .box .content-box .setting .dropdown .group .title {
-  text-align: center;
-}
-.header .box .content-box .setting .dropdown .group .title hr {
-  position: relative;
-  top: 0.8rem;
-}
-.header .box .content-box .setting .dropdown .group .title span {
-  font-size: 0.75rem;
-  position: relative;
-  background: #fff;
-  padding: 0.3125rem;
 }
 .header .box .content-box .login-modal {
   width: 18.75rem;
@@ -161,5 +102,42 @@
   display: inline-block;
   padding-left: 0.5rem;
   text-align: left;
+}
+.menu-selector-panel .nav-box a.item {
+  font-weight: bolder;
+}
+.setting-dropdown-panel .nav-box a.item span {
+  font-size: 0.8rem;
+  padding: 0.3125rem;
+}
+.setting-dropdown-panel .group .title {
+  text-align: center;
+}
+.setting-dropdown-panel .group .title hr {
+  position: relative;
+  top: 0.8rem;
+}
+.setting-dropdown-panel .group .title span {
+  font-size: 0.75rem;
+  position: relative;
+  background: #fff;
+  padding: 0.3125rem;
+}
+.menu-selector-panel,
+.setting-dropdown-panel {
+  width: 7rem;
+}
+.menu-selector-panel .nav-box a.item,
+.setting-dropdown-panel .nav-box a.item {
+  text-align: center;
+  color: #555;
+}
+.menu-selector-panel .nav-box a.item[active],
+.setting-dropdown-panel .nav-box a.item[active] {
+  background-color: #A9A19A;
+}
+.menu-selector-panel .nav-box a.item[active] span,
+.setting-dropdown-panel .nav-box a.item[active] span {
+  color: #fff;
 }
 /*# sourceMappingURL=header.css.map */

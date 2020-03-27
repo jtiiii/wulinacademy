@@ -1,7 +1,7 @@
 const store ={
     state:{
         isLogin: false,
-        locale: 'en-US',
+        locale: window.navigator.language,
         page:'/home',
         mode: process.env.NODE_ENV,
     },
