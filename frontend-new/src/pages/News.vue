@@ -36,9 +36,8 @@
                     <input type="text" v-model="news.modify.title" />
                 </label>
                 <label class="date">
-                    <span  v-if="isPreview" >{{ news.modify.eventDate.dateStr }}</span>
-                    <input v-else type="text" v-model="news.modify.eventDate.dateStr" />
-                    <input hidden type="text" v-model="news.modify.eventDate.gmt" />
+                    <span v-if="isPreview">{{ modifyEventDateFormat }}</span>
+                    <v-input-date v-else v-model="news.modify.eventDate"/>
                 </label>
                 <hr/>
                 <!-- 编辑器 -->
@@ -84,12 +83,13 @@
 
     export default {
         name:'news',
-        components:{
+        components: {
             'v-editor': FComponents.Third.Quill,
             'v-card': FComponents.Card,
             "v-dialog": FComponents.Dialog,
             "v-button": FComponents.Button,
             "v-modal": FComponents.Modal,
+            "v-input-date": FComponents.Input.Date,
             'image-control': ImageControl,
         },
         props:{
@@ -138,11 +138,7 @@
                             html: '',
                         },
                         thumbnail: null,
-                        eventDate: {
-                            dateStr: '',
-                            gmt: '+8',
-                            // date: null,
-                        }
+                        eventDate: new Date().getTime()
                     },
                     selected: undefined,
                     content:'',
@@ -160,14 +156,17 @@
             isUpdate(){
                 return Boolean(this.selected.id);
             },
-            isPreview(){
+            isPreview() {
                 return this.mode === 'preview';
             },
-            isLogin(){
+            isLogin() {
                 return this.$store.state.isLogin;
             },
-            isThumbnailImageTarget(){
+            isThumbnailImageTarget() {
                 return this.imageControlSelectTarget === this.imageControlSelectTargets[0];
+            },
+            modifyEventDateFormat() {
+                return new Date(this.news.modify.eventDate).toLocaleString();
             }
         },
         watch:{
@@ -198,14 +197,14 @@
                 this.news.modify.title = '';
                 this.news.modify.content.delta = null;
                 this.news.modify.content.html = '';
-                this.news.modify.eventDate.dateStr = '';
+                this.news.modify.eventDate = new Date().getTime();
                 this.news.modify.previews = '';
                 this.news.modify.thumbnail = '';
             },
             setNewsDialog(title, eventDate , thumbnail , content, uuid ){
                 this.news.modify.title = title;
                 this.news.modify.thumbnail = thumbnail;
-                this.news.modify.eventDate.dateStr = new Date(eventDate).toDateString();
+                this.news.modify.eventDate = eventDate;
                 if(uuid){
                     return NewsService.getContent(uuid).then( result => {
                         this.news.modify.content.delta = result;
@@ -275,8 +274,8 @@
                 this.modal.content = true;
             },
             saveOrUpdateNews(){
-                let preview = StringUtils.fixLength(this.editor.getText(),200,'');
-                let eventDate = new Date(this.news.modify.eventDate.dateStr).getTime();
+                let preview = StringUtils.fixLength(this.editor.getText(), 200, '');
+                let eventDate = this.news.modify.eventDate;
                 let updateOrSaveTask = null;
                 let isUpdate = this.isUpdate;
                 if(isUpdate){
@@ -390,5 +389,5 @@
     }
 </script>
 <style lang="less">
-    @import url('../assets/styles/components/news.less');
+    @import url('../assets/styles/pages/news.less');
 </style>
