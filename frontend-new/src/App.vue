@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-layout-header class="v-layout-header" />
-    <v-layout-container />
+    <router-view></router-view>
     <v-layout-footer />
   </div>
 </template>
@@ -9,7 +9,6 @@
 <script>
   import Header from './components/Header.vue';
   import Footer from './components/Footer.vue';
-  import Container from './components/Container.vue';
   import CheckService from "./scripts/api/CheckService";
 
   export default {
@@ -17,7 +16,6 @@
     components: {
       'v-layout-footer':Footer,
       'v-layout-header':Header,
-      'v-layout-container': Container,
     },
     mounted() {
       CheckService.available();

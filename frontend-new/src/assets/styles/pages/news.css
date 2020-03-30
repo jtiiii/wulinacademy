@@ -111,6 +111,7 @@
   flex-flow: column nowrap;
   padding: 1rem 2rem;
   min-height: 40.25rem;
+  margin-bottom: 2rem;
 }
 .dialog .panel .panel-body .news-content .header-img {
   height: 25rem;

@@ -49,30 +49,25 @@
 .header .box .content-box .setting {
   flex: 1;
 }
-.header .box .content-box .menu .selector,
-.header .box .content-box .setting .selector,
 .header .box .content-box .menu .dropdown,
 .header .box .content-box .setting .dropdown {
   position: absolute;
 }
-.header .box .content-box .menu .selector .iconfont,
-.header .box .content-box .setting .selector .iconfont,
 .header .box .content-box .menu .dropdown .iconfont,
 .header .box .content-box .setting .dropdown .iconfont {
   width: 1.5rem;
   height: 1.5rem;
   font-size: 1.5rem;
 }
-.header .box .content-box .menu .selector {
+
+.header .box .content-box .menu .dropdown {
   margin-left: 0.625rem;
   left: 0;
 }
+
 .header .box .content-box .setting .dropdown {
   margin-right: 0.625rem;
   right: 0;
-}
-.header .box .content-box .setting .dropdown .btn {
-  float: right;
 }
 .header .box .content-box .login-modal {
   width: 18.75rem;
