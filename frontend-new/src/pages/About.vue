@@ -1,5 +1,8 @@
 <template>
     <div class="about">
+        <article class="content">
+            <router-view/>
+        </article>
         <v-navigator
                 :length="tabs.length"
                 :direction="tabDirection"
@@ -10,13 +13,6 @@
                 {{ $t(tabs[index].i18Key) }}
             </template>
         </v-navigator>
-        <article class="content">
-            <router-view/>
-            <!--            <div v-show="currentTab === 'map'" class="dituAmap">-->
-            <!--                <div id="mapContainer">-->
-            <!--                </div>-->
-            <!--            </div>-->
-        </article>
     </div>
 </template>
 <script type="text/javascript">
@@ -42,7 +38,7 @@
                 }
                 this.changeTab(index);
                 this.$router.push(this.tabs[index].path);
-            }
+            },
         },
         data: ()=> {
             return {
@@ -75,7 +71,10 @@
             this.$router.afterEach(to => {
                 this.changeTab(this.pathTabIndexMap[to.path]);
             });
-            console.log('test');
+
+            if (window.innerWidth <= 850) {
+                this.tabDirection = 'row';
+            }
         }
     };
 </script>

@@ -3,13 +3,18 @@
   position: relative;
 }
 .about .content {
-  margin: 0 auto;
   max-width: 43.5rem;
   display: flex;
-  left: 5rem;
+  margin: 2.5rem auto 0 auto;
   position: relative;
   flex-flow: column nowrap;
-  padding: 0 1rem;
+  padding: 1rem 1rem 0 1rem;
+}
+@media screen and (min-width: 53.125rem) {
+  .about .content {
+    margin: 0 auto;
+    left: 5rem;
+  }
 }
 .about .content .history p {
   margin: 1rem 0;
@@ -57,12 +62,22 @@
   display: inline-block;
   width: 5.25rem;
 }
-.about .nav-box {
-  text-align: left;
-  position: fixed;
-  left: calc(50% - 27rem);
-  width: 7rem;
-  /* 112px */
+@media screen and (min-width: 53.125rem) {
+  .about .nav-box {
+    position: fixed;
+    text-align: left;
+    left: calc(50% - 25rem);
+    width: 7rem;
+    /* 112px */
+    top: 7rem;
+  }
+}
+@media screen and (max-width: 53.125rem) {
+  .about .nav-box {
+    position: absolute;
+    width: 100%;
+    top: -2.5rem;
+  }
 }
 .about .nav-box .nav.emotion-default.direction-column a:hover {
   background-color: #e4e1df;

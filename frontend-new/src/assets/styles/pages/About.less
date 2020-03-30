@@ -2,13 +2,17 @@
   text-align : center;
   position: relative;
   .content{
-    margin: 0 auto;
+
     max-width: 43.5rem;
     display: flex;
-    left: 5rem;
+    @media screen and (min-width: 53.125rem) {
+      margin: 0 auto;
+      left: 5rem;
+    }
+    margin: 2.5rem auto 0 auto;
     position: relative;
     flex-flow: column nowrap;
-    padding: 0 1rem;
+    padding: 1rem 1rem 0 1rem;
 
     .history {
       p {
@@ -65,10 +69,19 @@
   }
 
   .nav-box {
-    text-align: left;
-    position: fixed;
-    left: calc(50% - 27rem);
-    width: 7rem; /* 112px */
+    @media screen and (min-width: 53.125rem) {
+      position: fixed;
+      text-align: left;
+      left: calc(50% - 25rem);
+      width: 7rem; /* 112px */
+      top: 7rem;
+    }
+    @media screen and (max-width: 53.125rem) {
+      position: absolute;
+      width: 100%;
+      top: -2.5rem;
+    }
+
 
     .nav.emotion-default.direction-column {
       a {
