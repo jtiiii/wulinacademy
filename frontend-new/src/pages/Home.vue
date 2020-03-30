@@ -10,9 +10,9 @@
         <div class="guide-line"><p>{{ $t('index.nav.about') }}</p></div>
 
         <div class="about">
-            <a @click="goAbout" class="about-col">{{ $t('about.nav.history') }}</a>
-            <a @click="goAbout" class="about-col">{{ $t('about.nav.contact') }}</a>
-            <a @click="goAbout" class="about-col">{{ $t('about.nav.map') }}</a>
+            <a @click="goAbout('history')" class="about-col">{{ $t('about.nav.history') }}</a>
+            <a @click="goAbout('contact')" class="about-col">{{ $t('about.nav.contact') }}</a>
+            <a @click="goAbout('map')" class="about-col">{{ $t('about.nav.map') }}</a>
         </div>
 
         <div class="guide-line"><p>{{ $t('index.nav.channel') }}</p></div>
@@ -70,24 +70,24 @@
             };
         },
         methods: {
-            hideModal: function(){
+            hideModal: function () {
                 this.modal.show = false;
             },
-            showQR: function(){
+            showQR: function () {
                 this.modal.show = true;
             },
-            goAbout: function(){
-                this.$router.push('about');
+            goAbout: function (sub) {
+                this.$router.push('/about/' + sub);
             },
-            getThumbnail( thumbnail ){
-                if(thumbnail){
+            getThumbnail(thumbnail) {
+                if (thumbnail) {
                     return ImageService.getImageSrc(thumbnail);
                 }
                 return null;
             },
-            changeCover(){
+            changeCover() {
                 let current = this.showCoverIndex;
-                let next = this.showCoverIndex === this.covers.length - 1 ? 0: this.showCoverIndex + 1;
+                let next = this.showCoverIndex === this.covers.length - 1 ? 0 : this.showCoverIndex + 1;
                 if(current === next){
                     return;
                 }

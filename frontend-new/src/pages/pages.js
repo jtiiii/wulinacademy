@@ -23,7 +23,7 @@ const pages = [
         component: News
     },
     {
-        name: 'about', path: '/about', i18key: 'index.nav.about',
+        name: 'about', path: '/about/history', i18key: 'index.nav.about',
         component: About,
         children: [
             {name: 'history', path: '/about/history', component: AboutHistory, i18key: 'index.nav.about'},
