@@ -1,71 +1,63 @@
 <template>
     <div class="about">
+        <v-navigator
+                :length="tabs.length"
+                :direction="tabDirection"
+                :selects="selectTabs"
+                @click="changePage"
+        >
+            <template #item="{ index }">
+                {{ $t(tabs[index].i18Key) }}
+            </template>
+        </v-navigator>
         <article class="content">
-            <div class="history">
-                <p>{{ $t('about.history.h1') }}</p>
-                <p>{{ $t('about.history.h2') }}</p>
-                <p>{{ $t('about.history.h3')}}</p>
-                <div class="img">
-                    <img :src="pics[1]"/>
-                    <span>{{ $t('about.history.t1') }}</span>
-                </div>
-                <div class="img">
-                    <img :src="pics[2]"/>
-                    <span>{{ $t('about.history.t2') }}</span>
-                </div>
-                <div class="img">
-                    <img :src="pics[4]"/>
-                    <span>{{ $t('about.history.t3') }}</span>
-                </div>
-                <div class="img">
-                    <img :src="pics[3]"/>
-                    <span>{{ $t('about.history.t4') }}</span>
-                </div>
-            </div>
-            <div class="contact">
-                <h2>{{ $t('index.title') }}</h2>
-                <p><b>{{ $t('about.contact.phoneNumber') }}</b><span>{{ phoneNumber }}</span></p>
-                <p><b>{{ $t('about.contact.email') }}</b><a :href="'mailto:' + email">{{ email }}</a></p>
-                <p><b>{{ $t('about.contact.address') }}</b><span>{{ $t('about.contact.physicalAddress') }}</span></p>
-            </div>
-            <div v-show="currentTab === 'map'" class="dituAmap">
-                <div id="mapContainer">
-                </div>
-            </div>
+            <router-view/>
+            <!--            <div v-show="currentTab === 'map'" class="dituAmap">-->
+            <!--                <div id="mapContainer">-->
+            <!--                </div>-->
+            <!--            </div>-->
         </article>
     </div>
 </template>
 <script type="text/javascript">
-    import pic1 from '../assets/images/about-pic/photo2.jpg';
-    import pic2 from '../assets/images/about-pic/photo3.jpg';
-    import pic3 from '../assets/images/about-pic/photo4.jpg';
-    import pic4 from '../assets/images/about-pic/photo5.jpg';
-    import pic5 from '../assets/images/about-pic/photo6.jpg';
+    import FComponents from 'f-vue-components';
+    import FUtils from 'fo-utils';
 
     export default {
-        components:{
+        components: {
+            'v-navigator': FComponents.Navigator
         },
         methods: {
-            show: function( tab ){
+            show: function (tab) {
                 this.currentTab = tab.get().id;
             },
+            changeTab(index) {
+                FUtils.ArrayUtils.clean(this.selectTabs);
+                this.selectTabs.push(index);
+            },
+            changePage(index) {
+                let oldIndex = this.selectTabs[0];
+                if (oldIndex === index) {
+                    return;
+                }
+                this.changeTab(index);
+                this.$router.push(this.tabs[index].path);
+            }
         },
         data: ()=> {
             return {
-                phoneNumber: '(086) 0571-85150209',
-                email: 'wulinacademyarts@gmail.com',
                 amap: null,
-                markers:{},
+                markers: {},
                 currentTab: 'history',
+                tabDirection: 'column',
                 mobile: false,
-                tabs:[
-                    {id:'history', i18Key: 'about.nav.history',text: '' },
-                    {id:'contact', i18Key: 'about.nav.contact',text:''},
-                    {id:'map', i18Key: 'about.nav.map',text:''}
+                tabs: [
+                    {id: 'history', i18Key: 'about.nav.history', path: '/about/history'},
+                    {id: 'contact', i18Key: 'about.nav.contact', path: '/about/contact'},
+                    {id: 'map', i18Key: 'about.nav.map', path: '/about/map'}
                 ],
-                pics:[
-                    pic1,pic2,pic3,pic4,pic5
-                ]
+                pathTabIndexMap: {},
+                selectTabs: [],
             };
         },
         computed:{
@@ -73,10 +65,17 @@
                 return this.tabs.map( tab => {tab.text = this.$t(tab.i18Key); return tab});
             }
         },
-        mounted: function(){
-
+        mounted() {
         },
-        created(){
+        created() {
+            for (let i = 0; i < this.tabs.length; i++) {
+                this.pathTabIndexMap[this.tabs[i].path] = i;
+            }
+            this.selectTabs.push(this.pathTabIndexMap[this.$route.path]);
+            this.$router.afterEach(to => {
+                this.changeTab(this.pathTabIndexMap[to.path]);
+            });
+            console.log('test');
         }
     };
 </script>

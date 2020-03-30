@@ -1,12 +1,13 @@
 .about {
   text-align: center;
-  /*height: 100%;*/
   position: relative;
 }
 .about .content {
   margin: 0 auto;
-  max-width: 47rem;
+  max-width: 43.5rem;
   display: flex;
+  left: 5rem;
+  position: relative;
   flex-flow: column nowrap;
   padding: 0 1rem;
 }
@@ -56,29 +57,23 @@
   display: inline-block;
   width: 5.25rem;
 }
-.about > nav {
+.about .nav-box {
   text-align: left;
   position: fixed;
-  left: 2.5rem /* 40px */;
+  left: calc(50% - 27rem);
   width: 7rem;
   /* 112px */
 }
-.about > nav > a {
-  font-size: 17px;
-  color: #444;
-  margin: 10px 0;
-  display: block;
-  cursor: pointer;
+.about .nav-box .nav.emotion-default.direction-column a:hover {
+  background-color: #e4e1df;
 }
-.about > nav > a:hover {
+.about .nav-box .nav.emotion-default.direction-column a[active] {
+  background-color: #A9A19A;
+}
+.about .nav-box .nav.emotion-default.direction-column a[active]:hover {
+  background-color: #A9A19A;
   opacity: 0.7;
 }
-/*.about > article{*/
-/*    float: left;*/
-/*    height: 100%;*/
-/*    overflow: hidden;*/
-/*    overflow-y: scroll;*/
-/*}*/
 .dituAmap {
   margin: 20px auto;
 }

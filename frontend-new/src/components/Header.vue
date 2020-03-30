@@ -68,6 +68,11 @@
     const pageMap = {};
     Pages.forEach( p => {
         pageMap[p.path] = p;
+        if (p.children) {
+            p.children.forEach(c => {
+                pageMap[c.path] = c;
+            });
+        }
     });
     const languageGroup = { id: 'language', i18Key: 'index.sets.language', selects:[],
             items:[
