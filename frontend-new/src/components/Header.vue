@@ -65,7 +65,6 @@
     import Login from '../components/Login.vue';
     import VueUtils from 'f-vue-components/src/scripts/util/VueUtils';
     const pages = Pages.filter( p => !p.hidden);
-    console.info(pages);
     const pageMap = {};
     Pages.forEach( p => {
         pageMap[p.path] = p;
@@ -186,7 +185,6 @@
             if(!index && index !== 0) {
                 index = this.getLocaleIndex( 'en-US');
             }
-            console.log(index);
             this.changeLocale(index);
         }
     }

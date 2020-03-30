@@ -14,7 +14,8 @@
                 <div class="news-invisible" v-if="isLogin && !newsItem.enable">
                     <a class="iconfont wulin-invisible" />
                 </div>
-                <v-card :flow="'row'" :cover="getThumbnailSrc(newsItem.thumbnail) || defaultThumbnail" :coverText="newsItem.title">
+                <v-card :flow="news.cardFlow" :cover="getThumbnailSrc(newsItem.thumbnail) || defaultThumbnail"
+                        :coverText="newsItem.title">
                     <h3 class="item-title">{{ newsItem.title }}</h3>
                     <h6 class="item-date">{{ new Date(newsItem.eventDate).toLocaleString() }}</h6>
                     <p class="item-preview">{{ newsItem.preview }}</p>
@@ -116,8 +117,9 @@
                     1:'content'
                 },
                 registers:[ServerImage],
-                news:{
-                    page:{
+                news: {
+                    cardFlow: 'row',
+                    page: {
                         content: [],
                         pageNum: 0,
                         pageSize: 10,
@@ -350,9 +352,8 @@
                 },500);
             },
             getNews( id ){
-                return NewsService.getNews(id).then( news => {
+                return NewsService.getNews(id).then(() => {
                     this.cleanNews();
-
                 });
             },
             setEditor( editor ){
@@ -379,10 +380,18 @@
                 this.editor.insertEmbed(index,'server_image',image, 'api');
             }
         },
-        mounted(){
-
+        mounted() {
+            // window.addEventListener('resize', () => {
+            //     console.log('resize');
+            //     if(window.innerWidth <= 650){
+            //         this.news.cardFlow = 'column';
+            //     }
+            // });
         },
-        created(){
+        created() {
+            if (window.innerWidth <= 700) {
+                this.news.cardFlow = 'column';
+            }
             this.initDebounce();
             this.getNewsPage(true);
         }

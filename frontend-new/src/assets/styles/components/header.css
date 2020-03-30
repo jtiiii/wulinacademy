@@ -43,6 +43,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  position: relative;
 }
 .header .box .content-box .menu,
 .header .box .content-box .setting {
@@ -79,7 +80,6 @@
 .header .box.fixed {
   height: 3.125rem;
   position: fixed;
-  width: 100%;
   top: 0;
   background: #fff;
 }
