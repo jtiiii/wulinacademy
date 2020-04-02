@@ -44,9 +44,12 @@ export default {
         },
         contact: {
             phoneNumber: '聯系電話：',
-                email: '電子郵箱：',
-                address:'聯系地址：',
-                physicalAddress:'浙江省-杭州市-西湖大道298號'
+            email: '電子郵箱：',
+            address: '聯系地址：',
+            physicalAddress: '浙江省-杭州市-西湖大道298號'
+        },
+        map: {
+            gotoMap: '去地圖頁面上查看'
         }
     },
     channel: {

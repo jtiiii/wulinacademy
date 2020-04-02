@@ -45,8 +45,11 @@ export default {
         contact: {
             phoneNumber: '联系电话：',
             email: '电子邮箱：',
-            address:'联系地址：',
-            physicalAddress:'浙江省-杭州市-西湖大道298号'
+            address: '联系地址：',
+            physicalAddress: '浙江省-杭州市-西湖大道298号'
+        },
+        map: {
+            gotoMap: '去地图页面上查看'
         }
     },
     channel: {

@@ -8,6 +8,7 @@ const Manager = resolve => require(['./Manager.vue'], resolve);
 /* --------- 子页面 --------- */
 const AboutContact = resolve => require(['./sub/AboutContact.vue'], resolve);
 const AboutHistory = resolve => require(['./sub/AboutHistory.vue'], resolve);
+const AboutMap = resolve => require(['./sub/AboutMap.vue'], resolve);
 
 const pages = [
     {
@@ -27,7 +28,8 @@ const pages = [
         component: About,
         children: [
             {name: 'history', path: '/about/history', component: AboutHistory, i18key: 'index.nav.about'},
-            {name: 'contact', path: '/about/contact', component: AboutContact, i18key: 'index.nav.about'}
+            {name: 'contact', path: '/about/contact', component: AboutContact, i18key: 'index.nav.about'},
+            {name: 'map', path: '/about/map', component: AboutMap, i18key: 'index.nav.about'}
         ]
     },
     { name: 'channel', path: '/channel', i18key: 'index.nav.channel',

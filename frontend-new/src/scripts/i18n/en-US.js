@@ -42,11 +42,14 @@ export default {
             t3: 'Conference room at Wulin Academy, 2017',
             t4: 'Pum blossoms at Wulin Academy, 2018'
         },
-        contact:{
+        contact: {
             phoneNumber: 'Tel: ',
             email: 'Email: ',
             address: 'Address: ',
-            physicalAddress:'298 WestLake Avenue, Hangzhou, China'
+            physicalAddress: '298 WestLake Avenue, Hangzhou, China'
+        },
+        map: {
+            gotoMap: 'Check it out on the Map page.'
         }
     },
     channel: {
