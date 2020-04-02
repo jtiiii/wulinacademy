@@ -1,0 +1,32 @@
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://xxxxxxxxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+      username: xxxxxxxx
+      password: 'xxxxxxxxx'
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 700
+          batch_versioned_data: true
+        order_updates: true
+        order_inserts: true
+logging:
+  level:
+    ROOT: info
+    controller: debug
+    token: debug
+    org:
+      springframework:
+        security: info
+        web: info
+        jdbc: debug
+    com.alibaba.druid: info
+
+---
+cors:
+  allow-origin: '*'

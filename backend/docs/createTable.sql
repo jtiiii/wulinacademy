@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS wulin_dev COLLATE utf8_bin;
-use wulin_dev;
+CREATE DATABASE IF NOT EXISTS wulin_prod COLLATE utf8_bin;
+use wulin_prod;
 
 DROP TABLE IF EXISTS t_folder_images;
 DROP TABLE IF EXISTS t_folder_tree;
